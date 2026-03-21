@@ -2,28 +2,6 @@
 <html>
 <head>
     <title>SkillBridge</title>
-    <style>
-        body {
-            font-family: Arial;
-            text-align: center;
-            background: #f4f4f4;
-        }
-        header {
-            background: teal;
-            color: white;
-            padding: 20px;
-        }
-        .card {
-            background: white;
-            margin: 10px;
-            padding: 20px;
-            display: inline-block;
-            border-radius: 10px;
-        }
-    </style>
-</head>
-<head>
-    <title>SkillBridge</title>
 
     <style>
         body {
@@ -45,15 +23,19 @@
             padding: 20px;
         }
 
-        div {
+        .card {
             background: white;
             padding: 15px;
             margin: 10px;
             border-radius: 10px;
+            display: inline-block;
         }
     </style>
 </head>
+
 <body>
+
+<!-- LOGIN -->
 <h2>Login / Sign Up</h2>
 
 <input id="email" type="email" placeholder="Enter email"><br><br>
@@ -63,40 +45,43 @@
 <button onclick="login()">Login</button>
 
 <hr>
-<header>
 
+<!-- HEADER -->
+<header>
     <h1>SkillBridge</h1>
     <p>Find trusted service providers near you</p>
     <a href="services.html">Services</a> |
-<a href="contact.html">Contact</a>
+    <a href="contact.html">Contact</a>
 </header>
+
 <br><br>
+
+<!-- SEARCH -->
 <input type="text" placeholder="Search for services..." style="padding:10px; width:250px;">
 <button style="padding:10px; background:orange; color:white; border:none;">
 Search
 </button>
-    <h2>Login / Sign Up</h2>
 
-<input type="email" id="email" placeholder="Enter email"><br><br>
-<input type="password" id="password" placeholder="Enter password"><br><br>
+<!-- SERVICES FROM DATABASE -->
+<h2>Available Services</h2>
+<div id="servicesList"></div>
 
-<button onclick="signup()">Sign Up</button>
-<button onclick="login()">Login</button>
+<!-- STATIC SERVICES -->
 <h2>Popular Services</h2>
 
 <div class="card">Plumbing</div>
 <div class="card">Tailoring</div>
 <div class="card">Cleaning</div>
 <div class="card">Graphic Design</div>
-    <script type="module">
-  // Import Firebase
+
+<!-- FIREBASE -->
+<script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
   import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } 
     from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
   import { getFirestore, collection, getDocs } 
     from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
-  // Your config
   const firebaseConfig = {
     apiKey: "AIzaSyC1fquC3ESn2dc06AIQhSwHMB2Sv8e3wy8",
     authDomain: "skillbridge-app-e39f3.firebaseapp.com",
@@ -106,12 +91,10 @@ Search
     appId: "1:75622581303:web:fb0e009a37ec2cc67eabb2"
   };
 
-  // Initialize
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = getFirestore(app);
 
-  // SIGN UP
   window.signup = function () {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
@@ -121,7 +104,6 @@ Search
       .catch(err => alert(err.message));
   };
 
-  // LOGIN
   window.login = function () {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
@@ -131,8 +113,7 @@ Search
       .catch(err => alert(err.message));
   };
 
-  // LOAD SERVICES FROM DATABASE
-  window.loadServices = async function () {
+  async function loadServices() {
     const querySnapshot = await getDocs(collection(db, "services"));
 
     let output = "";
@@ -141,7 +122,7 @@ Search
       const data = doc.data();
 
       output += `
-        <div>
+        <div class="card">
           <h3>${data.name}</h3>
           <p>${data.category} - ${data.location}</p>
           <p>⭐ ${data.rating}</p>
@@ -150,10 +131,10 @@ Search
     });
 
     document.getElementById("servicesList").innerHTML = output;
-  };
+  }
 
-  // Run when page loads
   loadServices();
-          </script>
+</script>
+
 </body>
 </html>
