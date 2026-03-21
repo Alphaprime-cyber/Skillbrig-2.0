@@ -54,6 +54,15 @@
     </style>
 </head>
 <body>
+    <h2>Login / Sign Up</h2>
+
+<input id="email" type="email" placeholder="Enter email"><br><br>
+<input id="password" type="password" placeholder="Enter password"><br><br>
+
+<button onclick="signup()">Sign Up</button>
+<button onclick="login()">Login</button>
+
+<hr>
 
 <header>
 
@@ -80,13 +89,15 @@ Search
 <div class="card">Tailoring</div>
 <div class="card">Cleaning</div>
 <div class="card">Graphic Design</div>
-<script type="module">
-  // Import the functions you need from the SDKs you need
+    <script type="module">
+  // Import Firebase
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } 
+    from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
+  import { getFirestore, collection, getDocs } 
+    from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
-  // Your web app's Firebase configuration
+  // Your config
   const firebaseConfig = {
     apiKey: "AIzaSyC1fquC3ESn2dc06AIQhSwHMB2Sv8e3wy8",
     authDomain: "skillbridge-app-e39f3.firebaseapp.com",
@@ -96,27 +107,54 @@ Search
     appId: "1:75622581303:web:fb0e009a37ec2cc67eabb2"
   };
 
-  // Initialize Firebase
+  // Initialize
   const app = initializeApp(firebaseConfig);
-</script>
-    <script>
-function signup() {
-  var email = document.getElementById("email").value;
-  var password = document.getElementById("password").value;
+  const auth = getAuth(app);
+  const db = getFirestore(app);
 
-  firebase.auth().createUserWithEmailAndPassword(email, password)
-    .then(() => alert("Signup successful!"))
-    .catch(error => alert(error.message));
-}
+  // SIGN UP
+  window.signup = function () {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
 
-function login() {
-  var email = document.getElementById("email").value;
-  var password = document.getElementById("password").value;
+    createUserWithEmailAndPassword(auth, email, password)
+      .then(() => alert("Signup successful!"))
+      .catch(err => alert(err.message));
+  };
 
-  firebase.auth().signInWithEmailAndPassword(email, password)
-    .then(() => alert("Login successful!"))
-    .catch(error => alert(error.message));
-}
-    </script>
+  // LOGIN
+  window.login = function () {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    signInWithEmailAndPassword(auth, email, password)
+      .then(() => alert("Login successful!"))
+      .catch(err => alert(err.message));
+  };
+
+  // LOAD SERVICES FROM DATABASE
+  window.loadServices = async function () {
+    const querySnapshot = await getDocs(collection(db, "services"));
+
+    let output = "";
+
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+
+      output += `
+        <div>
+          <h3>${data.name}</h3>
+          <p>${data.category} - ${data.location}</p>
+          <p>⭐ ${data.rating}</p>
+        </div>
+      `;
+    });
+
+    document.getElementById("servicesList").innerHTML = output;
+  };
+
+  // Run when page loads
+  loadServices();
+          </script>
 </body>
 </html>
