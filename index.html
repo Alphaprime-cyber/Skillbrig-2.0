@@ -99,5 +99,24 @@ Search
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
 </script>
+    <script>
+function signup() {
+  var email = document.getElementById("email").value;
+  var password = document.getElementById("password").value;
+
+  firebase.auth().createUserWithEmailAndPassword(email, password)
+    .then(() => alert("Signup successful!"))
+    .catch(error => alert(error.message));
+}
+
+function login() {
+  var email = document.getElementById("email").value;
+  var password = document.getElementById("password").value;
+
+  firebase.auth().signInWithEmailAndPassword(email, password)
+    .then(() => alert("Login successful!"))
+    .catch(error => alert(error.message));
+}
+    </script>
 </body>
 </html>
