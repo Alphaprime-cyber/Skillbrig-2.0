@@ -5,9 +5,10 @@
 
     <style>
         body {
-            font-family: Arial;
+            font-family: Arial, sans-serif;
             background: #f5f5f5;
             text-align: center;
+            margin: 0;
         }
 
         header {
@@ -17,24 +18,31 @@
         }
 
         a {
-            margin: 10px;
-            text-decoration: none;
             color: white;
+            text-decoration: none;
+            margin: 10px;
             font-weight: bold;
         }
 
         input {
+            width: 260px;
             padding: 10px;
-            width: 250px;
             margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
 
         button {
-            padding: 10px;
-            border: none;
+            padding: 10px 15px;
             background: orange;
             color: white;
+            border: none;
+            border-radius: 5px;
             cursor: pointer;
+        }
+
+        button:hover {
+            opacity: 0.9;
         }
 
         .card {
@@ -43,14 +51,18 @@
             margin: 10px;
             border-radius: 10px;
             display: inline-block;
-            width: 200px;
+            width: 220px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        hr {
+            margin: 30px 0;
         }
     </style>
 </head>
 
 <body>
 
-<!-- HEADER -->
 <header>
     <h1>SkillBridge</h1>
     <p>Find trusted service providers near you</p>
@@ -64,22 +76,44 @@
 <input type="text" placeholder="Search for services...">
 <button>Search</button>
 
-<!-- LOGIN SECTION -->
+<hr>
+
+<!-- LOGIN -->
 <h2>Login / Sign Up</h2>
 
-<input id="email" type="email" placeholder="Enter email"><br>
-<input id="password" type="password" placeholder="Enter password"><br>
+<input id="email" type="email" placeholder="Email"><br>
+<input id="password" type="password" placeholder="Password"><br>
 
 <button onclick="signup()">Sign Up</button>
 <button onclick="login()">Login</button>
 
 <hr>
 
+<!-- POST SERVICE -->
+<h2>Post Your Service</h2>
+
+<input id="serviceName" type="text" placeholder="Service Name"><br>
+
+<input id="serviceCategory" type="text" placeholder="Category"><br>
+
+<input id="serviceLocation" type="text" placeholder="Location"><br>
+
+<input id="serviceRating" type="number" placeholder="Rating (1-5)"><br>
+
+<button onclick="addService()">Post Service</button>
+
+<hr>
+
 <!-- SERVICES -->
 <h2>Available Services</h2>
-<div id="servicesList"></div>
 
-<!-- STATIC SERVICES -->
+<div id="servicesList">
+    Loading services...
+</div>
+
+<hr>
+
+<!-- POPULAR SERVICES -->
 <h2>Popular Services</h2>
 
 <div class="card">Plumbing</div>
@@ -87,69 +121,141 @@
 <div class="card">Cleaning</div>
 <div class="card">Graphic Design</div>
 
-<!-- FIREBASE -->
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } 
-    from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
-  import { getFirestore, collection, getDocs } 
-    from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
-  // ✅ CORRECT CONFIG (NEW PROJECT)
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword
+}
+from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
 
-  // SIGN UP
-  window.signup = function () {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  addDoc
+}
+from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
-    createUserWithEmailAndPassword(auth, email, password)
-      .then(() => alert("Signup successful!"))
-      .catch(err => alert(err.message));
-  };
+const firebaseConfig = {
+  apiKey: "AIzaSyCgV-0KaUdjHyy_YPYRogunS5H01jPBbGg",
+  authDomain: "skillbridge-app-56faf.firebaseapp.com",
+  projectId: "skillbridge-app-56faf",
+  storageBucket: "skillbridge-app-56faf.firebasestorage.app",
+  messagingSenderId: "181813326765",
+  appId: "1:181813326765:web:4732292cd467a8f7d3a724"
+};
 
-  // LOGIN
-  window.login = function () {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-    signInWithEmailAndPassword(auth, email, password)
-      .then(() => alert("Login successful!"))
-      .catch(err => alert(err.message));
-  };
+window.signup = function () {
 
-  // LOAD SERVICES
-  async function loadServices() {
-    try {
-      const querySnapshot = await getDocs(collection(db, "services"));
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
 
-      let output = "";
+  createUserWithEmailAndPassword(auth, email, password)
+    .then(() => {
+      alert("Signup successful!");
+    })
+    .catch(error => {
+      alert(error.message);
+    });
+};
 
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
+window.login = function () {
 
-        output += `
-          <div class="card">
-            <h3>${data.name}</h3>
-            <p>${data.category}</p>
-            <p>${data.location}</p>
-            <p>⭐ ${data.rating}</p>
-          </div>
-        `;
-      });
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
 
-      document.getElementById("servicesList").innerHTML = output;
+  signInWithEmailAndPassword(auth, email, password)
+    .then(() => {
+      alert("Login successful!");
+    })
+    .catch(error => {
+      alert(error.message);
+    });
+};
 
-    } catch (error) {
-      console.error(error);
-      alert("Error loading services");
-    }
+window.addService = async function () {
+
+  const name = document.getElementById("serviceName").value;
+  const category = document.getElementById("serviceCategory").value;
+  const location = document.getElementById("serviceLocation").value;
+  const rating = document.getElementById("serviceRating").value;
+
+  if (!name || !category || !location || !rating) {
+    alert("Please fill all fields.");
+    return;
   }
 
-  loadServices();
+  try {
+
+    await addDoc(collection(db, "services"), {
+      name,
+      category,
+      location,
+      rating: Number(rating)
+    });
+
+    alert("Service posted successfully!");
+
+    document.getElementById("serviceName").value = "";
+    document.getElementById("serviceCategory").value = "";
+    document.getElementById("serviceLocation").value = "";
+    document.getElementById("serviceRating").value = "";
+
+    loadServices();
+
+  } catch (error) {
+    alert(error.message);
+  }
+};
+
+async function loadServices() {
+
+  try {
+
+    const querySnapshot = await getDocs(collection(db, "services"));
+
+    let output = "";
+
+    querySnapshot.forEach((doc) => {
+
+      const data = doc.data();
+
+      output += `
+        <div class="card">
+          <h3>${data.name}</h3>
+          <p>${data.category}</p>
+          <p>${data.location}</p>
+          <p>⭐ ${data.rating}</p>
+        </div>
+      `;
+    });
+
+    if (output === "") {
+      output = "<p>No services available yet.</p>";
+    }
+
+    document.getElementById("servicesList").innerHTML = output;
+
+  } catch (error) {
+
+    console.error(error);
+
+    document.getElementById("servicesList").innerHTML =
+      "<p>Error loading services.</p>";
+  }
+}
+
+loadServices();
+
 </script>
 
 </body>
