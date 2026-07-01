@@ -199,12 +199,14 @@ window.addService = async function () {
 
   try {
 
-    await addDoc(collection(db, "services"), {
-      name,
-      category,
-      location,
-      rating: Number(rating)
-    });
+await addDoc(collection(db, "services"), {
+  name,
+  category,
+  location,
+  phone,
+  rating: Number(rating)
+});
+    
 
     alert("Service posted successfully!");
 
