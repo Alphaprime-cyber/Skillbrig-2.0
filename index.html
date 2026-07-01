@@ -240,7 +240,11 @@ async function loadServices() {
     <p><strong>Category:</strong> ${data.category}</p>
     <p><strong>Location:</strong> ${data.location}</p>
     <p><strong>Phone:</strong> ${data.phone}</p>
-    <p>⭐ ${data.rating}</p>
+<p>⭐ ${data.rating}</p>
+
+<a href="https://wa.me/${data.phone}" target="_blank">
+    <button>💬 Chat on WhatsApp</button>
+</a>
   </div>
 `; 
     });
