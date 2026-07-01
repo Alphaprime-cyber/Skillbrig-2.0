@@ -234,14 +234,15 @@ async function loadServices() {
 
       const data = doc.data();
 
-      output += `
-        <div class="card">
-          <h3>${data.name}</h3>
-          <p>${data.category}</p>
-          <p>${data.location}</p>
-          <p>⭐ ${data.rating}</p>
-        </div>
-      `;
+     output += `
+  <div class="card">
+    <h3>${data.name}</h3>
+    <p><strong>Category:</strong> ${data.category}</p>
+    <p><strong>Location:</strong> ${data.location}</p>
+    <p><strong>Phone:</strong> ${data.phone}</p>
+    <p>⭐ ${data.rating}</p>
+  </div>
+`; 
     });
 
     if (output === "") {
