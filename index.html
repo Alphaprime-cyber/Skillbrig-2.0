@@ -211,8 +211,54 @@ await addDoc(collection(db, "services"), {
     document.getElementById("serviceRating").value = "";
 
 document.getElementById("servicePhone").value = "";
+
+// FILTER SERVICES BY CATEGORY
+window.filterCategory = async function(category) {
+
+  try {
+
+    const querySnapshot = await getDocs(collection(db, "services"));
+
+    let output = "";
+
+    querySnapshot.forEach((doc) => {
+
+      const data = doc.data();
+
+      if (data.category &&
+          data.category.toLowerCase() === category.toLowerCase()) {
+
+        output += `
+          <div class="card">
+            <h3>${data.name}</h3>
+            <p><strong>Category:</strong> ${data.category}</p>
+            <p><strong>Location:</strong> ${data.location}</p>
+            <p><strong>Phone:</strong> ${data.phone}</p>
+            <p>⭐ ${data.rating}</p>
+
+            <a href="https://wa.me/${data.phone}" target="_blank">
+              <button>💬 Chat on WhatsApp</button>
+            </a>
+          </div>
+        `;
+      }
+    });
+
+    if (output === "") {
+      output = "<p>No services found in this category.</p>";
+    }
+
+    document.getElementById("servicesList").innerHTML = output;
+
+  } catch (error) {
+    console.error(error);
+    alert("Error filtering services.");
+  }
+
+};
     loadServices();
 
+</script>
   } catch (error) {
     alert(error.message);
   }
