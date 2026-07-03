@@ -115,7 +115,6 @@ Connecting Customers with Trusted Professionals
 
 <input id="serviceLocation" type="text" placeholder="Location"><br>
 
-const phone = document.getElementById("servicePhone").value;
 <input id="servicePhone" type="text" placeholder="Phone Number"><br>
 
 <input id="serviceRating" type="number" placeholder="Rating (1-5)"><br>
@@ -208,11 +207,12 @@ window.addService = async function () {
   const category = document.getElementById("serviceCategory").value;
   const location = document.getElementById("serviceLocation").value;
   const rating = document.getElementById("serviceRating").value;
+const phone = document.getElementById("servicePhone").value.trim();
 
-  if (!name || !category || !location || !rating) {
-    alert("Please fill all fields.");
-    return;
-  }
+  if (!name || !category || !location || !phone || !rating) {
+  alert("Please fill in all fields.");
+  return;
+}
 
   try {
 
@@ -232,6 +232,7 @@ await addDoc(collection(db, "services"), {
     document.getElementById("serviceLocation").value = "";
     document.getElementById("serviceRating").value = "";
 
+document.getElementById("servicePhone").value = "";
     loadServices();
 
   } catch (error) {
