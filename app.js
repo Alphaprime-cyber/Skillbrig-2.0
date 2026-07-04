@@ -25,7 +25,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-// SIGN UP
+
+// ---------------- SIGN UP ----------------
+
 window.signup = function () {
 
   const email = document.getElementById("email").value;
@@ -38,9 +40,11 @@ window.signup = function () {
     .catch((error) => {
       alert(error.message);
     });
+
 };
 
-// LOGIN
+// ---------------- LOGIN ----------------
+
 window.login = function () {
 
   const email = document.getElementById("email").value;
@@ -53,7 +57,11 @@ window.login = function () {
     .catch((error) => {
       alert(error.message);
     });
+
 };
+
+// ---------------- ADD SERVICE ----------------
+
 window.addService = async function () {
 
   const name = document.getElementById("serviceName").value.trim();
@@ -67,58 +75,6 @@ window.addService = async function () {
     alert("Please complete all fields.");
     return;
   }
-async function loadServices() {
-
-  try {
-
-    const querySnapshot = await getDocs(collection(db, "services"));
-
-    let output = "";
-
-    querySnapshot.forEach((doc) => {
-
-      const data = doc.data();
-
-      output += `
-      <div class="card">
-
-        <h3>${data.name}</h3>
-
-        <p><strong>Category:</strong> ${data.category}</p>
-
-        <p><strong>Location:</strong> 📍 ${data.state}, ${data.location}</p>
-
-        <p>${data.description}</p>
-
-        <p><strong>Phone:</strong> ${data.phone}</p>
-
-        <a href="https://wa.me/${data.phone}" target="_blank">
-            <button>💬 Chat on WhatsApp</button>
-        </a>
-
-      </div>
-      `;
-
-    });
-
-    if (output === "") {
-      output = "<p>No services have been posted yet.</p>";
-    }
-
-    document.getElementById("servicesList").innerHTML = output;
-
-  } catch (error) {
-
-    console.error(error);
-
-    document.getElementById("servicesList").innerHTML =
-      "<p>Unable to load services.</p>";
-
-  }
-
-}
-
-loadServices();
 
   try {
 
@@ -149,3 +105,58 @@ loadServices();
   }
 
 };
+
+// ---------------- LOAD SERVICES ----------------
+
+async function loadServices() {
+
+  try {
+
+    const querySnapshot = await getDocs(collection(db, "services"));
+
+    let output = "";
+
+    querySnapshot.forEach((doc) => {
+
+      const data = doc.data();
+
+      output += `
+      <div class="card">
+
+        <h3>${data.name}</h3>
+
+        <p><strong>Category:</strong> ${data.category}</p>
+
+        <p><strong>Location:</strong> 📍 ${data.state}, ${data.location}</p>
+
+        <p>${data.description}</p>
+
+        <p><strong>Phone:</strong> ${data.phone}</p>
+
+        <a href="https://wa.me/${data.phone}" target="_blank">
+          <button>💬 Chat on WhatsApp</button>
+        </a>
+
+      </div>
+      `;
+
+    });
+
+    if (output === "") {
+      output = "<p>No services have been posted yet.</p>";
+    }
+
+    document.getElementById("servicesList").innerHTML = output;
+
+  } catch (error) {
+
+    console.error(error);
+
+    document.getElementById("servicesList").innerHTML =
+      "<p>Unable to load services.</p>";
+
+  }
+
+}
+
+loadServices();
