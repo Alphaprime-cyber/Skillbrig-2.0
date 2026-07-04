@@ -409,6 +409,11 @@ const state = document.getElementById("serviceState").value;
   const rating = document.getElementById("serviceRating").value;
 const phone = document.getElementById("servicePhone").value.trim();
 
+<textarea id="serviceDescription"
+placeholder="Describe your service..."
+rows="4"
+style="width:260px;padding:10px;border:1px solid #ccc;border-radius:5px;"></textarea><br><br>
+
   if (!name || !category || !state || !location || !phone || !rating) {
   alert("Please fill in all fields.");
   return;
