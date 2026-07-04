@@ -1,76 +1,201 @@
-<header>
-    <h1>Become a Service Provider</h1>
-    <p>Join SkillBridge and connect with customers across Nigeria.</p>
+ <!DOCTYPE html>
+<html lang="en">
 
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="services.html">Services</a>
-        <a href="contact.html">Contact</a>
-    </nav>
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Become a Service Provider | SkillBridge</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">
+🛠 <span>SkillBridge</span>
+</div>
+
+<nav>
+
+<a href="index.html">Home</a>
+
+<a href="services.html">Services</a>
+
+<a href="contact.html">Contact</a>
+
+<a href="provider.html">Become a Service Provider</a>
+
+</nav>
+
 </header>
 
-<div class="container">
+<section class="hero">
 
-<h2>Register as a Service Provider</h2>
+<h1>Join SkillBridge as a Service Provider</h1>
 
-<input id="providerName" type="text" placeholder="Full Name"><br><br>
+<p>
+Reach thousands of customers across Nigeria by listing your services on SkillBridge.
+</p>
 
-<input id="businessName" type="text" placeholder="Business Name (Optional)"><br><br>
+</section>
+
+<section class="post-service">
+
+<h2>Provider Registration</h2>
+
+<input id="providerName" type="text" placeholder="Full Name">
+
+<input id="businessName" type="text" placeholder="Business Name (Optional)">
 
 <select id="providerCategory">
-    <option value="">Select Category</option>
-    <option>Plumbing</option>
-    <option>Electrical</option>
-    <option>Carpentry</option>
-    <option>Cleaning</option>
-    <option>Tailoring</option>
-    <option>Fashion Design</option>
-    <option>Phone Repair</option>
-    <option>Computer Repair</option>
-    <option>Graphic Design</option>
-    <option>Web Development</option>
-    <option>Catering</option>
-    <option>Photography</option>
-    <option>Auto Mechanic</option>
-    <option>Hair Dressing</option>
-    <option>Barbing</option>
-</select>
 
-<br><br>
+<option value="">Select Category</option>
+
+<optgroup label="Home Services">
+<option>Plumbing</option>
+<option>Electrical</option>
+<option>Carpentry</option>
+<option>Painting</option>
+<option>Masonry</option>
+<option>Roofing</option>
+<option>Tiling</option>
+<option>POP Ceiling</option>
+<option>Interior Decoration</option>
+<option>Cleaning Services</option>
+<option>Laundry & Dry Cleaning</option>
+<option>Pest Control</option>
+<option>Gardening & Landscaping</option>
+<option>Borehole Drilling</option>
+<option>Water Treatment</option>
+</optgroup>
+
+<optgroup label="Automobile">
+<option>Auto Mechanic</option>
+<option>Car Wash</option>
+<option>Car Detailing</option>
+<option>Tyre Repair</option>
+<option>Panel Beating</option>
+<option>Auto Electrical</option>
+</optgroup>
+
+<optgroup label="Fashion & Beauty">
+<option>Tailoring</option>
+<option>Fashion Design</option>
+<option>Hair Dressing</option>
+<option>Barbing</option>
+<option>Makeup Artist</option>
+<option>Nail Technician</option>
+<option>Spa & Massage</option>
+<option>Wig Making</option>
+</optgroup>
+
+<optgroup label="Technology">
+<option>Phone Repair</option>
+<option>Computer Repair</option>
+<option>Laptop Repair</option>
+<option>Web Development</option>
+<option>Mobile App Development</option>
+<option>Graphic Design</option>
+<option>UI/UX Design</option>
+<option>Cyber Security</option>
+<option>Digital Marketing</option>
+<option>Software Development</option>
+</optgroup>
+
+<optgroup label="Events">
+<option>Photography</option>
+<option>Videography</option>
+<option>DJ Services</option>
+<option>MC Services</option>
+<option>Event Planning</option>
+<option>Catering</option>
+<option>Cake Baking</option>
+</optgroup>
 
 <select id="providerState">
-    <option value="">Select State</option>
-    <option>Lagos</option>
-    <option>Abuja (FCT)</option>
-    <option>Rivers</option>
-    <option>Kano</option>
-    <option>Oyo</option>
-    <option>Enugu</option>
-    <option>Delta</option>
-    <option>Kaduna</option>
+
+<option value="">Select State</option>
+
+<option>Abia</option>
+<option>Adamawa</option>
+<option>Akwa Ibom</option>
+<option>Anambra</option>
+<option>Bauchi</option>
+<option>Bayelsa</option>
+<option>Benue</option>
+<option>Borno</option>
+<option>Cross River</option>
+<option>Delta</option>
+<option>Ebonyi</option>
+<option>Edo</option>
+<option>Ekiti</option>
+<option>Enugu</option>
+<option>FCT Abuja</option>
+<option>Gombe</option>
+<option>Imo</option>
+<option>Jigawa</option>
+<option>Kaduna</option>
+<option>Kano</option>
+<option>Katsina</option>
+<option>Kebbi</option>
+<option>Kogi</option>
+<option>Kwara</option>
+<option>Lagos</option>
+<option>Nasarawa</option>
+<option>Niger</option>
+<option>Ogun</option>
+<option>Ondo</option>
+<option>Osun</option>
+<option>Oyo</option>
+<option>Plateau</option>
+<option>Rivers</option>
+<option>Sokoto</option>
+<option>Taraba</option>
+<option>Yobe</option>
+<option>Zamfara</option>
+
 </select>
 
-<br><br>
+<input id="providerLocation" type="text" placeholder="City / LGA">
 
-<input id="providerLocation" type="text" placeholder="City / LGA"><br><br>
+<input id="providerPhone" type="text" placeholder="Phone Number">
 
-<input id="providerPhone" type="tel" placeholder="Phone Number"><br><br>
+<input id="providerWhatsApp" type="text" placeholder="WhatsApp Number">
 
-<input id="providerEmail" type="email" placeholder="Email Address"><br><br>
+<input id="providerEmail" type="email" placeholder="Email Address">
 
-<textarea id="providerDescription"
-placeholder="Describe your services..."
+<input id="providerExperience" type="number" placeholder="Years of Experience">
+
+<input id="providerBusinessHours" type="text" placeholder="Business Hours (e.g. Mon–Sat 8AM–6PM)">
+
+<textarea
+id="providerDescription"
 rows="5"
-style="width:300px;"></textarea>
-<input id="providerExperience" type="number" placeholder="Years of Experience"><br><br>
+placeholder="Describe your services and experience"></textarea>
 
-<input id="providerBusinessHours" type="text" placeholder="Business Hours (e.g. Mon–Sat, 8AM–6PM)"><br><br>
-
-<input id="providerWhatsApp" type="text" placeholder="WhatsApp Number"><br><br>
-<br><br>
-
-<button id="registerProviderBtn">
+<button onclick="registerProvider()">
 Register Now
 </button>
 
-</div>
+</section>
+
+<footer>
+
+<p>
+
+© 2026 SkillBridge. All Rights Reserved.
+
+</p>
+
+</footer>
+
+<script type="module" src="provider.js"></script>
+
+</body>
+
+</html>
