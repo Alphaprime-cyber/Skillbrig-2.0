@@ -160,3 +160,70 @@ async function loadServices() {
 }
 
 loadServices();
+window.searchServices = async function () {
+
+  const searchText = document
+    .getElementById("searchBox")
+    .value
+    .toLowerCase()
+    .trim();
+
+  try {
+
+    const querySnapshot = await getDocs(collection(db, "services"));
+
+    let output = "";
+
+    querySnapshot.forEach((doc) => {
+
+      const data = doc.data();
+
+      const text = `
+        ${data.name}
+        ${data.category}
+        ${data.state}
+        ${data.location}
+        ${data.description}
+      `.toLowerCase();
+
+      if (text.includes(searchText)) {
+
+        output += `
+        <div class="card">
+
+          <h3>${data.name}</h3>
+
+          <p><strong>Category:</strong> ${data.category}</p>
+
+          <p><strong>Location:</strong> 📍 ${data.state}, ${data.location}</p>
+
+          <p>${data.description}</p>
+
+          <p><strong>Phone:</strong> ${data.phone}</p>
+
+          <a href="https://wa.me/${data.phone}" target="_blank">
+            <button>💬 Chat on WhatsApp</button>
+          </a>
+
+        </div>
+        `;
+
+      }
+
+    });
+
+    if (output === "") {
+      output = "<p>No matching services found.</p>";
+    }
+
+    document.getElementById("servicesList").innerHTML = output;
+
+  } catch (error) {
+
+    console.error(error);
+
+    alert("Search failed.");
+
+  }
+
+};
