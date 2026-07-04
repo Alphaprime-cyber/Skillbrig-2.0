@@ -54,3 +54,46 @@ window.login = function () {
       alert(error.message);
     });
 };
+window.addService = async function () {
+
+  const name = document.getElementById("serviceName").value.trim();
+  const category = document.getElementById("serviceCategory").value;
+  const state = document.getElementById("serviceState").value;
+  const location = document.getElementById("serviceLocation").value.trim();
+  const phone = document.getElementById("servicePhone").value.trim();
+  const description = document.getElementById("serviceDescription").value.trim();
+
+  if (!name || !category || !state || !location || !phone || !description) {
+    alert("Please complete all fields.");
+    return;
+  }
+
+  try {
+
+    await addDoc(collection(db, "services"), {
+      name,
+      category,
+      state,
+      location,
+      phone,
+      description,
+      rating: 0,
+      createdAt: new Date()
+    });
+
+    alert("Service posted successfully!");
+
+    document.getElementById("serviceName").value = "";
+    document.getElementById("serviceCategory").value = "";
+    document.getElementById("serviceState").value = "";
+    document.getElementById("serviceLocation").value = "";
+    document.getElementById("servicePhone").value = "";
+    document.getElementById("serviceDescription").value = "";
+
+    loadServices();
+
+  } catch (error) {
+    alert(error.message);
+  }
+
+};
