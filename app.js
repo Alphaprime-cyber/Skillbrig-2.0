@@ -108,7 +108,7 @@ window.addService = async function () {
 
 // ---------------- LOAD SERVICES ----------------
 
-async function loadServices() {
+window.loadServices = async function () {
 
   try {
 
