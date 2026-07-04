@@ -419,6 +419,7 @@ const phone = document.getElementById("servicePhone").value.trim();
 await addDoc(collection(db, "services"), {
   name,
   category,
+  state,
   location,
   phone,
   rating: Number(rating)
