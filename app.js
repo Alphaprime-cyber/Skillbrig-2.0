@@ -25,3 +25,32 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+// SIGN UP
+window.signup = function () {
+
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  createUserWithEmailAndPassword(auth, email, password)
+    .then(() => {
+      alert("Signup successful!");
+    })
+    .catch((error) => {
+      alert(error.message);
+    });
+};
+
+// LOGIN
+window.login = function () {
+
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  signInWithEmailAndPassword(auth, email, password)
+    .then(() => {
+      alert("Login successful!");
+    })
+    .catch((error) => {
+      alert(error.message);
+    });
+};
