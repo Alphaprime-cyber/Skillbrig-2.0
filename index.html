@@ -107,9 +107,60 @@ Login
 
 <h2>Post Your Service</h2>
 
-<form id="serviceForm">
+<input id="serviceName" type="text" placeholder="Business / Service Name">
 
-</form>
+<select id="serviceCategory">
+
+<option value="">Select Category</option>
+
+<option>Plumbing</option>
+<option>Electrical</option>
+<option>Carpentry</option>
+<option>Painting</option>
+<option>Cleaning</option>
+<option>Tailoring</option>
+<option>Fashion Design</option>
+<option>Hair Dressing</option>
+<option>Phone Repair</option>
+<option>Computer Repair</option>
+<option>Graphic Design</option>
+<option>Web Development</option>
+<option>Photography</option>
+<option>Catering</option>
+
+</select>
+
+<select id="serviceState">
+
+<option value="">Select State</option>
+
+<option>Lagos</option>
+<option>Abuja (FCT)</option>
+<option>Rivers</option>
+<option>Kano</option>
+<option>Oyo</option>
+<option>Kaduna</option>
+<option>Enugu</option>
+<option>Delta</option>
+<option>Ogun</option>
+<option>Anambra</option>
+
+</select>
+
+<input id="serviceLocation" type="text" placeholder="City / LGA">
+
+<input id="servicePhone" type="text" placeholder="Phone Number">
+
+<textarea
+id="serviceDescription"
+placeholder="Describe your service"
+rows="4"></textarea>
+
+<button onclick="addService()">
+
+Post Service
+
+</button>
 
 </section>
 
