@@ -1,548 +1,142 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-        <title>SkillBridge</title>
-        <link rel="stylesheet" href="style.css">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SkillBridge</title>
+
+<link rel="stylesheet" href="style.css">
+
 </head>
 
 <body>
-<header>
-    <h1>🛠 SkillBridge</h1>
-    <p>Connecting Customers with Trusted Professionals</p>
 
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="services.html">Services</a>
-        <a href="contact.html">Contact</a>
-        <a href="#">Become an Artisan</a>
-    </nav>
+<header>
+
+<div class="logo">
+🛠 <span>SkillBridge</span>
+</div>
+
+<nav>
+
+<a href="index.html">Home</a>
+
+<a href="services.html">Services</a>
+
+<a href="contact.html">Contact</a>
+
+<a href="#">Become an Artisan</a>
+
+</nav>
+
 </header>
 
-<div class="container">
+<section class="hero">
 
-<br>
+<h1>Find Trusted Artisans Near You</h1>
 
-<!-- HERO SECTION -->
-<section style="background:white;padding:50px;border-radius:15px;margin-top:30px;box-shadow:0 4px 10px rgba(0,0,0,.1);">
+<p>
+Hire verified professionals for every job,
+from plumbing to web development.
+</p>
 
-    <h1 style="font-size:40px;color:#008080;">
-        Find Trusted Artisans Near You
-    </h1>
+<div class="search-box">
 
-    <p style="font-size:18px;margin:20px 0;">
-        Search for verified plumbers, electricians, tailors, cleaners, mechanics, designers and many more.
-    </p>
+<input
+type="text"
+id="searchBox"
+placeholder="Search for any service...">
 
-    <input id="searchBox" type="text" placeholder="🔍 Search for a service..." style="width:300px;">
+<button onclick="searchServices()">
 
-    <button onclick="searchServices()">
-        Search
-    </button>
+Search
+
+</button>
+
+</div>
 
 </section>
- <section>
+
+<section class="categories">
 
 <h2>Popular Categories</h2>
-<div class="card" onclick="filterCategory('Plumbing')">🔧 Plumbing</div>
-<div class="card" onclick="filterCategory('Electrical')">⚡ Electrical</div>
-<div class="card" onclick="filterCategory('Carpentry')">🪚 Carpentry</div>
-<div class="card" onclick="filterCategory('Painting')">🎨 Painting</div>
-<div class="card" onclick="filterCategory('Masonry')">🧱 Masonry</div>
-<div class="card" onclick="filterCategory('POP Ceiling')">🏠 POP Ceiling</div>
-<div class="card" onclick="filterCategory('Roofing')">🏘️ Roofing</div>
-<div class="card" onclick="filterCategory('Aluminium & Glass')">🪟 Aluminium & Glass</div>
-<div class="card" onclick="filterCategory('Welding')">⚒️ Welding</div>
-<div class="card" onclick="filterCategory('Furniture Making')">🛋️ Furniture Making</div>
-<div class="card" onclick="filterCategory('Cleaning')">🧹 Cleaning</div>
-<div class="card" onclick="filterCategory('Laundry')">🧺 Laundry</div>
-<div class="card" onclick="filterCategory('Tailoring')">🧵 Tailoring</div>
-<div class="card" onclick="filterCategory('Fashion Design')">👗 Fashion Design</div>
-<div class="card" onclick="filterCategory('Hair Dressing')">💇 Hair Dressing</div>
-<div class="card" onclick="filterCategory('Barbing')">💈 Barbing</div>
-<div class="card" onclick="filterCategory('Makeup Artist')">💄 Makeup Artist</div>
-<div class="card" onclick="filterCategory('Nail Technician')">💅 Nail Technician</div>
-<div class="card" onclick="filterCategory('Photography')">📸 Photography</div>
-<div class="card" onclick="filterCategory('Videography')">🎥 Videography</div>
-<div class="card" onclick="filterCategory('DJ Services')">🎧 DJ Services</div>
-<div class="card" onclick="filterCategory('MC')">🎤 MC</div>
-<div class="card" onclick="filterCategory('Event Planner')">🎉 Event Planner</div>
-<div class="card" onclick="filterCategory('Catering')">🍽️ Catering</div>
-<div class="card" onclick="filterCategory('Cake Baking')">🎂 Cake Baking</div>
-<div class="card" onclick="filterCategory('Auto Mechanic')">🚗 Auto Mechanic</div>
-<div class="card" onclick="filterCategory('Car Wash')">🚘 Car Wash</div>
-<div class="card" onclick="filterCategory('Tyre Repair')">🛞 Tyre Repair</div>
-<div class="card" onclick="filterCategory('Phone Repair')">📱 Phone Repair</div>
-<div class="card" onclick="filterCategory('Computer Repair')">💻 Computer Repair</div>
-<div class="card" onclick="filterCategory('Laptop Repair')">🖥️ Laptop Repair</div>
-<div class="card" onclick="filterCategory('TV Repair')">📺 TV Repair</div>
-<div class="card" onclick="filterCategory('AC Repair')">❄️ AC Repair</div>
-<div class="card" onclick="filterCategory('Generator Repair')">⚡ Generator Repair</div>
-<div class="card" onclick="filterCategory('Solar Installation')">☀️ Solar Installation</div>
-<div class="card" onclick="filterCategory('Web Development')">🌐 Web Development</div>
-<div class="card" onclick="filterCategory('Mobile App Development')">📲 Mobile App Development</div>
-<div class="card" onclick="filterCategory('Graphic Design')">🎨 Graphic Design</div>
-<div class="card" onclick="filterCategory('UI/UX Design')">🖌️ UI/UX Design</div>
-<div class="card" onclick="filterCategory('Digital Marketing')">📈 Digital Marketing</div>
-<div class="card" onclick="filterCategory('Content Writing')">✍️ Content Writing</div>
-<div class="card" onclick="filterCategory('Home Tutor')">📚 Home Tutor</div>
-<div class="card" onclick="filterCategory('Music Lessons')">🎵 Music Lessons</div>
-<div class="card" onclick="filterCategory('Legal Services')">⚖️ Legal Services</div>
-<div class="card" onclick="filterCategory('Accounting')">📊 Accounting</div>
-<div class="card" onclick="filterCategory('Real Estate')">🏡 Real Estate</div>
-<div class="card" onclick="filterCategory('Courier Delivery')">📦 Courier Delivery</div>
-<div class="card" onclick="filterCategory('Moving Services')">🚚 Moving Services</div>
-<div class="card" onclick="filterCategory('Security Services')">🛡️ Security Services</div>
-<div class="card" onclick="filterCategory('Gardening')">🌿 Gardening</div>
-<div class="card" onclick="filterCategory('Pest Control')">🐜 Pest Control</div>
-<div class="card" onclick="filterCategory('Borehole Drilling')">🚰 Borehole Drilling</div>
-<div class="card" onclick="filterCategory('Water Treatment')">💧 Water Treatment</div>
-<div class="card" onclick="filterCategory('Nursing')">🏥 Nursing</div>
-<div class="card" onclick="filterCategory('Caregiver')">❤️ Caregiver</div>
-<div class="card" onclick="filterCategory('Pharmacy Delivery')">💊 Pharmacy Delivery</div>
-<div class="card" onclick="filterCategory('Pet Care')">🐕 Pet Care</div>
-<div class="card" onclick="filterCategory('Laundry Pickup')">🧺 Laundry Pickup</div>
 
+<div id="categoryContainer">
+
+</div>
 
 </section>
 
-<hr>
+<section class="auth">
 
-<!-- LOGIN -->
 <h2>Login / Sign Up</h2>
 
-<input id="email" type="email" placeholder="Email"><br>
-<input id="password" type="password" placeholder="Password"><br>
+<input
+id="email"
+type="email"
+placeholder="Email">
 
-<button onclick="signup()">Sign Up</button>
-<button onclick="login()">Login</button>
+<input
+id="password"
+type="password"
+placeholder="Password">
 
-<hr>
+<div>
 
-<!-- POST SERVICE -->
+<button onclick="signup()">
+
+Sign Up
+
+</button>
+
+<button onclick="login()">
+
+Login
+
+</button>
+
+</div>
+
+</section>
+
+<section class="post-service">
+
 <h2>Post Your Service</h2>
 
-<input id="serviceName" type="text" placeholder="Service Name"><br>
+<form id="serviceForm">
 
-<select id="serviceCategory">
+</form>
 
-<option value="">Select a Category</option>
+</section>
 
-<optgroup label="Home Services">
-<option>Plumbing</option>
-<option>Electrical</option>
-<option>Carpentry</option>
-<option>Painting</option>
-<option>Masonry</option>
-<option>Roofing</option>
-<option>Tiling</option>
-<option>POP Ceiling</option>
-<option>Interior Decoration</option>
-<option>Cleaning Services</option>
-<option>Laundry & Dry Cleaning</option>
-<option>Pest Control</option>
-<option>Gardening & Landscaping</option>
-<option>Borehole Drilling</option>
-<option>Water Treatment</option>
-</optgroup>
+<section>
 
-<optgroup label="Automobile">
-
-<option>Auto Mechanic</option>
-<option>Car Wash</option>
-<option>Car Detailing</option>
-<option>Tyre Repair</option>
-<option>Panel Beating</option>
-<option>Auto Electrical</option>
-<option>Vehicle Inspection</option>
-
-</optgroup>
-
-<optgroup label="Fashion & Beauty">
-
-<option>Tailoring</option>
-<option>Fashion Design</option>
-<option>Hair Dressing</option>
-<option>Barbing</option>
-<option>Makeup Artist</option>
-<option>Nail Technician</option>
-<option>Spa & Massage</option>
-<option>Wig Making</option>
-
-</optgroup>
-
-<optgroup label="Technology">
-
-<option>Computer Repair</option>
-<option>Phone Repair</option>
-<option>Laptop Repair</option>
-<option>Web Development</option>
-<option>Mobile App Development</option>
-<option>Graphic Design</option>
-<option>UI/UX Design</option>
-<option>Cyber Security</option>
-<option>Digital Marketing</option>
-<option>Data Analysis</option>
-<option>Software Development</option>
-
-</optgroup>
-
-<optgroup label="Events">
-
-<option>Photography</option>
-<option>Videography</option>
-<option>DJ Services</option>
-<option>MC Services</option>
-<option>Event Planning</option>
-<option>Decoration</option>
-<option>Catering</option>
-<option>Cake Baking</option>
-
-</optgroup>
-
-<optgroup label="Education">
-
-<option>Home Tutor</option>
-<option>Online Tutor</option>
-<option>Music Lessons</option>
-<option>Computer Training</option>
-<option>Language Tutor</option>
-
-</optgroup>
-
-<optgroup label="Business">
-
-<option>Accounting</option>
-<option>Legal Services</option>
-<option>Business Registration</option>
-<option>Consulting</option>
-<option>Printing</option>
-
-</optgroup>
-
-<optgroup label="Health">
-
-<option>Nursing</option>
-<option>Caregiver</option>
-<option>Physiotherapy</option>
-<option>Medical Laboratory</option>
-<option>Pharmacy Delivery</option>
-
-</optgroup>
-
-<optgroup label="Logistics">
-
-<option>Courier Delivery</option>
-<option>Moving Services</option>
-<option>Truck Hire</option>
-<option>Dispatch Rider</option>
-
-</optgroup>
-
-<optgroup label="Security">
-
-<option>Security Guard</option>
-<option>CCTV Installation</option>
-<option>Alarm Installation</option>
-
-</optgroup>
-
-<optgroup label="Agriculture">
-
-<option>Farming</option>
-<option>Poultry</option>
-<option>Fish Farming</option>
-<option>Livestock</option>
-
-</optgroup>
-
-<optgroup label="Others">
-
-<option>Generator Repair</option>
-<option>AC Installation & Repair</option>
-<option>Refrigerator Repair</option>
-<option>TV Repair</option>
-<option>Solar Installation</option>
-<option>Welding</option>
-<option>Furniture Making</option>
-<option>Glass & Aluminum</option>
-
-</optgroup>
-
-</select>
-
-<select id="serviceState">
-    <option value="">Select State</option>
-    <option>Abia</option>
-    <option>Adamawa</option>
-    <option>Akwa Ibom</option>
-    <option>Anambra</option>
-    <option>Bauchi</option>
-    <option>Bayelsa</option>
-    <option>Benue</option>
-    <option>Borno</option>
-    <option>Cross River</option>
-    <option>Delta</option>
-    <option>Ebonyi</option>
-    <option>Edo</option>
-    <option>Ekiti</option>
-    <option>Enugu</option>
-    <option>FCT Abuja</option>
-    <option>Gombe</option>
-    <option>Imo</option>
-    <option>Jigawa</option>
-    <option>Kaduna</option>
-    <option>Kano</option>
-    <option>Katsina</option>
-    <option>Kebbi</option>
-    <option>Kogi</option>
-    <option>Kwara</option>
-    <option>Lagos</option>
-    <option>Nasarawa</option>
-    <option>Niger</option>
-    <option>Ogun</option>
-    <option>Ondo</option>
-    <option>Osun</option>
-    <option>Oyo</option>
-    <option>Plateau</option>
-    <option>Rivers</option>
-    <option>Sokoto</option>
-    <option>Taraba</option>
-    <option>Yobe</option>
-    <option>Zamfara</option>
-</select>
-<br><br>
-
-<input id="serviceLocation" type="text" placeholder="City / LGA"><br>
-
-<input id="servicePhone" type="text" placeholder="Phone Number"><br>
-
-<input id="serviceRating" type="number" placeholder="Rating (1-5)"><br>
-
-<button onclick="addService()">Post Service</button>
-
-<hr>
-
-<!-- SERVICES -->
 <h2>Available Services</h2>
 
 <div id="servicesList">
-    Loading services...
-</div>
 
-<hr>
-
-<!-- POPULAR SERVICES -->
-<h2>Popular Services</h2>
-
-<div class="card">Plumbing</div>
-<div class="card">Tailoring</div>
-<div class="card">Cleaning</div>
-<div class="card">Graphic Design</div>
-
-<script type="module">
-
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
-
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword
-}
-from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
-
-import {
-  getFirestore,
-  collection,
-  getDocs,
-  addDoc
-}
-from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCgV-0KaUdjHyy_YPYRogunS5H01jPBbGg",
-  authDomain: "skillbridge-app-56faf.firebaseapp.com",
-  projectId: "skillbridge-app-56faf",
-  storageBucket: "skillbridge-app-56faf.firebasestorage.app",
-  messagingSenderId: "181813326765",
-  appId: "1:181813326765:web:4732292cd467a8f7d3a724"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-window.signup = function () {
-
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-
-  createUserWithEmailAndPassword(auth, email, password)
-    .then(() => {
-      alert("Signup successful!");
-    })
-    .catch(error => {
-      alert(error.message);
-    });
-};
-
-window.login = function () {
-
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-
-  signInWithEmailAndPassword(auth, email, password)
-    .then(() => {
-      alert("Login successful!");
-    })
-    .catch(error => {
-      alert(error.message);
-    });
-};
-
-window.addService = async function () {
-
-  const name = document.getElementById("serviceName").value;
-  const category = document.getElementById("serviceCategory").value;
-const state = document.getElementById("serviceState").value;
-  const location = document.getElementById("serviceLocation").value;
-  const rating = document.getElementById("serviceRating").value;
-const phone = document.getElementById("servicePhone").value.trim();
-
-<textarea id="serviceDescription"
-placeholder="Describe your service..."
-rows="4"
-style="width:260px;padding:10px;border:1px solid #ccc;border-radius:5px;"></textarea><br><br>
-
-  if (!name || !category || !state || !location || !phone || !rating) {
-  alert("Please fill in all fields.");
-  return;
-}
-
-  try {
-
-await addDoc(collection(db, "services"), {
-  name,
-  category,
-  state,
-  location,
-  phone,
-  rating: Number(rating)
-});
-    
-
-    alert("Service posted successfully!");
-
-    document.getElementById("serviceName").value = "";
-    document.getElementById("serviceCategory").value = "";
-    document.getElementById("serviceLocation").value = "";
-    document.getElementById("serviceRating").value = "";
-
-document.getElementById("servicePhone").value = "";
-
-// FILTER SERVICES BY CATEGORY
-window.filterCategory = async function(category) {
-
-  try {
-
-    const querySnapshot = await getDocs(collection(db, "services"));
-
-    let output = "";
-
-    querySnapshot.forEach((doc) => {
-
-      const data = doc.data();
-
-      if (data.category &&
-          data.category.toLowerCase() === category.toLowerCase()) {
-
-        output += `
-          <div class="card">
-            <h3>${data.name}</h3>
-            <p><strong>Category:</strong> ${data.category}</p>
-            <p><strong>Location:</strong> 📍 ${data.state}, ${data.location}</p>
-            <p><strong>Phone:</strong> ${data.phone}</p>
-            <p>⭐ ${data.rating}</p>
-
-            <a href="https://wa.me/${data.phone}" target="_blank">
-              <button>💬 Chat on WhatsApp</button>
-            </a>
-          </div>
-        `;
-      }
-    });
-
-    if (output === "") {
-      output = "<p>No services found in this category.</p>";
-    }
-
-    document.getElementById("servicesList").innerHTML = output;
-
-  } catch (error) {
-    console.error(error);
-    alert("Error filtering services.");
-  }
-
-};
-    loadServices();
-
-</script>
-  } catch (error) {
-    alert(error.message);
-  }
-};
-
-async function loadServices() {
-
-  try {
-
-    const querySnapshot = await getDocs(collection(db, "services"));
-
-    let output = "";
-
-    querySnapshot.forEach((doc) => {
-
-      const data = doc.data();
-
-     output += `
-  <div class="card">
-    <h3>${data.name}</h3>
-    <p><strong>Category:</strong> ${data.category}</p>
-    <p><strong>Location:</strong> 📍 ${data.state}, ${data.location}</p>
-    <p><strong>Phone:</strong> ${data.phone}</p>
-<p>⭐ ${data.rating}</p>
-
-<a href="https://wa.me/${data.phone}" target="_blank">
-    <button>💬 Chat on WhatsApp</button>
-</a>
-  </div>
-`; 
-    });
-
-    if (output === "") {
-      output = "<p>No services available yet.</p>";
-    }
-
-    document.getElementById("servicesList").innerHTML = output;
-
-  } catch (error) {
-
-    console.error(error);
-
-    document.getElementById("servicesList").innerHTML =
-      "<p>Error loading services.</p>";
-  }
-}
-
-loadServices();
-
-</script>
+Loading services...
 
 </div>
+
+</section>
 
 <footer>
-    <p>&copy; 2026 SkillBridge. All rights reserved.</p>
+
+<p>
+
+© 2026 SkillBridge
+
+</p>
+
 </footer>
 
+<script type="module" src="app.js"></script>
+
 </body>
+
 </html>
