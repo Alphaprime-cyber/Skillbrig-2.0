@@ -9,6 +9,12 @@ import {
   deleteDoc
 } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
+
 const firebaseConfig = {
   apiKey: "AIzaSyCgV-0KaUdjHyy_YPYRogunS5H01jPBbGg",
   authDomain: "skillbridge-app-56faf.firebaseapp.com",
@@ -20,13 +26,9 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-import {
-  getAuth,
-  onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
-
 const auth = getAuth(app);
 
+// Protect Admin Page
 onAuthStateChanged(auth, (user) => {
 
   if (!user) {
@@ -34,9 +36,12 @@ onAuthStateChanged(auth, (user) => {
   }
 
 });
+
+// Load Providers
 async function loadProviders() {
 
   const container = document.getElementById("providersList");
+
   container.innerHTML = "Loading providers...";
 
   try {
@@ -50,33 +55,35 @@ async function loadProviders() {
       const data = provider.data();
 
       output += `
-      <div class="card">
+        <div class="card">
 
-        <h3>${data.businessName || data.name}</h3>
+          <h3>${data.businessName || data.name}</h3>
 
-        <p><strong>Owner:</strong> ${data.name}</p>
+          <p><strong>Owner:</strong> ${data.name}</p>
 
-        <p><strong>Category:</strong> ${data.category}</p>
+          <p><strong>Category:</strong> ${data.category}</p>
 
-        <p><strong>Location:</strong> ${data.state}, ${data.location}</p>
+          <p><strong>Location:</strong> 📍 ${data.state}, ${data.location}</p>
 
-        <p><strong>Phone:</strong> ${data.phone}</p>
+          <p><strong>Phone:</strong> ${data.phone}</p>
 
-        <p><strong>Email:</strong> ${data.email}</p>
+          <p><strong>Email:</strong> ${data.email}</p>
 
-        <p><strong>Status:</strong>
-        ${data.verified ? "✅ Verified" : "⏳ Pending"}
-        </p>
+          <p><strong>Experience:</strong> ${data.experience || "N/A"} Years</p>
 
-        <button onclick="verifyProvider('${provider.id}')">
-        ✅ Verify
-        </button>
+          <p><strong>Status:</strong>
+            ${data.verified ? "✅ Verified" : "⏳ Pending"}
+          </p>
 
-        <button onclick="deleteProvider('${provider.id}')">
-        ❌ Delete
-        </button>
+          <button onclick="verifyProvider('${provider.id}')">
+            ✅ Verify
+          </button>
 
-      </div>
+          <button onclick="deleteProvider('${provider.id}')">
+            ❌ Delete
+          </button>
+
+        </div>
       `;
 
     });
@@ -97,33 +104,66 @@ async function loadProviders() {
 
 }
 
-window.verifyProvider = async function(id) {
+// Verify Provider
+window.verifyProvider = async function (id) {
 
-  await updateDoc(doc(db, "providers", id), {
-    verified: true
-  });
+  try {
 
-  alert("Provider verified.");
+    await updateDoc(doc(db, "providers", id), {
+      verified: true
+    });
 
-  loadProviders();
+    alert("Provider verified successfully.");
 
-};
+    loadProviders();
 
-import {
-  getAuth,
-  onAuthStateChanged,
-  signOut
-} from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
-window.deleteProvider = async function(id) {
+  } catch (error) {
 
-  if (!confirm("Delete this provider?")) return;
+    alert(error.message);
 
-  await deleteDoc(doc(db, "providers", id));
-
-  alert("Provider deleted.");
-
-  loadProviders();
+  }
 
 };
 
+// Delete Provider
+window.deleteProvider = async function (id) {
+
+  if (!confirm("Are you sure you want to delete this provider?")) {
+    return;
+  }
+
+  try {
+
+    await deleteDoc(doc(db, "providers", id));
+
+    alert("Provider deleted successfully.");
+
+    loadProviders();
+
+  } catch (error) {
+
+    alert(error.message);
+
+  }
+
+};
+
+// Logout Admin
+window.logoutAdmin = async function () {
+
+  try {
+
+    await signOut(auth);
+
+    window.location.href = "admin-login.html";
+
+  } catch (error) {
+
+    alert(error.message);
+
+  }
+
+};
+
+// Start App
 loadProviders();
