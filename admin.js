@@ -109,6 +109,11 @@ window.verifyProvider = async function(id) {
 
 };
 
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
 window.deleteProvider = async function(id) {
 
   if (!confirm("Delete this provider?")) return;
