@@ -120,7 +120,11 @@ window.loadServices = async function () {
 
       const data = doc.data();
 
-      output += `
+if (!data.verified) {
+    return;
+}
+
+output += `
       <div class="card">
 
         <h3>${data.name}</h3>
