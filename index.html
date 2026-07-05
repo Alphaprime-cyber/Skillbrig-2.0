@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,7 +6,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>SkillBridge</title>
+<title>SkillBridge | Find Trusted Service Providers</title>
 
 <link rel="stylesheet" href="style.css">
 
@@ -25,11 +24,11 @@
 
 <a href="index.html">Home</a>
 
-<a href="services.html">Services</a>
+<a href="provider.html">Become a Provider</a>
 
 <a href="contact.html">Contact</a>
 
-<a href="provider.html">Become a Service Provider</a>
+<a href="admin-login.html">Admin</a>
 
 </nav>
 
@@ -37,24 +36,27 @@
 
 <section class="hero">
 
-<h1>Find Trusted Artisans Near You</h1>
+<h1>Find Trusted Professionals Near You</h1>
 
 <p>
-Hire verified professionals for every job,
-from plumbing to web development.
+Connect with verified artisans and professionals across Nigeria.
 </p>
 
 <div class="search-box">
+
 <input
-  id="searchBox"
-  type="text"
-  placeholder="🔍 Search by service, category, state or city..."
-  style="width:300px;"
-  onkeyup="searchServices()">
+id="searchBox"
+type="text"
+placeholder="Search by service, state, city or provider..."
+onkeyup="searchServices()">
 
-<button onclick="searchServices()">Search</button>
+<button onclick="searchServices()">
+Search
+</button>
 
-<button onclick="loadServices()">Clear</button>
+<button onclick="loadServices()">
+Clear
+</button>
 
 </div>
 
@@ -66,127 +68,66 @@ from plumbing to web development.
 
 <div id="categoryContainer">
 
-</div>
+<div class="card" onclick="searchCategory('Plumbing')">🔧 Plumbing</div>
 
-</section>
+<div class="card" onclick="searchCategory('Electrical')">⚡ Electrical</div>
 
-<section class="auth">
+<div class="card" onclick="searchCategory('Carpentry')">🪚 Carpentry</div>
 
-<h2>Login / Sign Up</h2>
+<div class="card" onclick="searchCategory('Painting')">🎨 Painting</div>
 
-<input
-id="email"
-type="email"
-placeholder="Email">
+<div class="card" onclick="searchCategory('Cleaning')">🧹 Cleaning</div>
 
-<input
-id="password"
-type="password"
-placeholder="Password">
+<div class="card" onclick="searchCategory('Tailoring')">🧵 Tailoring</div>
 
-<div>
+<div class="card" onclick="searchCategory('Fashion Design')">👗 Fashion Design</div>
 
-<button onclick="signup()">
+<div class="card" onclick="searchCategory('Hair Dressing')">💇 Hair Dressing</div>
 
-Sign Up
+<div class="card" onclick="searchCategory('Barbing')">💈 Barbing</div>
 
-</button>
+<div class="card" onclick="searchCategory('Phone Repair')">📱 Phone Repair</div>
 
-<button onclick="login()">
+<div class="card" onclick="searchCategory('Computer Repair')">💻 Computer Repair</div>
 
-Login
+<div class="card" onclick="searchCategory('Web Development')">🌐 Web Development</div>
 
-</button>
+<div class="card" onclick="searchCategory('Graphic Design')">🎨 Graphic Design</div>
 
-</div>
+<div class="card" onclick="searchCategory('Photography')">📸 Photography</div>
 
-</section>
+<div class="card" onclick="searchCategory('Videography')">🎥 Videography</div>
 
-<section class="post-service">
+<div class="card" onclick="searchCategory('Auto Mechanic')">🚗 Auto Mechanic</div>
 
-<h2>Post Your Service</h2>
+<div class="card" onclick="searchCategory('Generator Repair')">⚡ Generator Repair</div>
 
-<input id="serviceName" type="text" placeholder="Business / Service Name">
+<div class="card" onclick="searchCategory('AC Repair')">❄️ AC Repair</div>
 
-<select id="serviceCategory">
+<div class="card" onclick="searchCategory('Solar Installation')">☀️ Solar Installation</div>
 
-<option value="">Select Category</option>
+<div class="card" onclick="searchCategory('Catering')">🍽 Catering</div>
 
-<option>Plumbing</option>
-<option>Electrical</option>
-<option>Carpentry</option>
-<option>Painting</option>
-<option>Cleaning</option>
-<option>Tailoring</option>
-<option>Fashion Design</option>
-<option>Hair Dressing</option>
-<option>Phone Repair</option>
-<option>Computer Repair</option>
-<option>Graphic Design</option>
-<option>Web Development</option>
-<option>Photography</option>
-<option>Catering</option>
+<div class="card" onclick="searchCategory('Cake Baking')">🎂 Cake Baking</div>
 
-</select>
+<div class="card" onclick="searchCategory('Event Planning')">🎉 Event Planning</div>
 
-<select id="serviceState">
+<div class="card" onclick="searchCategory('DJ Services')">🎧 DJ Services</div>
 
-<option value="">Select State</option>
+<div class="card" onclick="searchCategory('Home Tutor')">📚 Home Tutor</div>
 
-<option>Lagos</option>
-<option>Abuja (FCT)</option>
-<option>Rivers</option>
-<option>Kano</option>
-<option>Oyo</option>
-<option>Kaduna</option>
-<option>Enugu</option>
-<option>Delta</option>
-<option>Ogun</option>
-<option>Anambra</option>
+<div class="card" onclick="searchCategory('Laundry')">🧺 Laundry</div>
 
-</select>
+<div class="card" onclick="searchCategory('Pest Control')">🐜 Pest Control</div>
 
-<input id="serviceLocation" type="text" placeholder="City / LGA">
+<div class="card" onclick="searchCategory('Gardening')">🌿 Gardening</div>
 
-<input id="servicePhone" type="text" placeholder="Phone Number">
+<div class="card" onclick="searchCategory('Courier Delivery')">📦 Courier Delivery</div>
 
-<textarea
-id="serviceDescription"
-placeholder="Describe your service"
-rows="4"></textarea>
+<div class="card" onclick="searchCategory('Real Estate')">🏡 Real Estate</div>
 
-<button onclick="addService()">
-
-Post Service
-
-</button>
-
-</section>
-
-<section>
-
-<h2>Available Services</h2>
-
-<div id="servicesList">
-
-Loading services...
+<div class="card" onclick="searchCategory('Legal Services')">⚖️ Legal Services</div>
 
 </div>
 
 </section>
-
-<footer>
-
-<p>
-
-© 2026 SkillBridge
-
-</p>
-
-</footer>
-
-<script type="module" src="app.js"></script>
-
-</body>
-
-</html>
