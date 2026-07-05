@@ -1,133 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>SkillBridge | Find Trusted Service Providers</title>
-
+<title>SkillBridge</title>
 <link rel="stylesheet" href="style.css">
-
 </head>
-
 <body>
 
 <header>
-
-<div class="logo">
-🛠 <span>SkillBridge</span>
-</div>
-
+<div class="logo">🛠 <span>SkillBridge</span></div>
 <nav>
-
 <a href="index.html">Home</a>
-
 <a href="provider.html">Become a Provider</a>
-
 <a href="contact.html">Contact</a>
-
 <a href="admin-login.html">Admin</a>
-
 </nav>
-
 </header>
 
 <section class="hero">
-
 <h1>Find Trusted Professionals Near You</h1>
-
-<p>
-Connect with verified artisans and professionals across Nigeria.
-</p>
+<p>Connect with verified professionals across Nigeria.</p>
 
 <div class="search-box">
-
-<input
-id="searchBox"
-type="text"
-placeholder="Search by service, state, city or provider..."
-onkeyup="searchServices()">
-
-<button onclick="searchServices()">
-Search
-</button>
-
-<button onclick="loadServices()">
-Clear
-</button>
-
+<input id="searchBox" type="text" placeholder="Search by service, state, city or provider..." onkeyup="searchServices()">
+<button onclick="searchServices()">Search</button>
+<button onclick="loadServices()">Clear</button>
 </div>
-
 </section>
 
 <section class="categories">
-
 <h2>Popular Categories</h2>
-
 <div id="categoryContainer">
-
 <div class="card" onclick="searchCategory('Plumbing')">🔧 Plumbing</div>
-
 <div class="card" onclick="searchCategory('Electrical')">⚡ Electrical</div>
-
 <div class="card" onclick="searchCategory('Carpentry')">🪚 Carpentry</div>
-
-<div class="card" onclick="searchCategory('Painting')">🎨 Painting</div>
-
 <div class="card" onclick="searchCategory('Cleaning')">🧹 Cleaning</div>
-
+<div class="card" onclick="searchCategory('Painting')">🎨 Painting</div>
 <div class="card" onclick="searchCategory('Tailoring')">🧵 Tailoring</div>
-
-<div class="card" onclick="searchCategory('Fashion Design')">👗 Fashion Design</div>
-
-<div class="card" onclick="searchCategory('Hair Dressing')">💇 Hair Dressing</div>
-
-<div class="card" onclick="searchCategory('Barbing')">💈 Barbing</div>
-
 <div class="card" onclick="searchCategory('Phone Repair')">📱 Phone Repair</div>
-
 <div class="card" onclick="searchCategory('Computer Repair')">💻 Computer Repair</div>
-
-<div class="card" onclick="searchCategory('Web Development')">🌐 Web Development</div>
-
 <div class="card" onclick="searchCategory('Graphic Design')">🎨 Graphic Design</div>
-
+<div class="card" onclick="searchCategory('Web Development')">🌐 Web Development</div>
 <div class="card" onclick="searchCategory('Photography')">📸 Photography</div>
-
-<div class="card" onclick="searchCategory('Videography')">🎥 Videography</div>
-
 <div class="card" onclick="searchCategory('Auto Mechanic')">🚗 Auto Mechanic</div>
-
-<div class="card" onclick="searchCategory('Generator Repair')">⚡ Generator Repair</div>
-
-<div class="card" onclick="searchCategory('AC Repair')">❄️ AC Repair</div>
-
-<div class="card" onclick="searchCategory('Solar Installation')">☀️ Solar Installation</div>
-
-<div class="card" onclick="searchCategory('Catering')">🍽 Catering</div>
-
-<div class="card" onclick="searchCategory('Cake Baking')">🎂 Cake Baking</div>
-
-<div class="card" onclick="searchCategory('Event Planning')">🎉 Event Planning</div>
-
-<div class="card" onclick="searchCategory('DJ Services')">🎧 DJ Services</div>
-
-<div class="card" onclick="searchCategory('Home Tutor')">📚 Home Tutor</div>
-
-<div class="card" onclick="searchCategory('Laundry')">🧺 Laundry</div>
-
-<div class="card" onclick="searchCategory('Pest Control')">🐜 Pest Control</div>
-
-<div class="card" onclick="searchCategory('Gardening')">🌿 Gardening</div>
-
-<div class="card" onclick="searchCategory('Courier Delivery')">📦 Courier Delivery</div>
-
-<div class="card" onclick="searchCategory('Real Estate')">🏡 Real Estate</div>
-
-<div class="card" onclick="searchCategory('Legal Services')">⚖️ Legal Services</div>
-
 </div>
-
 </section>
+
+<section class="auth">
+<h2>Customer Login / Sign Up</h2>
+<input id="email" type="email" placeholder="Email Address">
+<input id="password" type="password" placeholder="Password">
+<div>
+<button onclick="signup()">Sign Up</button>
+<button onclick="login()">Login</button>
+</div>
+</section>
+
+<section>
+<h2>⭐ Featured Providers</h2>
+<div id="featuredProviders">
+<p>Featured providers will appear here.</p>
+</div>
+</section>
+
+<section>
+<h2>Available Providers</h2>
+<div id="servicesList">Loading providers...</div>
+</section>
+
+<section>
+<h2>Why Choose SkillBridge?</h2>
+<div id="categoryContainer">
+<div class="card"><h3>✅ Verified Professionals</h3><p>Approved providers only.</p></div>
+<div class="card"><h3>💬 Direct Contact</h3><p>Call or chat via WhatsApp.</p></div>
+<div class="card"><h3>🇳🇬 Nationwide</h3><p>Providers across Nigeria.</p></div>
+<div class="card"><h3>⚡ Fast Search</h3><p>Search by service or location.</p></div>
+</div>
+</section>
+
+<footer>
+<p>&copy; 2026 SkillBridge. All rights reserved.</p>
+</footer>
+
+<script type="module" src="app.js"></script>
+
+</body>
+</html>
+
