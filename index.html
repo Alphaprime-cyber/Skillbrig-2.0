@@ -1,90 +1,188 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SkillBridge</title>
+
+<title>SkillBridge | Connecting Nigeria with Trusted Professionals</title>
+
+<meta name="description"
+content="Find verified professionals across Nigeria. Plumbers, electricians, mechanics, web developers, cleaners, caterers and more.">
+
 <link rel="stylesheet" href="style.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
 </head>
+
 <body>
 
 <header>
-<div class="logo">🛠 <span>SkillBridge</span></div>
+
+<div class="logo">
+
+<i class="fas fa-bridge"></i>
+
+<span>SkillBridge</span>
+
+</div>
+
 <nav>
+
 <a href="index.html">Home</a>
+
+<a href="#categories">Categories</a>
+
+<a href="#featured">Featured</a>
+
 <a href="provider.html">Become a Provider</a>
+
 <a href="contact.html">Contact</a>
-<a href="admin-login.html">Admin</a>
+
 </nav>
+
+<div>
+
+<button class="secondary-btn" id="loginBtn">
+
+Login
+
+</button>
+
+</div>
+
 </header>
 
+<!-- HERO -->
+
 <section class="hero">
-<h1>Find Trusted Professionals Near You</h1>
-<p>Connect with verified professionals across Nigeria.</p>
+
+<div class="hero-content">
+
+<h1>
+
+Find Trusted Professionals Near You
+
+</h1>
+
+<p>
+
+Connect with verified plumbers,
+electricians, mechanics,
+tailors, designers,
+technicians and hundreds
+of skilled professionals
+across Nigeria.
+
+</p>
 
 <div class="search-box">
-<input id="searchBox" type="text" placeholder="Search by service, state, city or provider..." onkeyup="searchServices()">
-<button onclick="searchServices()">Search</button>
-<button onclick="loadServices()">Clear</button>
+
+<input
+id="searchBox"
+type="text"
+placeholder="What service do you need?">
+
+<select id="categoryFilter">
+
+<option value="">All Categories</option>
+
+<option>Plumbing</option>
+
+<option>Electrical</option>
+
+<option>Carpentry</option>
+
+<option>Auto Mechanic</option>
+
+<option>Cleaning</option>
+
+<option>Phone Repair</option>
+
+<option>Computer Repair</option>
+
+<option>Tailoring</option>
+
+<option>Hair Dressing</option>
+
+<option>Graphic Design</option>
+
+<option>Web Development</option>
+
+<option>Catering</option>
+
+<option>Photography</option>
+
+</select>
+
+<select id="stateFilter">
+
+<option value="">All States</option>
+
+<option>Lagos</option>
+
+<option>Abuja (FCT)</option>
+
+<option>Rivers</option>
+
+<option>Kano</option>
+
+<option>Kaduna</option>
+
+<option>Oyo</option>
+
+<option>Enugu</option>
+
+<option>Delta</option>
+
+<option>Anambra</option>
+
+<option>Ogun</option>
+
+</select>
+
+<button onclick="searchServices()">
+
+<i class="fas fa-search"></i>
+
+Find Professional
+
+</button>
+
 </div>
-</section>
 
-<section class="categories">
-<h2>Popular Categories</h2>
-<div id="categoryContainer">
-<div class="card" onclick="searchCategory('Plumbing')">🔧 Plumbing</div>
-<div class="card" onclick="searchCategory('Electrical')">⚡ Electrical</div>
-<div class="card" onclick="searchCategory('Carpentry')">🪚 Carpentry</div>
-<div class="card" onclick="searchCategory('Cleaning')">🧹 Cleaning</div>
-<div class="card" onclick="searchCategory('Painting')">🎨 Painting</div>
-<div class="card" onclick="searchCategory('Tailoring')">🧵 Tailoring</div>
-<div class="card" onclick="searchCategory('Phone Repair')">📱 Phone Repair</div>
-<div class="card" onclick="searchCategory('Computer Repair')">💻 Computer Repair</div>
-<div class="card" onclick="searchCategory('Graphic Design')">🎨 Graphic Design</div>
-<div class="card" onclick="searchCategory('Web Development')">🌐 Web Development</div>
-<div class="card" onclick="searchCategory('Photography')">📸 Photography</div>
-<div class="card" onclick="searchCategory('Auto Mechanic')">🚗 Auto Mechanic</div>
+<div class="hero-buttons">
+
+<a href="provider.html">
+
+<button class="primary-btn">
+
+Become a Provider
+
+</button>
+
+</a>
+
+<a href="#featured">
+
+<button class="secondary-btn">
+
+Explore Services
+
+</button>
+
+</a>
+
 </div>
-</section>
 
-<section class="auth">
-<h2>Customer Login / Sign Up</h2>
-<input id="email" type="email" placeholder="Email Address">
-<input id="password" type="password" placeholder="Password">
-<div>
-<button onclick="signup()">Sign Up</button>
-<button onclick="login()">Login</button>
 </div>
+
 </section>
-
-<section>
-<h2>⭐ Featured Providers</h2>
-<div id="featuredProviders">
-<p>Featured providers will appear here.</p>
-</div>
-</section>
-
-<section>
-<h2>Available Providers</h2>
-<div id="servicesList">Loading providers...</div>
-</section>
-
-<section>
-<h2>Why Choose SkillBridge?</h2>
-<div id="categoryContainer">
-<div class="card"><h3>✅ Verified Professionals</h3><p>Approved providers only.</p></div>
-<div class="card"><h3>💬 Direct Contact</h3><p>Call or chat via WhatsApp.</p></div>
-<div class="card"><h3>🇳🇬 Nationwide</h3><p>Providers across Nigeria.</p></div>
-<div class="card"><h3>⚡ Fast Search</h3><p>Search by service or location.</p></div>
-</div>
-</section>
-
-<footer>
-<p>&copy; 2026 SkillBridge. All rights reserved.</p>
-</footer>
-
-<script type="module" src="app.js"></script>
-
-</body>
-</html>
-
