@@ -106,13 +106,13 @@ window.addService = async function () {
 
 };
 
-// ---------------- LOAD SERVICES ----------------
+// ---------------- LOAD VERIFIED PROVIDERS ----------------
 
-window.loadServices = async function () {
+window.loadProviders = async function () {
 
   try {
 
-    const querySnapshot = await getDocs(collection(db, "services"));
+    const querySnapshot = await getDocs(collection(db, "providers"));
 
     let output = "";
 
@@ -120,26 +120,65 @@ window.loadServices = async function () {
 
       const data = doc.data();
 
-if (!data.verified) {
-    return;
-}
+      // Show only verified providers
+      if (!data.verified) return;
 
-output += `
-      <div class="card">
+      output += `
+      <div class="provider-card">
 
-        <h3>${data.name}</h3>
+        <img
+          class="provider-image"
+          src="${data.profileImage || 'images/default-provider.png'}"
+          alt="${data.businessName || data.name}">
 
-        <p><strong>Category:</strong> ${data.category}</p>
+        <div class="provider-body">
 
-        <p><strong>Location:</strong> 📍 ${data.state}, ${data.location}</p>
+          <div class="verified-badge">
+            ✓ VERIFIED
+          </div>
 
-        <p>${data.description}</p>
+          <div class="provider-name">
+            ${data.businessName || data.name}
+          </div>
 
-        <p><strong>Phone:</strong> ${data.phone}</p>
+          <p class="provider-info">
+            <strong>Category:</strong> ${data.category}
+          </p>
 
-        <a href="https://wa.me/${data.phone}" target="_blank">
-          <button>💬 Chat on WhatsApp</button>
-        </a>
+          <p class="provider-info">
+            ⭐ ${data.averageRating || 0} |
+            🏆 SkillScore ${data.skillScore || 50}
+          </p>
+
+          <p class="provider-info">
+            📍 ${data.state}, ${data.location}
+          </p>
+
+          <p class="provider-info">
+            💼 ${data.experience} Years Experience
+          </p>
+
+          <div class="provider-buttons">
+
+            <a href="tel:${data.phone}">
+              <button class="call-btn">📞 Call</button>
+            </a>
+
+            <a href="https://wa.me/${data.whatsapp || data.phone}" target="_blank">
+              <button class="whatsapp-btn">💬 WhatsApp</button>
+            </a>
+
+            <button
+              class="profile-btn"
+              onclick="viewProvider('${doc.id}')">
+
+              👤 Profile
+
+            </button>
+
+          </div>
+
+        </div>
 
       </div>
       `;
@@ -147,87 +186,20 @@ output += `
     });
 
     if (output === "") {
-      output = "<p>No services have been posted yet.</p>";
+      output = "<p>No verified providers available yet.</p>";
     }
 
-    document.getElementById("servicesList").innerHTML = output;
+    document.getElementById("providersList").innerHTML = output;
 
   } catch (error) {
 
     console.error(error);
 
-    document.getElementById("servicesList").innerHTML =
-      "<p>Unable to load services.</p>";
-
-  }
-
-}
-
-loadServices();
-window.searchServices = async function () {
-
-  const searchText = document
-    .getElementById("searchBox")
-    .value
-    .toLowerCase()
-    .trim();
-
-  try {
-
-    const querySnapshot = await getDocs(collection(db, "services"));
-
-    let output = "";
-
-    querySnapshot.forEach((doc) => {
-
-      const data = doc.data();
-
-      const text = `
-        ${data.name}
-        ${data.category}
-        ${data.state}
-        ${data.location}
-        ${data.description}
-      `.toLowerCase();
-
-      if (text.includes(searchText)) {
-
-        output += `
-        <div class="card">
-
-          <h3>${data.name}</h3>
-
-          <p><strong>Category:</strong> ${data.category}</p>
-
-          <p><strong>Location:</strong> 📍 ${data.state}, ${data.location}</p>
-
-          <p>${data.description}</p>
-
-          <p><strong>Phone:</strong> ${data.phone}</p>
-
-          <a href="https://wa.me/${data.phone}" target="_blank">
-            <button>💬 Chat on WhatsApp</button>
-          </a>
-
-        </div>
-        `;
-
-      }
-
-    });
-
-    if (output === "") {
-      output = "<p>No matching services found.</p>";
-    }
-
-    document.getElementById("servicesList").innerHTML = output;
-
-  } catch (error) {
-
-    console.error(error);
-
-    alert("Search failed.");
+    document.getElementById("providersList").innerHTML =
+      "<p>Unable to load providers.</p>";
 
   }
 
 };
+
+loadProviders();
