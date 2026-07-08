@@ -70,12 +70,38 @@
 <section class="reviews">
 
 <h2>Customer Reviews</h2>
+<div class="review-form">
+
+    <input
+        type="text"
+        id="reviewName"
+        placeholder="Your Name">
+
+    <select id="reviewRating">
+
+        <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
+        <option value="4">⭐⭐⭐⭐ Very Good</option>
+        <option value="3">⭐⭐⭐ Good</option>
+        <option value="2">⭐⭐ Fair</option>
+        <option value="1">⭐ Poor</option>
+
+    </select>
+
+    <textarea
+        id="reviewComment"
+        placeholder="Share your experience..."></textarea>
+
+    <button onclick="submitReview()">
+
+        Submit Review
+
+    </button>
+
+</div>
 
 <div id="reviewsList">
 
 No reviews yet.
-
-</div>
 
 </section>
 
