@@ -279,3 +279,48 @@ nav a:hover{
     transform:translateY(-8px);
     border-color:#FFD700;
 }
+
+/* =========================
+   Categories
+========================= */
+
+.categories{
+    padding:80px 8%;
+    text-align:center;
+}
+
+.categories h2{
+    font-size:2.3rem;
+    margin-bottom:40px;
+}
+
+.category-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:20px;
+}
+
+.category-card{
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,215,0,.15);
+    border-radius:18px;
+    padding:30px 20px;
+    transition:.3s;
+    cursor:pointer;
+}
+
+.category-card:hover{
+    transform:translateY(-8px);
+    border-color:#FFD700;
+}
+
+.category-card span{
+    font-size:48px;
+    display:block;
+    margin-bottom:15px;
+}
+
+.category-card h3{
+    color:#fff;
+    font-size:18px;
+}
