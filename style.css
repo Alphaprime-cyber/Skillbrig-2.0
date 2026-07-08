@@ -522,3 +522,71 @@ nav a:hover{
     color:#ddd;
     line-height:1.6;
 }
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer{
+    background:#05101a;
+    margin-top:80px;
+    padding:60px 8% 20px;
+    border-top:1px solid rgba(255,215,0,.15);
+}
+
+.footer-container{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:40px;
+}
+
+.footer-section h3{
+    color:#FFD700;
+    margin-bottom:20px;
+}
+
+.footer-section p{
+    color:#ccc;
+    line-height:1.7;
+}
+
+.footer-section a{
+    display:block;
+    color:#ccc;
+    text-decoration:none;
+    margin:10px 0;
+    transition:.3s;
+}
+
+.footer-section a:hover{
+    color:#FFD700;
+}
+
+.social-icons{
+    display:flex;
+    gap:15px;
+}
+
+.social-icons a{
+    width:45px;
+    height:45px;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:rgba(255,255,255,.08);
+    font-size:20px;
+}
+
+.social-icons a:hover{
+    background:#FFD700;
+    color:#07131f;
+}
+
+.footer-bottom{
+    text-align:center;
+    margin-top:40px;
+    padding-top:20px;
+    border-top:1px solid rgba(255,255,255,.1);
+    color:#aaa;
+}
