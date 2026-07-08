@@ -106,99 +106,106 @@ window.addService = async function () {
 
 };
 
-// ---------------- LOAD VERIFIED PROVIDERS ----------------
+// =============================
+// LOAD VERIFIED PROVIDERS
+// =============================
 
 window.loadProviders = async function () {
 
-  try {
+    try {
 
-    const querySnapshot = await getDocs(collection(db, "providers"));
+        const snapshot = await getDocs(collection(db, "providers"));
 
-    let output = "";
+        let html = "";
 
-    querySnapshot.forEach((doc) => {
+        snapshot.forEach((doc) => {
 
-      const data = doc.data();
+            const provider = doc.data();
 
-      // Show only verified providers
-      if (!data.verified) return;
+            if (!provider.verified) return;
 
-      output += `
-      <div class="provider-card">
+            html += `
 
-        <img
-          class="provider-image"
-          src="${data.profileImage || 'images/default-provider.png'}"
-          alt="${data.businessName || data.name}">
+            <div class="provider-card">
 
-        <div class="provider-body">
+                <img
+                    src="${provider.profileImage || "images/default-provider.png"}"
+                    class="provider-image"
+                    alt="${provider.businessName || provider.name}">
 
-          <div class="verified-badge">
-            ✓ VERIFIED
-          </div>
+                <div class="provider-body">
 
-          <div class="provider-name">
-            ${data.businessName || data.name}
-          </div>
+                    <span class="verified-badge">
+                        <i class="fas fa-check-circle"></i>
+                        Verified
+                    </span>
 
-          <p class="provider-info">
-            <strong>Category:</strong> ${data.category}
-          </p>
+                    <h3 class="provider-name">
+                        ${provider.businessName || provider.name}
+                    </h3>
 
-          <p class="provider-info">
-            ⭐ ${data.averageRating || 0} |
-            🏆 SkillScore ${data.skillScore || 50}
-          </p>
+                    <p class="provider-info">
+                        <i class="fas fa-screwdriver-wrench"></i>
+                        ${provider.category}
+                    </p>
 
-          <p class="provider-info">
-            📍 ${data.state}, ${data.location}
-          </p>
+                    <p class="provider-info">
+                        <i class="fas fa-location-dot"></i>
+                        ${provider.state}, ${provider.location}
+                    </p>
 
-          <p class="provider-info">
-            💼 ${data.experience} Years Experience
-          </p>
+                    <p class="provider-info">
+                        ⭐ ${provider.averageRating || 0}
+                        &nbsp;|&nbsp;
+                        🏆 ${provider.skillScore || 50}
+                    </p>
 
-          <div class="provider-buttons">
+                    <div class="provider-buttons">
 
-            <a href="tel:${data.phone}">
-              <button class="call-btn">📞 Call</button>
-            </a>
+                        <a href="tel:${provider.phone}">
+                            <button class="call-btn">
+                                <i class="fas fa-phone"></i>
+                                Call
+                            </button>
+                        </a>
 
-            <a href="https://wa.me/${data.whatsapp || data.phone}" target="_blank">
-              <button class="whatsapp-btn">💬 WhatsApp</button>
-            </a>
+                        <a
+                          href="https://wa.me/${provider.whatsapp || provider.phone}"
+                          target="_blank">
 
-            <button
-              class="profile-btn"
-              onclick="viewProvider('${doc.id}')">
+                            <button class="whatsapp-btn">
 
-              👤 Profile
+                                <i class="fab fa-whatsapp"></i>
 
-            </button>
+                                WhatsApp
 
-          </div>
+                            </button>
 
-        </div>
+                        </a>
 
-      </div>
-      `;
+                    </div>
 
-    });
+                </div>
 
-    if (output === "") {
-      output = "<p>No verified providers available yet.</p>";
+            </div>
+
+            `;
+
+        });
+
+        document.getElementById("providersList").innerHTML =
+            html || "<p>No verified providers available yet.</p>";
+
     }
 
-    document.getElementById("providersList").innerHTML = output;
+    catch (error) {
 
-  } catch (error) {
+        console.error(error);
 
-    console.error(error);
+        document.getElementById("providersList").innerHTML =
+            "<p>Unable to load providers.</p>";
 
-    document.getElementById("providersList").innerHTML =
-      "<p>Unable to load providers.</p>";
-
-  }
+    }
 
 };
 
