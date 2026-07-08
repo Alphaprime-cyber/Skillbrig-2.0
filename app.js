@@ -212,3 +212,75 @@ window.viewProvider = function(id) {
     window.location.href = `profile.html?id=${id}`;
 
 };
+
+// ==============================
+// LOAD BUSINESS PROFILE
+// ==============================
+
+window.loadBusinessProfile = async function () {
+
+    const params = new URLSearchParams(window.location.search);
+    const providerId = params.get("id");
+
+    if (!providerId) return;
+
+    try {
+
+        const providerRef = doc(db, "providers", providerId);
+        const providerSnap = await getDoc(providerRef);
+
+        if (!providerSnap.exists()) {
+            document.getElementById("businessName").textContent =
+                "Provider not found";
+            return;
+        }
+
+        const provider = providerSnap.data();
+
+        document.getElementById("businessName").textContent =
+            provider.businessName || provider.name;
+
+        document.getElementById("category").textContent =
+            "Category: " + provider.category;
+
+        document.getElementById("experience").textContent =
+            "Experience: " + provider.experience + " years";
+
+        document.getElementById("location").textContent =
+            "Location: " + provider.state + ", " + provider.location;
+
+        document.getElementById("businessHours").textContent =
+            "Business Hours: " + provider.businessHours;
+
+        document.getElementById("description").textContent =
+            provider.description;
+
+        document.getElementById("rating").textContent =
+            "⭐ " + (provider.averageRating || 0);
+
+        document.getElementById("skillScore").textContent =
+            "🏆 SkillScore " + (provider.skillScore || 50);
+
+        document.getElementById("callButton").href =
+            "tel:" + provider.phone;
+
+        document.getElementById("whatsappButton").href =
+            "https://wa.me/" + (provider.whatsapp || provider.phone);
+
+        if (provider.profileImage) {
+            document.getElementById("profileImage").src =
+                provider.profileImage;
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+    }
+
+};
+
+// Run only on profile.html
+if (document.getElementById("businessName")) {
+    loadBusinessProfile();
+}
