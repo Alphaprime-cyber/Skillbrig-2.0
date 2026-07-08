@@ -5,27 +5,23 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>SkillBridge | Connecting Nigeria with Trusted Professionals</title>
+<title>SkillBridge | Find Trusted Professionals</title>
 
-<meta name="description"
-content="Find verified professionals across Nigeria. Plumbers, electricians, mechanics, web developers, cleaners, caterers and more.">
-
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="css/style.css">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
-
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 </head>
 
 <body>
 
-<header>
+<header class="header">
 
 <div class="logo">
 
@@ -41,27 +37,19 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
 
 <a href="#categories">Categories</a>
 
-<a href="#featured">Featured</a>
-
 <a href="provider.html">Become a Provider</a>
 
 <a href="contact.html">Contact</a>
 
-</nav>
-
-<div>
-
-<button class="secondary-btn" id="loginBtn">
+<button id="loginBtn" class="primary-btn">
 
 Login
 
 </button>
 
-</div>
+</nav>
 
 </header>
-
-<!-- HERO -->
 
 <section class="hero">
 
@@ -69,59 +57,22 @@ Login
 
 <h1>
 
-Find Trusted Professionals Near You
+Find Trusted Professionals Across Nigeria
 
 </h1>
 
 <p>
 
-Connect with verified plumbers,
-electricians, mechanics,
-tailors, designers,
-technicians and hundreds
-of skilled professionals
-across Nigeria.
+Electricians • Plumbers • Mechanics • Tailors • Developers • Cleaners • Photographers • And More
 
 </p>
 
-<div class="search-box">
+<div class="search-container">
 
 <input
-id="searchBox"
 type="text"
+id="searchBox"
 placeholder="What service do you need?">
-
-<select id="categoryFilter">
-
-<option value="">All Categories</option>
-
-<option>Plumbing</option>
-
-<option>Electrical</option>
-
-<option>Carpentry</option>
-
-<option>Auto Mechanic</option>
-
-<option>Cleaning</option>
-
-<option>Phone Repair</option>
-
-<option>Computer Repair</option>
-
-<option>Tailoring</option>
-
-<option>Hair Dressing</option>
-
-<option>Graphic Design</option>
-
-<option>Web Development</option>
-
-<option>Catering</option>
-
-<option>Photography</option>
-
-</select>
 
 <select id="stateFilter">
 
@@ -129,23 +80,17 @@ placeholder="What service do you need?">
 
 <option>Lagos</option>
 
-<option>Abuja (FCT)</option>
+<option>Abuja</option>
+
+<option>Enugu</option>
 
 <option>Rivers</option>
 
 <option>Kano</option>
 
-<option>Kaduna</option>
-
 <option>Oyo</option>
 
-<option>Enugu</option>
-
 <option>Delta</option>
-
-<option>Anambra</option>
-
-<option>Ogun</option>
 
 </select>
 
@@ -159,382 +104,48 @@ Find Professional
 
 </div>
 
-<div class="hero-buttons">
-
-<a href="provider.html">
-
-<button class="primary-btn">
-
-Become a Provider
-
-</button>
-
-</a>
-
-<a href="#featured">
-
-<button class="secondary-btn">
-
-Explore Services
-
-</button>
-
-</a>
-
-</div>
-
 </div>
 
 </section>
-<!-- POPULAR CATEGORIES -->
-
-<section class="categories" id="categories">
-
-<h2>Popular Categories</h2>
-
-<div class="grid">
-
-<div class="card category-card">
-<i class="fas fa-faucet"></i>
-<h3>Plumbing</h3>
-<p>Professional plumbers for homes and businesses.</p>
-</div>
-
-<div class="card category-card">
-<i class="fas fa-bolt"></i>
-<h3>Electrical</h3>
-<p>Certified electricians for installations and repairs.</p>
-</div>
-
-<div class="card category-card">
-<i class="fas fa-hammer"></i>
-<h3>Carpentry</h3>
-<p>Furniture makers and skilled carpenters.</p>
-</div>
-
-<div class="card category-card">
-<i class="fas fa-car"></i>
-<h3>Auto Mechanic</h3>
-<p>Trusted mechanics and vehicle technicians.</p>
-</div>
-
-<div class="card category-card">
-<i class="fas fa-mobile-screen-button"></i>
-<h3>Phone Repair</h3>
-<p>Screen replacement, software and hardware repairs.</p>
-</div>
-
-<div class="card category-card">
-<i class="fas fa-laptop-code"></i>
-<h3>Web Development</h3>
-<p>Websites, web applications and e-commerce solutions.</p>
-</div>
-
-<div class="card category-card">
-<i class="fas fa-scissors"></i>
-<h3>Tailoring</h3>
-<p>Fashion designers and tailoring professionals.</p>
-</div>
-
-<div class="card category-card">
-<i class="fas fa-broom"></i>
-<h3>Cleaning</h3>
-<p>Residential and commercial cleaning experts.</p>
-</div>
-
-</div>
-
-</section>
-
-<!-- EMERGENCY SERVICES -->
 
 <section class="emergency">
 
-<h2>🚨 Emergency Services</h2>
+<h2>Emergency Services</h2>
 
 <div class="grid">
 
-<div class="card emergency-card">
+<div class="card">
+
 <h3>⚡ Emergency Electrician</h3>
-<p>Available for urgent electrical faults.</p>
+
+<p>Fast response for urgent electrical faults.</p>
+
 </div>
 
-<div class="card emergency-card">
+<div class="card">
+
 <h3>🚰 Emergency Plumber</h3>
-<p>Burst pipes, leaks and drainage problems.</p>
+
+<p>Leaks, burst pipes and drainage issues.</p>
+
 </div>
 
-<div class="card emergency-card">
+<div class="card">
+
+<h3>🚗 Auto Mechanic</h3>
+
+<p>Roadside repairs and breakdown assistance.</p>
+
+</div>
+
+<div class="card">
+
 <h3>🔑 Locksmith</h3>
-<p>Locked out? Find a nearby locksmith quickly.</p>
-</div>
 
-<div class="card emergency-card">
-<h3>🚗 Vehicle Breakdown</h3>
-<p>Roadside mechanics and towing assistance.</p>
-</div>
-
-</div>
-
-</section>
-
-<!-- FEATURED PROVIDERS -->
-
-<section id="featured">
-
-<h2>Featured Professionals</h2>
-
-<div id="servicesList" class="grid">
-
-Loading verified professionals...
-
-</div>
-
-</section>
-
-<!-- PLATFORM STATS -->
-
-<section class="stats">
-
-<h2>SkillBridge in Numbers</h2>
-
-<div class="grid">
-
-<div class="card stat-card">
-
-<h1 id="providersCount">0+</h1>
-
-<p>Verified Professionals</p>
-
-</div>
-
-<div class="card stat-card">
-
-<h1>36</h1>
-
-<p>States Covered</p>
-
-</div>
-
-<div class="card stat-card">
-
-<h1>70+</h1>
-
-<p>Service Categories</p>
-
-</div>
-
-<div class="card stat-card">
-
-<h1>24/7</h1>
-
-<p>Platform Availability</p>
+<p>Locked out? Find help near you.</p>
 
 </div>
 
 </div>
 
 </section>
-
-<!-- TESTIMONIALS -->
-
-<section class="testimonials">
-
-<h2>What Our Customers Say</h2>
-
-<div class="grid">
-
-<div class="card">
-
-<h3>⭐⭐⭐⭐⭐</h3>
-
-<p>
-
-"I found an electrician within 15 minutes.
-The service was excellent."
-
-</p>
-
-<strong>— Chinedu, Lagos</strong>
-
-</div>
-
-<div class="card">
-
-<h3>⭐⭐⭐⭐⭐</h3>
-
-<p>
-
-"SkillBridge made it easy to find a trusted plumber.
-Highly recommended."
-
-</p>
-
-<strong>— Amina, Abuja</strong>
-
-</div>
-
-<div class="card">
-
-<h3>⭐⭐⭐⭐⭐</h3>
-
-<p>
-
-"My mechanic responded almost immediately.
-Great platform."
-
-</p>
-
-<strong>— Samuel, Port Harcourt</strong>
-
-</div>
-
-</div>
-
-</section>
-
-<!-- CALL TO ACTION -->
-
-<section class="cta">
-
-<h2>Are You a Skilled Professional?</h2>
-
-<p>
-
-Join thousands of professionals growing their business with SkillBridge.
-
-</p>
-
-<a href="provider.html">
-
-<button class="primary-btn">
-
-Become a Service Provider
-
-</button>
-
-</a>
-
-</section>
-
-<!-- LOGIN MODAL -->
-
-<div id="loginModal" class="modal">
-
-<div class="modal-content">
-
-<span id="closeLogin" class="close">&times;</span>
-
-<h2>Welcome to SkillBridge</h2>
-
-<p>Choose how you want to continue.</p>
-
-<div class="role-buttons">
-
-<button id="customerRole" class="secondary-btn">
-
-👤 I Need a Professional
-
-</button>
-
-<button id="providerRole" class="primary-btn">
-
-🛠 I'm a Service Provider
-
-</button>
-
-</div>
-
-<hr>
-
-<input
-id="email"
-type="email"
-placeholder="Email Address">
-
-<input
-id="password"
-type="password"
-placeholder="Password">
-
-<button onclick="login()" class="primary-btn">
-
-Login
-
-</button>
-
-<button onclick="signup()" class="secondary-btn">
-
-Create Account
-
-</button>
-
-<button onclick="googleLogin()" class="google-btn">
-
-<i class="fab fa-google"></i>
-
-Continue with Google
-
-</button>
-
-</div>
-
-</div>
-
-<!-- FOOTER -->
-
-<footer>
-
-<div class="footer-content">
-
-<h2>SkillBridge</h2>
-
-<p>
-
-Connecting Nigeria with Trusted Professionals.
-
-</p>
-
-<div class="footer-links">
-
-<a href="index.html">Home</a>
-
-<a href="provider.html">Become a Provider</a>
-
-<a href="contact.html">Contact</a>
-
-<a href="#">Privacy Policy</a>
-
-<a href="#">Terms of Service</a>
-
-</div>
-
-<div class="social-links">
-
-<a href="#"><i class="fab fa-facebook"></i></a>
-
-<a href="#"><i class="fab fa-instagram"></i></a>
-
-<a href="#"><i class="fab fa-x-twitter"></i></a>
-
-<a href="#"><i class="fab fa-linkedin"></i></a>
-
-<a href="#"><i class="fab fa-whatsapp"></i></a>
-
-</div>
-
-<p>
-
-© 2026 SkillBridge. All Rights Reserved.
-
-</p>
-
-</div>
-
-</footer>
-
-<script type="module" src="app.js"></script>
-
-</body>
-
-</html>
