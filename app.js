@@ -203,3 +203,9 @@ window.loadProviders = async function () {
 };
 
 loadProviders();
+
+window.viewProvider = function(id) {
+
+    window.location.href = `profile.html?id=${id}`;
+
+};
