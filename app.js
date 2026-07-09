@@ -9,6 +9,7 @@ import {
   addDoc,
   query,
   where
+  updatedoc
 } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -350,3 +351,45 @@ ${review.comment}
 No reviews yet.
 
 "; }; if (document.getElementById("reviewsList")) { loadReviews(); }
+
+// ==============================
+// UPDATE PROVIDER RATING
+// ==============================
+
+window.updateProviderRating = async function(providerId) {
+
+    const q = query(
+        collection(db, "reviews"),
+        where("providerId", "==", providerId)
+    );
+
+    const snapshot = await getDocs(q);
+
+    let totalRating = 0;
+    let totalReviews = 0;
+
+    snapshot.forEach((doc) => {
+
+        const review = doc.data();
+
+        totalRating += Number(review.rating);
+        totalReviews++;
+
+    });
+
+    const averageRating =
+        totalReviews > 0
+        ? (totalRating / totalReviews).toFixed(1)
+        : 0;
+
+    const providerRef = doc(db, "providers", providerId);
+
+    await updateDoc(providerRef, {
+
+        averageRating: Number(averageRating),
+
+        totalReviews: totalReviews
+
+    });
+
+};
