@@ -4,9 +4,11 @@ import {
   getFirestore,
   collection,
   getDocs,
-  addDoc,
   getDoc,
   doc
+  addDoc,
+  query,
+  where
 } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
 const firebaseConfig = {
