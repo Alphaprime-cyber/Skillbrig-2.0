@@ -11,6 +11,8 @@ import {
   where
   updatedoc
   serverTimestamp
+  updateDoc,
+  doc
 } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
 const firebaseConfig = {
