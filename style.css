@@ -714,3 +714,107 @@ color:#ff4d4d;
 font-weight:600;
 
 }
+
+/* ADMIN DASHBOARD */
+
+.admin-header{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+padding:20px 8%;
+
+background:#07131f;
+
+border-bottom:1px solid rgba(255,215,0,.2);
+
+}
+
+.admin-header h1{
+
+font-size:28px;
+
+}
+
+.admin-header button{
+
+padding:12px 20px;
+
+background:#FFD700;
+
+border:none;
+
+border-radius:10px;
+
+cursor:pointer;
+
+font-weight:bold;
+
+}
+
+.dashboard{
+
+padding:50px 8%;
+
+}
+
+.dashboard-grid{
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+
+gap:25px;
+
+margin:30px 0;
+
+}
+
+.dashboard-card{
+
+background:rgba(255,255,255,.08);
+
+border-radius:20px;
+
+padding:30px;
+
+text-align:center;
+
+text-decoration:none;
+
+color:white;
+
+border:1px solid rgba(255,215,0,.15);
+
+transition:.3s;
+
+}
+
+.dashboard-card:hover{
+
+transform:translateY(-8px);
+
+border-color:#FFD700;
+
+}
+
+.dashboard-card i{
+
+font-size:45px;
+
+color:#FFD700;
+
+margin-bottom:20px;
+
+}
+
+.dashboard-card h3{
+
+font-size:32px;
+
+margin-bottom:10px;
+
+}
