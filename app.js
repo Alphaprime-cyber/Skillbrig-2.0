@@ -322,6 +322,7 @@ window.submitReview = async function () {
 
         });
 
+await updateProviderRating(providerId);
         alert("Thank you! Your review has been submitted.");
 
         loadReviews();
