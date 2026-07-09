@@ -6,9 +6,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>SkillBridge Admin Login</title>
+<title>SkillBridge Admin Portal</title>
 
 <link rel="stylesheet" href="../style.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
@@ -21,13 +26,14 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
 <div class="login-box">
 
-<h1>
+<div class="admin-logo">
 <i class="fas fa-user-shield"></i>
-Admin Portal
-</h1>
+</div>
+
+<h1>SkillBridge Admin</h1>
 
 <p>
-Authorized administrators only.
+Restricted Area. Authorized Administrators Only.
 </p>
 
 <input
@@ -41,8 +47,11 @@ id="adminPassword"
 placeholder="Password">
 
 <button onclick="adminLogin()">
-Login
+<i class="fas fa-lock"></i>
+Secure Login
 </button>
+
+<div id="adminMessage"></div>
 
 </div>
 
