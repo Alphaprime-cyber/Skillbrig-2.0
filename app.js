@@ -495,3 +495,75 @@ window.adminLogin = async function () {
     }
 
 };
+
+window.loadAdminProviders = async function(){
+
+const snapshot = await getDocs(collection(db,"providers"));
+
+let html="";
+
+snapshot.forEach((providerDoc)=>{
+
+const provider=providerDoc.data();
+
+html+=`
+
+<div class="provider-row">
+
+<div>
+
+<h3>${provider.businessName || provider.name}</h3>
+
+<p>${provider.category}</p>
+
+<p>${provider.state}</p>
+
+<p>
+
+Status:
+
+<b style="color:${provider.verified ? 'lime':'orange'}">
+
+${provider.verified ? 'Approved':'Pending'}
+
+</b>
+
+</p>
+
+</div>
+
+<div class="provider-actions">
+
+<button
+class="approve-btn"
+onclick="approveProvider('${providerDoc.id}')">
+
+Approve
+
+</button>
+
+<button
+class="reject-btn"
+onclick="rejectProvider('${providerDoc.id}')">
+
+Reject
+
+</button>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+document.getElementById("providersTable").innerHTML=html;
+
+}
+
+if(document.getElementById("providersTable")){
+
+loadAdminProviders();
+
+}
