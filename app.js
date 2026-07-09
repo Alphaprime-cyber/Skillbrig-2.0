@@ -10,6 +10,7 @@ import {
   query,
   where
   updatedoc
+  serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -392,5 +393,71 @@ window.updateProviderRating = async function(providerId) {
         totalReviews: totalReviews
 
     });
+
+};
+
+// ==============================
+// REQUEST A QUOTE
+// ==============================
+
+window.requestQuote = async function () {
+
+    const params = new URLSearchParams(window.location.search);
+    const providerId = params.get("id");
+
+    const customerName =
+        document.getElementById("customerName").value.trim();
+
+    const customerPhone =
+        document.getElementById("customerPhone").value.trim();
+
+    const customerLocation =
+        document.getElementById("customerLocation").value.trim();
+
+    const preferredDate =
+        document.getElementById("preferredDate").value;
+
+    const jobDescription =
+        document.getElementById("jobDescription").value.trim();
+
+    if (
+        !customerName ||
+        !customerPhone ||
+        !customerLocation ||
+        !jobDescription
+    ) {
+        alert("Please complete all required fields.");
+        return;
+    }
+
+    try {
+
+        await addDoc(collection(db, "quoteRequests"), {
+
+            providerId,
+            customerName,
+            customerPhone,
+            customerLocation,
+            preferredDate,
+            jobDescription,
+            status: "Pending",
+            createdAt: serverTimestamp()
+
+        });
+
+        alert("✅ Quote request sent successfully!");
+
+        document.getElementById("customerName").value = "";
+        document.getElementById("customerPhone").value = "";
+        document.getElementById("customerLocation").value = "";
+        document.getElementById("preferredDate").value = "";
+        document.getElementById("jobDescription").value = "";
+
+    } catch (error) {
+
+        console.error(error);
+        alert(error.message);
+
+    }
 
 };
