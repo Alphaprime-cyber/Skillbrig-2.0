@@ -461,3 +461,35 @@ window.requestQuote = async function () {
     }
 
 };
+
+// ==============================
+// ADMIN LOGIN
+// ==============================
+
+window.adminLogin = async function () {
+
+    const email = document.getElementById("adminEmail").value.trim();
+    const password = document.getElementById("adminPassword").value.trim();
+
+    if (!email || !password) {
+        document.getElementById("adminMessage").innerHTML =
+            "Please enter your email and password.";
+        return;
+    }
+
+    try {
+
+        await signInWithEmailAndPassword(auth, email, password);
+
+        window.location.href = "dashboard.html";
+
+    } catch (error) {
+
+        document.getElementById("adminMessage").innerHTML =
+            "Invalid email or password.";
+
+        console.error(error);
+
+    }
+
+};
