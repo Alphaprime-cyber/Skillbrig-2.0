@@ -286,3 +286,53 @@ window.loadBusinessProfile = async function () {
 if (document.getElementById("businessName")) {
     loadBusinessProfile();
 }
+
+window.submitReview = async function () {
+
+    const params = new URLSearchParams(window.location.search);
+    const providerId = params.get("id");
+
+    const customerName =
+        document.getElementById("reviewName").value.trim();
+
+    const rating =
+        Number(document.getElementById("reviewRating").value);
+
+    const comment =
+        document.getElementById("reviewComment").value.trim();
+
+    if (!customerName || !comment) {
+
+        alert("Please complete all fields.");
+
+        return;
+
+    }
+
+    try {
+
+        await addDoc(collection(db, "reviews"), {
+
+            providerId,
+            customerName,
+            rating,
+            comment,
+            createdAt: new Date()
+
+        });
+
+        alert("Thank you! Your review has been submitted.");
+
+        loadReviews();
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        alert(error.message);
+
+    }
+
+};
