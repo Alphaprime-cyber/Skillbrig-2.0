@@ -1,1 +1,132 @@
-tyy
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SkillBridge Admin Dashboard</title>
+
+<link rel="stylesheet" href="../style.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body>
+
+<header class="admin-header">
+
+<h1>
+<i class="fas fa-user-shield"></i>
+SkillBridge Admin
+</h1>
+
+<button onclick="logoutAdmin()">
+<i class="fas fa-right-from-bracket"></i>
+Logout
+</button>
+
+</header>
+
+<section class="dashboard">
+
+<h2>Dashboard Overview</h2>
+
+<div class="dashboard-grid">
+
+<div class="dashboard-card">
+<i class="fas fa-users"></i>
+<h3 id="customersCount">0</h3>
+<p>Customers</p>
+</div>
+
+<div class="dashboard-card">
+<i class="fas fa-user-tie"></i>
+<h3 id="providersCount">0</h3>
+<p>Providers</p>
+</div>
+
+<div class="dashboard-card">
+<i class="fas fa-hourglass-half"></i>
+<h3 id="pendingCount">0</h3>
+<p>Pending Approvals</p>
+</div>
+
+<div class="dashboard-card">
+<i class="fas fa-star"></i>
+<h3 id="reviewsCount">0</h3>
+<p>Reviews</p>
+</div>
+
+</div>
+
+<h2>Quick Actions</h2>
+
+<div class="dashboard-grid">
+
+<a href="providers.html" class="dashboard-card">
+
+<i class="fas fa-user-check"></i>
+
+<h3>Manage Providers</h3>
+
+</a>
+
+<a href="customers.html" class="dashboard-card">
+
+<i class="fas fa-users"></i>
+
+<h3>Customers</h3>
+
+</a>
+
+<a href="quotes.html" class="dashboard-card">
+
+<i class="fas fa-file-signature"></i>
+
+<h3>Quotes</h3>
+
+</a>
+
+<a href="reviews.html" class="dashboard-card">
+
+<i class="fas fa-comments"></i>
+
+<h3>Reviews</h3>
+
+</a>
+
+<a href="analytics.html" class="dashboard-card">
+
+<i class="fas fa-chart-line"></i>
+
+<h3>Analytics</h3>
+
+</a>
+
+<a href="settings.html" class="dashboard-card">
+
+<i class="fas fa-gear"></i>
+
+<h3>Settings</h3>
+
+</a>
+
+</div>
+
+</section>
+
+<script type="module" src="../app.js"></script>
+
+</body>
+
+</html>
