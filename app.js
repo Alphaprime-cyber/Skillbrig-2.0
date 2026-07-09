@@ -336,3 +336,17 @@ window.submitReview = async function () {
     }
 
 };
+
+window.loadReviews = async function () { const params = new URLSearchParams(window.location.search); const providerId = params.get("id"); const q = query( collection(db, "reviews"), where("providerId", "==", providerId) ); const snapshot = await getDocs(q); let html = ""; snapshot.forEach((doc) => { const review = doc.data(); html += ` 
+
+${review.customerName}
+
+⭐ ${review.rating}/5
+
+${review.comment}
+
+`; }); document.getElementById("reviewsList").innerHTML = html || "
+
+No reviews yet.
+
+"; }; if (document.getElementById("reviewsList")) { loadReviews(); }
