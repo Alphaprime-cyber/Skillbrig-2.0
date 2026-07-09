@@ -1,1 +1,55 @@
-ggr
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Manage Providers | SkillBridge</title>
+
+<link rel="stylesheet" href="../style.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body>
+
+<header class="admin-header">
+
+<h1>
+<i class="fas fa-user-check"></i>
+Manage Providers
+</h1>
+
+<a href="dashboard.html">
+<button>← Dashboard</button>
+</a>
+
+</header>
+
+<section class="dashboard">
+
+<input
+type="text"
+id="providerSearch"
+placeholder="Search providers..."
+onkeyup="searchProviders()">
+
+<br><br>
+
+<div id="providersTable">
+
+Loading providers...
+
+</div>
+
+</section>
+
+<script type="module" src="../app.js"></script>
+
+</body>
+
+</html>
