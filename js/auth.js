@@ -143,12 +143,25 @@ window.adminLogin = async function () {
 
     }
 
-};
 // =========================
 // AUTH STATE
 // =========================
 
 onAuthStateChanged(auth, (user) => {
+
+    const page = window.location.pathname;
+
+    // Protect admin pages
+    if (page.includes("/admin/") && !page.endsWith("index.html")) {
+
+        if (!user) {
+
+            window.location.href = "index.html";
+            return;
+
+        }
+
+    }
 
     if (user) {
 
