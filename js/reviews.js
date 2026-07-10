@@ -10,9 +10,9 @@ import {
   doc
 } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
-// ==============================
+// ===============================
 // SUBMIT REVIEW
-// ==============================
+// ===============================
 
 window.submitReview = async function () {
 
@@ -20,17 +20,20 @@ window.submitReview = async function () {
     const providerId = params.get("id");
 
     const customerName =
-        document.getElementById("customerName").value.trim();
+        document.getElementById("reviewName").value.trim();
 
     const rating =
-        Number(document.getElementById("rating").value);
+        Number(document.getElementById("reviewRating").value);
 
     const comment =
-        document.getElementById("comment").value.trim();
+        document.getElementById("reviewComment").value.trim();
 
     if (!customerName || !rating || !comment) {
+
         alert("Please complete all fields.");
+
         return;
+
     }
 
     try {
@@ -47,7 +50,11 @@ window.submitReview = async function () {
 
         await updateProviderRating(providerId);
 
-        alert("⭐ Thank you for your review!");
+        alert("⭐ Review submitted successfully!");
+
+        document.getElementById("reviewName").value = "";
+        document.getElementById("reviewRating").value = "5";
+        document.getElementById("reviewComment").value = "";
 
         loadReviews();
 
@@ -61,9 +68,9 @@ window.submitReview = async function () {
 
 };
 
-// ==============================
+// ===============================
 // LOAD REVIEWS
-// ==============================
+// ===============================
 
 window.loadReviews = async function () {
 
@@ -104,15 +111,15 @@ window.loadReviews = async function () {
 
 };
 
-// ==============================
+// ===============================
 // UPDATE PROVIDER RATING
-// ==============================
+// ===============================
 
-async function updateProviderRating(providerId){
+async function updateProviderRating(providerId) {
 
     const q = query(
-        collection(db,"reviews"),
-        where("providerId","==",providerId)
+        collection(db, "reviews"),
+        where("providerId", "==", providerId)
     );
 
     const snapshot = await getDocs(q);
@@ -120,7 +127,7 @@ async function updateProviderRating(providerId){
     let total = 0;
     let count = 0;
 
-    snapshot.forEach((reviewDoc)=>{
+    snapshot.forEach((reviewDoc) => {
 
         total += Number(reviewDoc.data().rating);
 
@@ -130,16 +137,20 @@ async function updateProviderRating(providerId){
 
     const average = count > 0 ? total / count : 0;
 
-    await updateDoc(doc(db,"providers",providerId),{
+    await updateDoc(doc(db, "providers", providerId), {
 
-        averageRating:Number(average.toFixed(1)),
-        totalReviews:count
+        averageRating: Number(average.toFixed(1)),
+        totalReviews: count
 
     });
 
 }
 
-if(document.getElementById("reviewsList")){
+// ===============================
+// AUTO LOAD REVIEWS
+// ===============================
+
+if (document.getElementById("reviewsList")) {
 
     loadReviews();
 
