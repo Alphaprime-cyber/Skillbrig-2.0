@@ -123,6 +123,28 @@ window.resetPassword = async function () {
 };
 
 // =========================
+// ADMIN LOGIN
+// =========================
+
+window.adminLogin = async function () {
+
+    const email = document.getElementById("adminEmail").value.trim();
+    const password = document.getElementById("adminPassword").value.trim();
+
+    try {
+
+        await signInWithEmailAndPassword(auth, email, password);
+
+        window.location.href = "dashboard.html";
+
+    } catch (error) {
+
+        alert(error.message);
+
+    }
+
+};
+// =========================
 // AUTH STATE
 // =========================
 
