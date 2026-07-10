@@ -1,168 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Provider Profile | SkillBridge</title>
+
+<link rel="stylesheet" href="style.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
 <body>
 
 <header class="header">
-    <div class="logo">
-        <i class="fas fa-bridge"></i>
-        <span>SkillBridge</span>
-    </div>
 
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="provider.html">Become a Provider</a>
-        <a href="contact.html">Contact</a>
-    </nav>
+<div class="logo">
+<i class="fas fa-bridge"></i>
+<span>SkillBridge</span>
+</div>
+
+<nav>
+
+<a href="index.html">Home</a>
+<a href="provider.html">Become a Provider</a>
+<a href="contact.html">Contact</a>
+
+</nav>
+
 </header>
 
 <section class="provider-profile">
 
-    <div class="cover-image"></div>
+<div class="cover-image">
 
-    <div class="profile-card">
+<img id="coverImage"
+src="images/default-cover.jpg"
+alt="Cover Image">
 
-        <img id="profileImage"
-             src="images/default-provider.png"
-             class="profile-photo">
+</div>
 
-        <h1 id="businessName">Loading...</h1>
+<div class="profile-card">
 
-        <div class="verified-badge">
-            ✓ VERIFIED PROVIDER
-        </div>
+<img
+id="profileImage"
+src="images/default-provider.png"
+class="profile-photo">
 
-        <div id="rating">
-            ⭐ 0.0
-        </div>
+<h1 id="businessName">
 
-        <div id="skillScore">
-            🏆 SkillScore 50
-        </div>
+Loading...
 
-        <p id="category"></p>
+</h1>
 
-        <p id="experience"></p>
+<div class="verified-badge">
 
-        <p id="location"></p>
+✅ VERIFIED PROVIDER
 
-        <p id="businessHours"></p>
+</div>
 
-        <p id="description"></p>
+<p id="rating">
+
+⭐ 0.0
+
+</p>
+
+<p id="skillScore">
+
+🏆 SkillScore 50
+
+</p>
+
+<p id="category"></p>
+
+<p id="experience"></p>
+
+<p id="location"></p>
+
+<p id="businessHours"></p>
+
+<p id="description"></p>
+
 <hr>
 
-<p><strong>Member Since:</strong> <span id="memberSince">2026</span></p>
+<p>
 
-<p><strong>Total Reviews:</strong> <span id="totalReviews">0</span></p>
+<strong>Member Since:</strong>
 
-<p><strong>Jobs Completed:</strong> <span id="jobsCompleted">0</span></p>
+<span id="memberSince">
 
-        <div class="profile-buttons">
+2026
 
-            <a id="callButton">
-                <button class="call-btn">
-                    📞 Call
-                </button>
-       <a id="emailButton">
+</span>
 
-       <button class="email-btn">
+</p>
 
-              📧 Email
+<p>
 
-            </button>
+<strong>Total Reviews:</strong>
 
-             </a>
-            </a>
+<span id="totalReviews">
 
-            <a id="whatsappButton" target="_blank">
-                <button class="whatsapp-btn">
-                    💬 WhatsApp
-                </button>
-            </a>
+0
 
-        </div>
+</span>
 
-    </div>
+</p>
+
+<p>
+
+<strong>Jobs Completed:</strong>
+
+<span id="jobsCompleted">
+
+0
+
+</span>
+
+</p>
+
+<div class="profile-buttons">
+
+<a id="callButton">
+
+<button class="call-btn">
+
+📞 Call
+
+</button>
+
+</a>
+
+<a
+id="whatsappButton"
+target="_blank">
+
+<button class="whatsapp-btn">
+
+💬 WhatsApp
+
+</button>
+
+</a>
+
+<a id="emailButton">
+
+<button class="email-btn">
+
+📧 Email
+
+</button>
+
+</a>
+
+</div>
+
+</div>
 
 </section>
 
 <section class="quote-section">
 
-    <h2>Request a Quote</h2>
+<h2>
 
-    <input
-        type="text"
-        id="customerName"
-        placeholder="Your Name">
+Request a Quote
 
-    <input
-        type="tel"
-        id="customerPhone"
-        placeholder="Phone Number">
+</h2>
 
-    <input
-        type="text"
-        id="customerLocation"
-        placeholder="Your Location">
+<input
+type="text"
+id="customerName"
+placeholder="Your Name">
 
-    <input
-        type="date"
-        id="preferredDate">
+<input
+type="tel"
+id="customerPhone"
+placeholder="Phone Number">
 
-    <textarea
-        id="jobDescription"
-        placeholder="Describe the work you need..."></textarea>
+<input
+type="text"
+id="customerLocation"
+placeholder="Your Location">
 
-    <button onclick="requestQuote()">
-        Send Request
-    </button>
+<input
+type="date"
+id="preferredDate">
+
+<textarea
+id="jobDescription"
+placeholder="Describe the work you need..."></textarea>
+
+<button onclick="requestQuote()">
+
+Send Request
+
+</button>
 
 </section>
-<section class="reviews">
-
-<h2>Customer Reviews</h2>
-<div class="review-form">
-
-    <input
-        type="text"
-        id="reviewName"
-        placeholder="Your Name">
 
 <section class="portfolio">
 
-<h2>Portfolio</h2>
+<h2>
 
-<div id="portfolioGallery" class="gallery">
+Portfolio
 
-<p>No portfolio images uploaded yet.</p>
+</h2>
+
+<div
+id="portfolioGallery"
+class="gallery">
+
+<p>
+
+No portfolio uploaded yet.
+
+</p>
 
 </div>
 
 </section>
 
-    <select id="reviewRating">
+<section class="reviews">
 
-        <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
-        <option value="4">⭐⭐⭐⭐ Very Good</option>
-        <option value="3">⭐⭐⭐ Good</option>
-        <option value="2">⭐⭐ Fair</option>
-        <option value="1">⭐ Poor</option>
+<h2>
 
-    </select>
+Customer Reviews
 
-    <textarea
-        id="reviewComment"
-        placeholder="Share your experience..."></textarea>
+</h2>
 
-    <button onclick="submitReview()">
+<div class="review-form">
 
-        Submit Review
+<input
+type="text"
+id="reviewName"
+placeholder="Your Name">
 
-    </button>
+<select id="reviewRating">
+
+<option value="5">⭐⭐⭐⭐⭐ Excellent</option>
+<option value="4">⭐⭐⭐⭐ Very Good</option>
+<option value="3">⭐⭐⭐ Good</option>
+<option value="2">⭐⭐ Fair</option>
+<option value="1">⭐ Poor</option>
+
+</select>
+
+<textarea
+id="reviewComment"
+placeholder="Share your experience..."></textarea>
+
+<button onclick="submitReview()">
+
+Submit Review
+
+</button>
+
+</div>
 
 <div id="reviewsList">
 
+<p>
+
 No reviews yet.
+
+</p>
 
 </div>
 
 </section>
 
-</body>
+<footer class="footer">
+
+<p>
+
+© 2026 SkillBridge. All Rights Reserved.
+
+</p>
+
+</footer>
+
+<script type="module" src="
