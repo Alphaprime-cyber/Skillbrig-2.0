@@ -6,6 +6,36 @@
     --danger:#E63946;
     --success:#22C55E;
 }
+
+button{
+
+background:var(--primary);
+
+color:white;
+
+padding:14px 24px;
+
+border:none;
+
+border-radius:10px;
+
+cursor:pointer;
+
+font-size:16px;
+
+font-weight:600;
+
+transition:.3s;
+
+}
+
+button:hover{
+
+background:#09543d;
+
+transform:translateY(-2px);
+
+}
 /* =========================
    SKILLBRIDGE V2
 ========================= */
