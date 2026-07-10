@@ -2,18 +2,8 @@ import { db } from "./firebase.js";
 
 import {
   collection,
-  addDoc,
-  getDocs,
-  query,
-  where,
-  updateDoc,
-  doc,
-  serverTimestamp
+  addDoc
 } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
-
-// ======================================
-// SEND QUOTE REQUEST
-// ======================================
 
 window.requestQuote = async function () {
 
@@ -39,15 +29,16 @@ window.requestQuote = async function () {
         !customerName ||
         !customerPhone ||
         !customerLocation ||
+        !preferredDate ||
         !jobDescription
     ) {
-        alert("Please complete all required fields.");
+        alert("Please complete all fields.");
         return;
     }
 
     try {
 
-        await addDoc(collection(db, "quoteRequests"), {
+        await addDoc(collection(db, "quotes"), {
 
             providerId,
             customerName,
@@ -55,14 +46,12 @@ window.requestQuote = async function () {
             customerLocation,
             preferredDate,
             jobDescription,
-
             status: "Pending",
-
-            createdAt: serverTimestamp()
+            createdAt: new Date()
 
         });
 
-        alert("✅ Quote request sent successfully!");
+        alert("✅ Your quote request has been sent successfully!");
 
         document.getElementById("customerName").value = "";
         document.getElementById("customerPhone").value = "";
@@ -73,102 +62,8 @@ window.requestQuote = async function () {
     } catch (error) {
 
         console.error(error);
-
         alert(error.message);
 
     }
-
-};
-
-// ======================================
-// LOAD PROVIDER QUOTES
-// ======================================
-
-window.loadQuotes = async function(providerId){
-
-    const q = query(
-        collection(db,"quoteRequests"),
-        where("providerId","==",providerId)
-    );
-
-    const snapshot = await getDocs(q);
-
-    let html="";
-
-    snapshot.forEach((quoteDoc)=>{
-
-        const quote = quoteDoc.data();
-
-        html += `
-
-        <div class="card">
-
-            <h3>${quote.customerName}</h3>
-
-            <p><strong>Phone:</strong> ${quote.customerPhone}</p>
-
-            <p><strong>Location:</strong> ${quote.customerLocation}</p>
-
-            <p><strong>Date:</strong> ${quote.preferredDate || "Not specified"}</p>
-
-            <p>${quote.jobDescription}</p>
-
-            <p>Status:
-                <strong>${quote.status}</strong>
-            </p>
-
-            <button onclick="acceptQuote('${quoteDoc.id}')">
-                Accept
-            </button>
-
-            <button onclick="rejectQuote('${quoteDoc.id}')">
-                Reject
-            </button>
-
-        </div>
-
-        `;
-
-    });
-
-    const list = document.getElementById("requestsList");
-
-    if(list){
-
-        list.innerHTML = html || "<p>No quote requests yet.</p>";
-
-    }
-
-};
-
-// ======================================
-// ACCEPT QUOTE
-// ======================================
-
-window.acceptQuote = async function(id){
-
-    await updateDoc(doc(db,"quoteRequests",id),{
-
-        status:"Accepted"
-
-    });
-
-    alert("Quote accepted.");
-
-};
-
-// ======================================
-// REJECT QUOTE
-// ======================================
-
-window.rejectQuote = async function(id){
-
-    await updateDoc(doc(db,"quoteRequests",id),{
-
-        status:"Rejected"
-
-    });
-
-    alert("Quote rejected.");
 
 };
