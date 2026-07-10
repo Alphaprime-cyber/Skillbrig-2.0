@@ -1,81 +1,50 @@
 import { db } from "./firebase.js";
 
 import {
-    collection,
-    getDocs,
-    query,
-    where
+  collection,
+  getDocs,
+  query,
+  where
 } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
-// =====================================
-// LOAD PROVIDER DASHBOARD
-// =====================================
-
-window.loadDashboard = async function (providerId) {
+async function loadDashboard() {
 
     try {
 
-        // Load Quotes
-        const quotesQuery = query(
-            collection(db, "quoteRequests"),
-            where("providerId", "==", providerId)
+        // Total Providers
+        const providersSnapshot = await getDocs(collection(db, "providers"));
+        document.getElementById("totalProviders").textContent =
+            providersSnapshot.size;
+
+        // Pending Providers
+        const pendingQuery = query(
+            collection(db, "providers"),
+            where("verified", "==", false)
         );
 
-        const quotesSnapshot = await getDocs(quotesQuery);
+        const pendingSnapshot = await getDocs(pendingQuery);
 
-        const totalQuotes = quotesSnapshot.size;
+        document.getElementById("pendingProviders").textContent =
+            pendingSnapshot.size;
 
-        // Load Reviews
-        const reviewsQuery = query(
-            collection(db, "reviews"),
-            where("providerId", "==", providerId)
-        );
+        // Total Reviews
+        const reviewsSnapshot = await getDocs(collection(db, "reviews"));
 
-        const reviewsSnapshot = await getDocs(reviewsQuery);
+        document.getElementById("totalCustomers").textContent =
+            reviewsSnapshot.size;
 
-        const totalReviews = reviewsSnapshot.size;
+        // Total Quote Requests
+        const quotesSnapshot = await getDocs(collection(db, "quotes"));
 
-        let totalRating = 0;
+        document.getElementById("totalQuotes").textContent =
+            quotesSnapshot.size;
 
-        reviewsSnapshot.forEach((doc) => {
-
-            totalRating += Number(doc.data().rating);
-
-        });
-
-        const averageRating =
-            totalReviews > 0
-                ? (totalRating / totalReviews).toFixed(1)
-                : 0;
-
-        // SkillScore
-        let skillScore = 50;
-
-        skillScore += totalReviews * 2;
-        skillScore += Number(averageRating) * 5;
-
-        if (skillScore > 100) {
-
-            skillScore = 100;
-
-        }
-
-        // Display
-
-        document.getElementById("totalRequests").innerHTML = totalQuotes;
-
-        document.getElementById("totalReviews").innerHTML = totalReviews;
-
-        document.getElementById("averageRating").innerHTML = averageRating;
-
-        document.getElementById("skillScore").innerHTML = skillScore;
-
-    }
-
-    catch (error) {
+    } catch (error) {
 
         console.error(error);
 
     }
 
-};
+}
+
+loadDashboard();
