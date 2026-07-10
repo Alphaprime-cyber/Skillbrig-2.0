@@ -336,17 +336,23 @@ nav a:hover{
 }
 
 .card{
-    background:rgba(255,255,255,.08);
-    border:1px solid rgba(255,215,0,.2);
-    border-radius:18px;
-    padding:25px;
-    transition:.3s;
-    backdrop-filter:blur(10px);
+
+background:white;
+
+border-radius:16px;
+
+padding:20px;
+
+box-shadow:0 5px 18px rgba(0,0,0,.08);
+
+transition:.3s;
+
 }
 
 .card:hover{
-    transform:translateY(-8px);
-    border-color:#FFD700;
+
+transform:translateY(-6px);
+
 }
 
 /* =========================
