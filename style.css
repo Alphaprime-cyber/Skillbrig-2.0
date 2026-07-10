@@ -1,4 +1,11 @@
-
+:root{
+    --primary:#0B6E4F;
+    --secondary:#FFD166;
+    --dark:#1E293B;
+    --light:#F8FAFC;
+    --danger:#E63946;
+    --success:#22C55E;
+}
 /* =========================
    SKILLBRIDGE V2
 ========================= */
