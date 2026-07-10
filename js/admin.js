@@ -20,7 +20,7 @@ window.loadAdminDashboard = async function () {
 
         const providers = await getDocs(collection(db, "providers"));
         const reviews = await getDocs(collection(db, "reviews"));
-        const quotes = await getDocs(collection(db, "quoteRequests"));
+        const quotes = await getDocs(collection(db, "quotes"));
         const users = await getDocs(collection(db, "users"));
 
         let pending = 0;
