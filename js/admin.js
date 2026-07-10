@@ -123,6 +123,62 @@ window.searchProviders = function(){
 }
 
 // ==============================
+// LOAD ADMIN PROVIDERS
+// ==============================
+
+window.loadAdminProviders = async function () {
+
+    const container = document.getElementById("providersTable");
+
+    if (!container) return;
+
+    const snapshot = await getDocs(collection(db, "providers"));
+
+    let html = "";
+
+    snapshot.forEach((providerDoc) => {
+
+        const provider = providerDoc.data();
+
+        html += `
+
+        <div class="provider-row">
+
+            <h3>${provider.businessName || provider.name}</h3>
+
+            <p><strong>Category:</strong> ${provider.category}</p>
+
+            <p><strong>Location:</strong> ${provider.state}, ${provider.location}</p>
+
+            <p><strong>Status:</strong>
+                ${provider.verified ? "✅ Verified" : "⏳ Pending"}
+            </p>
+
+            <button onclick="approveProvider('${providerDoc.id}')">
+                Approve
+            </button>
+
+            <button onclick="rejectProvider('${providerDoc.id}')">
+                Reject
+            </button>
+
+        </div>
+
+        `;
+
+    });
+
+    container.innerHTML = html || "<p>No providers found.</p>";
+
+}
+
+if (document.getElementById("providersTable")) {
+
+    loadAdminProviders();
+
+}
+
+// ==============================
 // AUTO LOAD
 // ==============================
 
