@@ -1,10 +1,21 @@
 :root{
-    --primary:#0B6E4F;
-    --secondary:#FFD166;
-    --dark:#1E293B;
-    --light:#F8FAFC;
-    --danger:#E63946;
-    --success:#22C55E;
+
+--primary:#2563eb;
+--secondary:#1e40af;
+--accent:#f59e0b;
+--success:#16a34a;
+--danger:#dc2626;
+
+--dark:#111827;
+--light:#f8fafc;
+--white:#ffffff;
+
+--text:#374151;
+
+--radius:14px;
+
+--shadow:0 10px 30px rgba(0,0,0,.08);
+
 }
 
 button{
