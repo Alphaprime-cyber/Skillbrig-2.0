@@ -1,43 +1,61 @@
-import { db } from "./firebase.js";
+import { db, auth } from "./firebase.js";
 
 import {
-
-collection,
-addDoc
-
+    collection,
+    addDoc
 } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
-window.bookProvider = async function(){
+window.bookProvider = async function () {
 
-const params = new URLSearchParams(window.location.search);
+    if (!auth.currentUser) {
 
-const providerId = params.get("id");
+        alert("Please log in before booking.");
 
-await addDoc(collection(db,"bookings"),{
+        return;
 
-providerId,
+    }
 
-customerName:
-document.getElementById("customerName").value,
+    const params = new URLSearchParams(window.location.search);
 
-customerPhone:
-document.getElementById("customerPhone").value,
+    const providerId = params.get("id");
 
-bookingDate:
-document.getElementById("bookingDate").value,
+    try {
 
-bookingTime:
-document.getElementById("bookingTime").value,
+        await addDoc(collection(db, "bookings"), {
 
-bookingDetails:
-document.getElementById("bookingDetails").value,
+            providerId,
 
-status:"Pending",
+            customerEmail: auth.currentUser.email,
 
-createdAt:new Date()
+            customerName:
+            document.getElementById("customerName").value,
 
-});
+            customerPhone:
+            document.getElementById("customerPhone").value,
 
-alert("✅ Booking submitted successfully.");
+            bookingDate:
+            document.getElementById("bookingDate").value,
 
-}
+            bookingTime:
+            document.getElementById("bookingTime").value,
+
+            bookingDetails:
+            document.getElementById("bookingDetails").value,
+
+            status: "Pending",
+
+            createdAt: new Date()
+
+        });
+
+        alert("✅ Booking submitted successfully.");
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(error.message);
+
+    }
+
+};
