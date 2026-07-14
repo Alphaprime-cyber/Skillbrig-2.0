@@ -1012,3 +1012,36 @@ background:#FFD700;
 color:#07131f;
 
 }
+
+.menu-icon{
+    display:none;
+    font-size:30px;
+    cursor:pointer;
+    color:#FFD700;
+}
+
+@media (max-width:768px){
+
+    .menu-icon{
+        display:block;
+    }
+
+    nav{
+        display:none;
+        position:absolute;
+        top:70px;
+        left:0;
+        width:100%;
+        background:#07131f;
+        flex-direction:column;
+        padding:20px;
+    }
+
+    nav.active{
+        display:flex;
+    }
+
+    nav a{
+        padding:12px 0;
+    }
+}
