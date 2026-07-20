@@ -368,6 +368,7 @@ box-shadow:0 5px 18px rgba(0,0,0,.08);
 
 transition:.3s;
 
+transition:0.3s ease;
 }
 
 .card:hover{
