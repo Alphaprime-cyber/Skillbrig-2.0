@@ -628,8 +628,6 @@ transform:translateY(-6px);
 
 .footer{
 
-.footer{
-
 background:var(--dark);
 
 color:white;
