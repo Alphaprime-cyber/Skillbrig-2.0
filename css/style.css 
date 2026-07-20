@@ -625,7 +625,7 @@ transform:translateY(-6px);
 
 .footer{
 
-background:var(--dark);
+background:#07131f;
 
 color:white;
 
