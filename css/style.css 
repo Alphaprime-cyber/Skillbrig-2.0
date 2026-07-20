@@ -142,7 +142,7 @@ body::after{
 
 /* Header */
 
-.header{
+<header class="header">
 
     display:flex;
 
@@ -331,7 +331,7 @@ nav a:hover{
 
 /* Header */
 
-.header{
+<header class="header">
     position:fixed;
     top:0;
     left:0;
