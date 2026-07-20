@@ -126,3 +126,103 @@ Find Professional
 </div>
 
 </section>
+
+<section class="emergency">
+
+<h2>🚨 Emergency Services</h2>
+
+<div class="grid">
+
+<div class="card">
+<h3>⚡ Emergency Electrician</h3>
+<p>Fast response for urgent electrical faults.</p>
+</div>
+
+<div class="card">
+<h3>🚰 Emergency Plumber</h3>
+<p>Fix leaks, burst pipes and drainage problems quickly.</p>
+</div>
+
+<div class="card">
+<h3>🚗 Auto Mechanic</h3>
+<p>Roadside repairs and vehicle breakdown assistance.</p>
+</div>
+
+<div class="card">
+<h3>🔑 Locksmith</h3>
+<p>Locked out? Find a trusted locksmith near you.</p>
+</div>
+
+</div>
+
+</section>
+
+<section id="categories" class="categories">
+
+<h2>Browse Categories</h2>
+
+<div class="category-grid">
+
+<div class="category-card">
+<span>⚡</span>
+<h3>Electricians</h3>
+</div>
+
+<div class="category-card">
+<span>🚰</span>
+<h3>Plumbers</h3>
+</div>
+
+<div class="category-card">
+<span>🏠</span>
+<h3>Carpenters</h3>
+</div>
+
+<div class="category-card">
+<span>🚗</span>
+<h3>Mechanics</h3>
+</div>
+
+<div class="category-card">
+<span>🎨</span>
+<h3>Painters</h3>
+</div>
+
+<div class="category-card">
+<span>💇</span>
+<h3>Barbers</h3>
+</div>
+
+<div class="category-card">
+<span>💄</span>
+<h3>Makeup Artists</h3>
+</div>
+
+<div class="category-card">
+<span>💻</span>
+<h3>Software Developers</h3>
+</div>
+
+<div class="category-card">
+<span>🧹</span>
+<h3>Cleaners</h3>
+</div>
+
+<div class="category-card">
+<span>📷</span>
+<h3>Photographers</h3>
+</div>
+
+<div class="category-card">
+<span>❄️</span>
+<h3>AC Technicians</h3>
+</div>
+
+<div class="category-card">
+<span>🧱</span>
+<h3>Masons</h3>
+</div>
+
+</div>
+
+</section>
