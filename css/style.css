@@ -424,3 +424,168 @@ button:hover {
         color: #FFD700;
     }
 }
+
+/* =========================
+   PROFESSIONAL HERO
+========================= */
+
+.hero {
+    min-height: 88vh;
+    padding: 150px 6% 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.hero-content {
+    width: 100%;
+    max-width: 1000px;
+    margin: auto;
+}
+
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    margin-bottom: 24px;
+    border: 1px solid rgba(255, 215, 0, .3);
+    border-radius: 50px;
+    background: rgba(255, 215, 0, .08);
+    color: #ffd700;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.hero h1 {
+    max-width: 900px;
+    margin: 0 auto 22px;
+    font-size: clamp(2.7rem, 7vw, 5rem);
+    line-height: 1.08;
+    font-weight: 800;
+}
+
+.hero h1 span {
+    color: #ffd700;
+}
+
+.hero p {
+    max-width: 720px;
+    margin: 0 auto 35px;
+    color: #d5dbe3;
+    font-size: 18px;
+    line-height: 1.7;
+}
+
+/* SEARCH BOX */
+
+.search-container {
+    width: 100%;
+    max-width: 900px;
+    margin: auto;
+    padding: 10px;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 10px;
+
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, .25);
+}
+
+.search-field {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 15px;
+    background: #f5f7fb;
+    border-radius: 10px;
+}
+
+.search-field i {
+    color: #2563eb;
+}
+
+.search-field input,
+.search-field select {
+    width: 100%;
+    margin: 0;
+    padding: 15px 5px;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: #374151;
+}
+
+.search-container > button {
+    padding: 0 25px;
+    border-radius: 10px;
+    background: #2563eb;
+    color: white;
+    white-space: nowrap;
+}
+
+.search-container > button:hover {
+    background: #1e40af;
+}
+
+/* TRUST ITEMS */
+
+.hero-trust {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 25px;
+    margin-top: 28px;
+}
+
+.hero-trust span {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: #cbd5e1;
+    font-size: 14px;
+}
+
+.hero-trust i {
+    color: #ffd700;
+}
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+
+    .hero {
+        min-height: auto;
+        padding: 125px 6% 65px;
+    }
+
+    .hero h1 {
+        font-size: clamp(2.4rem, 11vw, 3.5rem);
+    }
+
+    .hero p {
+        font-size: 16px;
+    }
+
+    .search-container {
+        grid-template-columns: 1fr;
+        padding: 12px;
+    }
+
+    .search-field {
+        min-height: 55px;
+    }
+
+    .search-container > button {
+        min-height: 55px;
+    }
+
+    .hero-trust {
+        flex-direction: column;
+        gap: 12px;
+    }
+}
