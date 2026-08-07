@@ -363,3 +363,64 @@ button:hover {
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 215, 0, 0.15);
 }
+
+/* =========================
+   MOBILE THREE-DOT MENU
+========================= */
+
+.menu-icon {
+    display: none;
+    font-size: 32px;
+    color: #FFD700;
+    cursor: pointer;
+    user-select: none;
+    line-height: 1;
+}
+
+@media (max-width: 768px) {
+
+    .header {
+        padding: 16px 6%;
+    }
+
+    .menu-icon {
+        display: block;
+    }
+
+    nav {
+        display: none;
+        position: absolute;
+        top: 100%;
+        right: 5%;
+        left: auto;
+        width: 220px;
+
+        background: #07131f;
+
+        border: 1px solid rgba(255, 215, 0, .25);
+        border-radius: 14px;
+
+        padding: 10px;
+
+        flex-direction: column;
+        gap: 0;
+
+        box-shadow: 0 15px 35px rgba(0,0,0,.35);
+    }
+
+    nav.active {
+        display: flex;
+    }
+
+    nav a {
+        width: 100%;
+        padding: 14px 16px;
+        border-radius: 10px;
+        color: white;
+    }
+
+    nav a:hover {
+        background: rgba(255,215,0,.12);
+        color: #FFD700;
+    }
+}
