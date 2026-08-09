@@ -22,22 +22,71 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 
 <header class="header">
 
-  <div class="logo">
-    <i class="fas fa-bridge"></i>
-    <span>SkillBridge</span>
-  </div>
+    <div class="logo">
+        <span class="logo-icon">⚙</span>
+        <span>Skill<span>Bridge</span></span>
+    </div>
 
-  <div class="menu-icon" onclick="toggleMenu()">
-    ⋮
-  </div>
+    <nav class="desktop-nav">
+        <a href="index.html" class="active">Home</a>
+        <a href="#categories">Categories</a>
+        <a href="provider.html">Providers</a>
+        <a href="#about">About Us</a>
+        <a href="contact.html">Contact Us</a>
+    </nav>
 
-  <nav id="nav-menu">
-    <a href="index.html">Home</a>
-    <a href="#categories">Categories</a>
-    <a href="provider.html">Providers</a>
-    <a href="#why-us">About</a>
-    <a href="contact.html">Contact</a>
-  </nav>
+    <div class="header-actions">
+        <a href="provider.html" class="provider-btn">
+            <i class="fas fa-user-plus"></i>
+            Become a Provider
+        </a>
+
+        <a href="admin-login.html" class="login-btn">
+            <i class="fas fa-user"></i>
+            Login
+        </a>
+
+        <button class="menu-button" onclick="toggleMenu()" aria-label="Open menu">
+            <i class="fas fa-ellipsis-v"></i>
+        </button>
+    </div>
+
+    <div class="mobile-menu" id="nav-menu">
+
+        <a href="index.html">
+            <i class="fas fa-home"></i>
+            Home
+        </a>
+
+        <a href="#categories">
+            <i class="fas fa-th-large"></i>
+            Categories
+        </a>
+
+        <a href="provider.html">
+            <i class="fas fa-user-tie"></i>
+            Providers
+        </a>
+
+        <a href="#about">
+            <i class="fas fa-info-circle"></i>
+            About Us
+        </a>
+
+        <a href="contact.html">
+            <i class="fas fa-phone"></i>
+            Contact Us
+        </a>
+
+        <a href="provider.html" class="mobile-provider">
+            Become a Provider
+        </a>
+
+        <a href="admin-login.html" class="mobile-login">
+            Login
+        </a>
+
+    </div>
 
 </header>
 
