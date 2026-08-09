@@ -718,3 +718,25 @@
 
             <p>
                 We prioritize
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const menuBtn = document.getElementById("menuBtn");
+    const closeMenu = document.getElementById("closeMenu");
+    const mobileMenu = document.getElementById("mobileMenu");
+
+    if (menuBtn && mobileMenu) {
+        menuBtn.addEventListener("click", function () {
+            mobileMenu.classList.add("open");
+        });
+    }
+
+    if (closeMenu && mobileMenu) {
+        closeMenu.addEventListener("click", function () {
+            mobileMenu.classList.remove("open");
+        });
+    }
+
+});
+</script>
