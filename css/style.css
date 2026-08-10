@@ -1292,3 +1292,261 @@ body {
     }
 
 }
+
+/* =========================================
+   HERO — CLEAN PROFESSIONAL DESIGN
+========================================= */
+
+.hero {
+    position: relative;
+    min-height: 680px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 110px 6% 80px;
+    text-align: center;
+    overflow: hidden;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 1050px;
+    margin: 0 auto;
+}
+
+.hero-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 16px;
+    margin-bottom: 24px;
+    border: 1px solid rgba(255, 215, 0, .25);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .06);
+    color: #FFD700;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.hero h1 {
+    max-width: 900px;
+    margin: 0 auto 22px;
+    color: #ffffff;
+    font-size: clamp(42px, 6vw, 72px);
+    line-height: 1.08;
+    letter-spacing: -2px;
+}
+
+.hero h1 span {
+    color: #FFD700;
+}
+
+.hero p {
+    max-width: 720px;
+    margin: 0 auto 38px;
+    color: #cbd5e1;
+    font-size: 17px;
+    line-height: 1.8;
+}
+
+
+/* SEARCH */
+
+.search-box {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 10px;
+
+    display: flex;
+    align-items: stretch;
+
+    background: #ffffff;
+    border-radius: 18px;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, .25);
+
+    text-align: left;
+}
+
+.search-field {
+    flex: 1;
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 12px 18px;
+
+    border-right: 1px solid #e5e7eb;
+}
+
+.search-field > i {
+    color: #2563eb;
+    font-size: 18px;
+}
+
+.search-field > div {
+    width: 100%;
+    min-width: 0;
+}
+
+.search-field label {
+    display: block;
+    margin-bottom: 3px;
+
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+
+.search-field input,
+.search-field select {
+    width: 100%;
+    margin: 0;
+    padding: 3px 0;
+
+    border: none;
+    outline: none;
+    box-shadow: none;
+
+    background: transparent;
+
+    color: #111827;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+.search-field input::placeholder {
+    color: #94a3b8;
+}
+
+.search-btn {
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+
+    min-width: 145px;
+    padding: 0 22px;
+
+    border: none;
+    border-radius: 12px;
+
+    background: #FFD700;
+    color: #07131f;
+
+    font-weight: 700;
+    font-size: 14px;
+
+    cursor: pointer;
+
+    transition: .25s ease;
+}
+
+.search-btn:hover {
+    background: #f5c400;
+    transform: translateY(-1px);
+}
+
+
+/* TRUST ITEMS */
+
+.hero-trust {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 25px;
+
+    margin-top: 28px;
+}
+
+.hero-trust div {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    color: #cbd5e1;
+    font-size: 13px;
+}
+
+.hero-trust i {
+    color: #FFD700;
+}
+
+
+/* =========================================
+   HERO MOBILE
+========================================= */
+
+@media (max-width: 768px) {
+
+    .hero {
+        min-height: auto;
+        padding: 70px 18px 55px;
+    }
+
+    .hero-label {
+        font-size: 11px;
+        margin-bottom: 20px;
+    }
+
+    .hero h1 {
+        font-size: clamp(38px, 11vw, 54px);
+        letter-spacing: -1.5px;
+    }
+
+    .hero p {
+        font-size: 15px;
+        line-height: 1.7;
+        margin-bottom: 28px;
+    }
+
+    .search-box {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+
+        padding: 8px;
+        border-radius: 16px;
+    }
+
+    .search-field {
+        width: 100%;
+        padding: 14px 12px;
+
+        border-right: none;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    .search-field:last-of-type {
+        border-bottom: none;
+    }
+
+    .search-btn {
+        width: 100%;
+        min-height: 52px;
+        margin-top: 8px;
+    }
+
+    .hero-trust {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px 8px;
+    }
+
+    .hero-trust div {
+        justify-content: center;
+        font-size: 12px;
+    }
+}
