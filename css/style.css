@@ -1654,3 +1654,147 @@ body {
         font-size: 13px;
     }
 }
+
+/* =========================================
+   FEATURED PROFESSIONALS — CLEAN CARDS
+========================================= */
+
+.providers-section {
+    background: #ffffff;
+}
+
+.providers-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.provider-card {
+    min-width: 0;
+    overflow: hidden;
+
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+
+    box-shadow: 0 6px 20px rgba(15, 23, 42, .06);
+
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.provider-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 30px rgba(15, 23, 42, .10);
+}
+
+.provider-card img {
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+    display: block;
+}
+
+.provider-card-content {
+    padding: 16px;
+}
+
+.provider-card h3 {
+    margin: 0 0 5px;
+    color: #0f172a;
+    font-size: 16px;
+}
+
+.provider-card p {
+    margin: 4px 0;
+    color: #64748b;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.provider-card .verified {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+
+    margin-bottom: 8px;
+
+    color: #0f766e;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.provider-card .rating {
+    color: #d99b00;
+    font-weight: 600;
+}
+
+.provider-card .provider-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.provider-card .provider-actions a,
+.provider-card .provider-actions button {
+    flex: 1;
+    min-height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
+    border: none;
+    border-radius: 8px;
+
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+/* TABLET */
+
+@media (max-width: 1000px) {
+
+    .providers-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+
+    .providers-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .provider-card {
+        display: grid;
+        grid-template-columns: 105px 1fr;
+    }
+
+    .provider-card img {
+        width: 105px;
+        height: 100%;
+        min-height: 150px;
+    }
+
+    .provider-card-content {
+        padding: 14px;
+    }
+
+    .provider-card h3 {
+        font-size: 15px;
+    }
+
+    .provider-card p {
+        font-size: 12px;
+    }
+}
