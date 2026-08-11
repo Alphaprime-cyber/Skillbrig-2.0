@@ -1,366 +1,1005 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-<title>Become a Service Provider | SkillBridge</title>
+    <title>Become a Provider | SkillBridge</title>
 
-<link rel="stylesheet" href="css/style.css">
+    <meta
+        name="description"
+        content="Join SkillBridge and connect your professional services with customers across Nigeria."
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <link rel="stylesheet" href="css/style.css">
 
 </head>
 
+
 <body>
 
-<header class="header">
 
-<div class="logo">
+<!-- ==================================================
+     HEADER
+================================================== -->
 
-<i class="fas fa-bridge"></i>
+<header class="site-header">
 
-<span>SkillBridge</span>
+    <a href="index.html" class="logo">
 
-</div>
+        <span class="logo-icon">
+            <i class="fas fa-link"></i>
+        </span>
 
-<nav>
+        <span>
+            Skill<span>Bridge</span>
+        </span>
 
-<a href="index.html">Home</a>
+    </a>
 
-<a href="contact.html">Contact</a>
 
-<a href="provider.html">Become a Provider</a>
+    <nav class="desktop-nav">
 
-</nav>
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="categories.html">
+            Categories
+        </a>
+
+        <a href="provider.html" class="active">
+            Providers
+        </a>
+
+        <a href="index.html#why">
+            About
+        </a>
+
+        <a href="contact.html">
+            Contact
+        </a>
+
+    </nav>
+
+
+    <div class="header-actions">
+
+        <a
+            href="#registration"
+            class="provider-btn"
+        >
+            Become a Provider
+        </a>
+
+        <a
+            href="#"
+            class="login-btn"
+        >
+            Login
+        </a>
+
+    </div>
+
+
+    <button
+        class="menu-btn"
+        id="menuBtn"
+        aria-label="Open menu"
+    >
+        <i class="fas fa-bars"></i>
+    </button>
 
 </header>
 
+
+<!-- ==================================================
+     MOBILE MENU
+================================================== -->
+
+<div
+    class="mobile-menu"
+    id="mobileMenu"
+>
+
+    <div class="mobile-menu-header">
+
+        <strong>SkillBridge</strong>
+
+        <button
+            id="closeMenu"
+            aria-label="Close menu"
+        >
+            <i class="fas fa-times"></i>
+        </button>
+
+    </div>
+
+
+    <a href="index.html">
+        <i class="fas fa-house"></i>
+        Home
+    </a>
+
+    <a href="categories.html">
+        <i class="fas fa-layer-group"></i>
+        Categories
+    </a>
+
+    <a href="provider.html">
+        <i class="fas fa-user-tie"></i>
+        Providers
+    </a>
+
+    <a href="index.html#why">
+        <i class="fas fa-circle-info"></i>
+        About
+    </a>
+
+    <a href="contact.html">
+        <i class="fas fa-envelope"></i>
+        Contact
+    </a>
+
+    <a href="#">
+        <i class="fas fa-right-to-bracket"></i>
+        Login
+    </a>
+
+</div>
+
+
+<!-- ==================================================
+     HERO
+================================================== -->
+
 <section class="hero">
 
-<div class="hero-content">
+    <div class="hero-overlay"></div>
 
-<h1>Become a Verified SkillBridge Professional</h1>
+    <div class="hero-content">
 
-<p>
+        <div class="hero-label">
 
-Reach thousands of customers across Nigeria, grow your business, receive bookings, quotes and build your reputation.
+            <i class="fas fa-briefcase"></i>
 
-</p>
+            GROW YOUR BUSINESS WITH SKILLBRIDGE
 
-<button onclick="document.querySelector('.post-service').scrollIntoView({behavior:'smooth'})">
+        </div>
 
-Register Now
 
-</button>
+        <h1>
 
-</div>
+            Become a Verified
+            <span>SkillBridge Professional</span>
+
+        </h1>
+
+
+        <p>
+
+            Connect with customers across Nigeria,
+            showcase your skills, receive enquiries
+            and grow your professional reputation.
+
+        </p>
+
+
+        <a
+            href="#registration"
+            class="search-btn"
+            style="display:inline-flex;text-decoration:none;"
+        >
+
+            <i class="fas fa-user-plus"></i>
+
+            Register as a Provider
+
+        </a>
+
+    </div>
 
 </section>
 
-</h2>
 
-<p style="text-align:center;margin-bottom:30px;">
+<!-- ==================================================
+     WHY JOIN
+================================================== -->
 
-Complete the form below to join SkillBridge.
+<section class="section">
 
-</p>
+    <div class="section-heading centered">
+
+        <div>
+
+            <div class="section-label">
+                WHY JOIN SKILLBRIDGE
+            </div>
+
+            <h2>
+                Grow Your Professional Business
+            </h2>
+
+            <p>
+                Put your skills in front of people who
+                are actively looking for trusted professionals.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="why-grid">
+
+
+        <div class="why-card">
+
+            <div class="why-icon">
+                <i class="fas fa-users"></i>
+            </div>
+
+            <h3>
+                Reach More Customers
+            </h3>
+
+            <p>
+                Get discovered by customers searching
+                for your services.
+            </p>
+
+        </div>
+
+
+        <div class="why-card">
+
+            <div class="why-icon">
+                <i class="fas fa-star"></i>
+            </div>
+
+            <h3>
+                Build Your Reputation
+            </h3>
+
+            <p>
+                Showcase your experience and build trust
+                through ratings and reviews.
+            </p>
+
+        </div>
+
+
+        <div class="why-card">
+
+            <div class="why-icon">
+                <i class="fas fa-calendar-check"></i>
+            </div>
+
+            <h3>
+                Get More Opportunities
+            </h3>
+
+            <p>
+                Give customers an easy way to discover
+                and contact your business.
+            </p>
+
+        </div>
+
+
+        <div class="why-card">
+
+            <div class="why-icon">
+                <i class="fas fa-shield-halved"></i>
+            </div>
+
+            <h3>
+                Earn Customer Trust
+            </h3>
+
+            <p>
+                Verified providers can build stronger
+                credibility on SkillBridge.
+            </p>
+
+        </div>
+
+    </div>
 
 </section>
 
-<section class="post-service">
 
-<h2>Provider Registration</h2>
+<!-- ==================================================
+     REGISTRATION
+================================================== -->
 
-<input id="providerName" type="text" placeholder="Full Name">
+<section
+    class="section post-service"
+    id="registration"
+>
 
-<input id="businessName" type="text" placeholder="Business Name (Optional)">
+    <div class="section-heading centered">
 
-<select id="providerCategory">
+        <div>
 
-<option value="">Select Category</option>
+            <div class="section-label">
+                JOIN SKILLBRIDGE
+            </div>
 
-<optgroup label="Home Services">
-<option>Plumbing</option>
-<option>Electrical</option>
-<option>Carpentry</option>
-<option>Painting</option>
-<option>Masonry</option>
-<option>Roofing</option>
-<option>Tiling</option>
-<option>POP Ceiling</option>
-<option>Interior Decoration</option>
-<option>Cleaning Services</option>
-<option>Laundry & Dry Cleaning</option>
-<option>Pest Control</option>
-<option>Gardening & Landscaping</option>
-<option>Borehole Drilling</option>
-<option>Water Treatment</option>
-</optgroup>
-
-<optgroup label="Automobile">
-<option>Auto Mechanic</option>
-<option>Car Wash</option>
-<option>Car Detailing</option>
-<option>Tyre Repair</option>
-<option>Panel Beating</option>
-<option>Auto Electrical</option>
-</optgroup>
-
-<optgroup label="Fashion & Beauty">
-<option>Tailoring</option>
-<option>Fashion Design</option>
-<option>Hair Dressing</option>
-<option>Barbing</option>
-<option>Makeup Artist</option>
-<option>Nail Technician</option>
-<option>Spa & Massage</option>
-<option>Wig Making</option>
-</optgroup>
-
-<optgroup label="Technology">
-<option>Phone Repair</option>
-<option>Computer Repair</option>
-<option>Laptop Repair</option>
-<option>Web Development</option>
-<option>Mobile App Development</option>
-<option>Graphic Design</option>
-<option>UI/UX Design</option>
-<option>Cyber Security</option>
-<option>Digital Marketing</option>
-<option>Software Development</option>
-</optgroup>
-
-<optgroup label="Health">
-
-<option>Doctor</option>
-
-<option>Nurse</option>
-
-<option>Pharmacist</option>
-
-<option>Physiotherapist</option>
-
-<option>Caregiver</option>
-
-</optgroup>
-
-<optgroup label="Education">
-
-<option>Private Tutor</option>
-
-<option>Music Teacher</option>
-
-<option>Language Teacher</option>
-
-</optgroup>
-
-<optgroup label="Business">
-
-<option>Accountant</option>
-
-<option>Lawyer</option>
-
-<option>Business Consultant</option>
-
-<option>Real Estate Agent</option>
-
-</optgroup>
-
-<optgroup label="Events">
-<option>Photography</option>
-<option>Videography</option>
-<option>DJ Services</option>
-<option>MC Services</option>
-<option>Event Planning</option>
-<option>Catering</option>
-<option>Cake Baking</option>
-</optgroup>
-
-</select>
-<select id="providerState">
-
-<option value="">Select State</option>
-
-<option>Abia</option>
-<option>Adamawa</option>
-<option>Akwa Ibom</option>
-<option>Anambra</option>
-<option>Bauchi</option>
-<option>Bayelsa</option>
-<option>Benue</option>
-<option>Borno</option>
-<option>Cross River</option>
-<option>Delta</option>
-<option>Ebonyi</option>
-<option>Edo</option>
-<option>Ekiti</option>
-<option>Enugu</option>
-<option>FCT Abuja</option>
-<option>Gombe</option>
-<option>Imo</option>
-<option>Jigawa</option>
-<option>Kaduna</option>
-<option>Kano</option>
-<option>Katsina</option>
-<option>Kebbi</option>
-<option>Kogi</option>
-<option>Kwara</option>
-<option>Lagos</option>
-<option>Nasarawa</option>
-<option>Niger</option>
-<option>Ogun</option>
-<option>Ondo</option>
-<option>Osun</option>
-<option>Oyo</option>
-<option>Plateau</option>
-<option>Rivers</option>
-<option>Sokoto</option>
-<option>Taraba</option>
-<option>Yobe</option>
-<option>Zamfara</option>
+            <h2>
+                Provider Registration
+            </h2>
 
-</select>
+            <p>
+                Complete your information below.
+                Your application will be reviewed before
+                your profile becomes publicly visible.
+            </p>
 
-<input id="providerLocation" type="text" placeholder="City / LGA">
+        </div>
 
-<input id="providerPhone" type="text" placeholder="Phone Number">
+    </div>
 
-<input id="providerWhatsApp" type="text" placeholder="WhatsApp Number">
 
-<input id="providerEmail" type="email" placeholder="Email Address">
+    <div
+        class="card"
+        style="max-width:900px;margin:0 auto;padding:30px;"
+    >
 
-<input id="providerExperience" type="number" placeholder="Years of Experience">
 
-<input id="providerBusinessHours" type="text" placeholder="Business Hours (e.g. Mon–Sat 8AM–6PM)">
+        <!-- ==========================================
+             BASIC INFORMATION
+        =========================================== -->
 
-<textarea
-id="providerDescription"
-rows="5"
-placeholder="Describe your services and experience"></textarea>
+        <h3>
+            <i class="fas fa-user"></i>
+            Basic Information
+        </h3>
 
-<h3>Business Images</h3>
 
-<label>Profile Photo</label>
-<input type="file" id="profilePhoto" accept="image/*">
+        <input
+            id="providerName"
+            type="text"
+            placeholder="Full Name *"
+            required
+        >
 
-<label>Business Logo</label>
-<input type="file" id="businessLogo" accept="image/*">
 
-<label>Cover Photo</label>
-<input type="file" id="coverPhoto" accept="image/*">
+        <input
+            id="businessName"
+            type="text"
+            placeholder="Business Name (Optional)"
+        >
 
-<label>Portfolio Images</label>
-<input type="file" id="portfolioImages" accept="image/*" multiple>
-<button onclick="registerProvider()">
 
-<h3>Portfolio Images</h3>
+        <!-- ==========================================
+             SERVICE
+        =========================================== -->
 
-<input
-type="file"
-id="portfolioImages"
-multiple
-accept="image/*">
+        <h3 style="margin-top:30px;">
+            <i class="fas fa-briefcase"></i>
+            Your Service
+        </h3>
 
-<p>You can upload up to 10 photos of your previous work.</p>
 
-<hr>
+        <select
+            id="providerCategory"
+            required
+        >
 
-<h3>Verification Documents</h3>
+            <option value="">
+                Select Category *
+            </option>
 
-<label>Profile Photo</label>
-<input type="file" id="profilePhoto" accept="image/*">
 
-<label>National ID (NIN, Driver's License or Voter's Card)</label>
-<input type="file" id="governmentId" accept="image/*,.pdf">
+            <optgroup label="Home Services">
 
-<label>Business Registration (Optional)</label>
-<input type="file" id="businessCertificate" accept="image/*,.pdf">
+                <option>Plumbing</option>
+                <option>Electrical</option>
+                <option>Carpentry</option>
+                <option>Painting</option>
+                <option>Masonry</option>
+                <option>Roofing</option>
+                <option>Tiling</option>
+                <option>POP Ceiling</option>
+                <option>Interior Decoration</option>
+                <option>Cleaning Services</option>
+                <option>Laundry & Dry Cleaning</option>
+                <option>Pest Control</option>
+                <option>Gardening & Landscaping</option>
+                <option>Borehole Drilling</option>
+                <option>Water Treatment</option>
 
-<label>Proof of Address</label>
-<input type="file" id="proofOfAddress" accept="image/*,.pdf">
+            </optgroup>
 
-<label>
 
-<input type="checkbox" id="agreeTerms">
+            <optgroup label="Automobile">
 
-I confirm that the information provided is correct and I agree to SkillBridge's Terms & Conditions.
+                <option>Auto Mechanic</option>
+                <option>Car Wash</option>
+                <option>Car Detailing</option>
+                <option>Tyre Repair</option>
+                <option>Panel Beating</option>
+                <option>Auto Electrical</option>
 
-</label>
+            </optgroup>
 
-Register Now
-</button>
 
-<section class="why-us">
+            <optgroup label="Fashion & Beauty">
 
-<h2>Why Join SkillBridge?</h2>
+                <option>Tailoring</option>
+                <option>Fashion Design</option>
+                <option>Hair Dressing</option>
+                <option>Barbing</option>
+                <option>Makeup Artist</option>
+                <option>Nail Technician</option>
+                <option>Spa & Massage</option>
+                <option>Wig Making</option>
 
-<div class="why-grid">
+            </optgroup>
 
-<div class="why-card">
 
-<i class="fas fa-users"></i>
+            <optgroup label="Technology">
 
-<h3>More Customers</h3>
+                <option>Phone Repair</option>
+                <option>Computer Repair</option>
+                <option>Laptop Repair</option>
+                <option>Web Development</option>
+                <option>Mobile App Development</option>
+                <option>Graphic Design</option>
+                <option>UI/UX Design</option>
+                <option>Cyber Security</option>
+                <option>Digital Marketing</option>
+                <option>Software Development</option>
 
-<p>Get discovered by people looking for your services.</p>
+            </optgroup>
 
-</div>
 
-<div class="why-card">
+            <optgroup label="Health">
 
-<i class="fas fa-star"></i>
+                <option>Doctor</option>
+                <option>Nurse</option>
+                <option>Pharmacist</option>
+                <option>Physiotherapist</option>
+                <option>Caregiver</option>
 
-<h3>Build Your Reputation</h3>
+            </optgroup>
 
-<p>Earn reviews and increase your visibility.</p>
 
-</div>
+            <optgroup label="Education">
 
-<div class="why-card">
+                <option>Private Tutor</option>
+                <option>Music Teacher</option>
+                <option>Language Teacher</option>
 
-<i class="fas fa-calendar-check"></i>
+            </optgroup>
 
-<h3>Receive Bookings</h3>
 
-<p>Manage quote requests and appointments in one place.</p>
+            <optgroup label="Business">
 
-</div>
+                <option>Accountant</option>
+                <option>Lawyer</option>
+                <option>Business Consultant</option>
+                <option>Real Estate Agent</option>
 
-<div class="why-card">
+            </optgroup>
 
-<i class="fas fa-shield-alt"></i>
 
-<h3>Verified Badge</h3>
+            <optgroup label="Events">
 
-<p>Approved providers earn customer trust.</p>
+                <option>Photography</option>
+                <option>Videography</option>
+                <option>DJ Services</option>
+                <option>MC Services</option>
+                <option>Event Planning</option>
+                <option>Catering</option>
+                <option>Cake Baking</option>
 
-</div>
+            </optgroup>
 
-</div>
+        </select>
+
+
+        <!-- ==========================================
+             LOCATION
+        =========================================== -->
+
+        <h3 style="margin-top:30px;">
+            <i class="fas fa-location-dot"></i>
+            Location
+        </h3>
+
+
+        <select
+            id="providerState"
+            required
+        >
+
+            <option value="">
+                Select State *
+            </option>
+
+            <option>Abia</option>
+            <option>Adamawa</option>
+            <option>Akwa Ibom</option>
+            <option>Anambra</option>
+            <option>Bauchi</option>
+            <option>Bayelsa</option>
+            <option>Benue</option>
+            <option>Borno</option>
+            <option>Cross River</option>
+            <option>Delta</option>
+            <option>Ebonyi</option>
+            <option>Edo</option>
+            <option>Ekiti</option>
+            <option>Enugu</option>
+            <option>FCT Abuja</option>
+            <option>Gombe</option>
+            <option>Imo</option>
+            <option>Jigawa</option>
+            <option>Kaduna</option>
+            <option>Kano</option>
+            <option>Katsina</option>
+            <option>Kebbi</option>
+            <option>Kogi</option>
+            <option>Kwara</option>
+            <option>Lagos</option>
+            <option>Nasarawa</option>
+            <option>Niger</option>
+            <option>Ogun</option>
+            <option>Ondo</option>
+            <option>Osun</option>
+            <option>Oyo</option>
+            <option>Plateau</option>
+            <option>Rivers</option>
+            <option>Sokoto</option>
+            <option>Taraba</option>
+            <option>Yobe</option>
+            <option>Zamfara</option>
+
+        </select>
+
+
+        <input
+            id="providerLocation"
+            type="text"
+            placeholder="City / LGA *"
+            required
+        >
+
+
+        <!-- ==========================================
+             CONTACT
+        =========================================== -->
+
+        <h3 style="margin-top:30px;">
+            <i class="fas fa-phone"></i>
+            Contact Information
+        </h3>
+
+
+        <input
+            id="providerPhone"
+            type="tel"
+            placeholder="Phone Number *"
+            required
+        >
+
+
+        <input
+            id="providerWhatsApp"
+            type="tel"
+            placeholder="WhatsApp Number"
+        >
+
+
+        <input
+            id="providerEmail"
+            type="email"
+            placeholder="Email Address *"
+            required
+        >
+
+
+        <!-- ==========================================
+             EXPERIENCE
+        =========================================== -->
+
+        <h3 style="margin-top:30px;">
+            <i class="fas fa-award"></i>
+            Professional Details
+        </h3>
+
+
+        <input
+            id="providerExperience"
+            type="number"
+            min="0"
+            placeholder="Years of Experience"
+        >
+
+
+        <input
+            id="providerBusinessHours"
+            type="text"
+            placeholder="Business Hours (e.g. Mon–Sat 8AM–6PM)"
+        >
+
+
+        <textarea
+            id="providerDescription"
+            rows="6"
+            placeholder="Describe your services, experience and what makes your business different..."
+        ></textarea>
+
+
+        <!-- ==========================================
+             PHOTOS
+        =========================================== -->
+
+        <h3 style="margin-top:30px;">
+            <i class="fas fa-images"></i>
+            Business Images
+        </h3>
+
+
+        <label>
+            Profile Photo
+        </label>
+
+        <input
+            type="file"
+            id="profilePhoto"
+            accept="image/*"
+        >
+
+
+        <label>
+            Business Logo
+        </label>
+
+        <input
+            type="file"
+            id="businessLogo"
+            accept="image/*"
+        >
+
+
+        <label>
+            Cover Photo
+        </label>
+
+        <input
+            type="file"
+            id="coverPhoto"
+            accept="image/*"
+        >
+
+
+        <label>
+            Portfolio Images
+        </label>
+
+        <input
+            type="file"
+            id="portfolioImages"
+            accept="image/*"
+            multiple
+        >
+
+
+        <p>
+            Upload photos that showcase your work.
+        </p>
+
+
+        <!-- ==========================================
+             VERIFICATION
+        =========================================== -->
+
+        <h3 style="margin-top:30px;">
+            <i class="fas fa-shield-halved"></i>
+            Verification Documents
+        </h3>
+
+
+        <label>
+            Government ID
+        </label>
+
+        <input
+            type="file"
+            id="governmentId"
+            accept="image/*,.pdf"
+        >
+
+
+        <label>
+            Business Registration
+            <small>(Optional)</small>
+        </label>
+
+        <input
+            type="file"
+            id="businessCertificate"
+            accept="image/*,.pdf"
+        >
+
+
+        <label>
+            Proof of Address
+        </label>
+
+        <input
+            type="file"
+            id="proofOfAddress"
+            accept="image/*,.pdf"
+        >
+
+
+        <!-- ==========================================
+             TERMS
+        =========================================== -->
+
+        <label
+            style="
+                display:flex;
+                gap:10px;
+                align-items:flex-start;
+                margin-top:25px;
+            "
+        >
+
+            <input
+                type="checkbox"
+                id="agreeTerms"
+                style="width:auto;"
+            >
+
+            <span>
+
+                I confirm that the information provided is
+                correct and I agree to SkillBridge's
+                Terms & Conditions.
+
+            </span>
+
+        </label>
+
+
+        <!-- ==========================================
+             SUBMIT
+        =========================================== -->
+
+        <button
+            type="button"
+            class="search-btn"
+            onclick="registerProvider()"
+            style="
+                width:100%;
+                margin-top:25px;
+                justify-content:center;
+            "
+        >
+
+            <i class="fas fa-paper-plane"></i>
+
+            Submit Provider Application
+
+        </button>
+
+
+        <p
+            style="
+                text-align:center;
+                margin-top:15px;
+                font-size:14px;
+            "
+        >
+
+            Your application will be reviewed before
+            your profile is publicly listed.
+
+        </p>
+
+    </div>
 
 </section>
 
-<div class="card" style="max-width:900px;margin:auto;">
 
-<!-- ALL YOUR INPUTS GO HERE -->
+<!-- ==================================================
+     FOOTER
+================================================== -->
 
-</div>
+<footer class="footer">
 
-</section>
+    <div class="footer-container">
 
-<footer>
 
-<p>
+        <div class="footer-brand">
 
-© 2026 SkillBridge. All Rights Reserved.
+            <a href="index.html" class="logo">
 
-</p>
+                <span class="logo-icon">
+                    <i class="fas fa-link"></i>
+                </span>
+
+                <span>
+                    Skill<span>Bridge</span>
+                </span>
+
+            </a>
+
+
+            <p>
+                Connecting customers with trusted and
+                verified professionals across Nigeria.
+            </p>
+
+        </div>
+
+
+        <div class="footer-column">
+
+            <h3>
+                Quick Links
+            </h3>
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="categories.html">
+                Categories
+            </a>
+
+            <a href="provider.html">
+                Become a Provider
+            </a>
+
+            <a href="contact.html">
+                Contact
+            </a>
+
+        </div>
+
+
+        <div class="footer-column">
+
+            <h3>
+                Support
+            </h3>
+
+            <a href="#">
+                Privacy Policy
+            </a>
+
+            <a href="#">
+                Terms & Conditions
+            </a>
+
+            <a href="#">
+                Help Centre
+            </a>
+
+            <a href="#">
+                FAQs
+            </a>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+        <span>
+            © 2026 SkillBridge. All Rights Reserved.
+        </span>
+
+        <span>
+            Built for Nigeria 🇳🇬
+        </span>
+
+    </div>
 
 </footer>
 
-<script type="module" src="js/firebase.js"></script>
-<script type="module" src="js/providers.js"></script>
+
+<!-- ==================================================
+     MOBILE MENU SCRIPT
+================================================== -->
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const menuBtn =
+            document.getElementById("menuBtn");
+
+        const closeMenu =
+            document.getElementById("closeMenu");
+
+        const mobileMenu =
+            document.getElementById("mobileMenu");
+
+
+        if (menuBtn && mobileMenu) {
+
+            menuBtn.addEventListener(
+                "click",
+                function () {
+
+                    mobileMenu.classList.add("open");
+
+                }
+            );
+
+        }
+
+
+        if (closeMenu && mobileMenu) {
+
+            closeMenu.addEventListener(
+                "click",
+                function () {
+
+                    mobileMenu.classList.remove("open");
+
+                }
+            );
+
+        }
+
+    }
+);
+
+</script>
+
+
+<!-- ==================================================
+     FIREBASE / PROVIDER JAVASCRIPT
+================================================== -->
+
+<script
+    type="module"
+    src="js/firebase.js"
+></script>
+
+<script
+    type="module"
+    src="js/providers.js"
+></script>
+
 
 </body>
 
