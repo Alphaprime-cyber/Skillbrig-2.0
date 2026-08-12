@@ -2198,3 +2198,87 @@ body {
         margin-bottom: 14px;
     }
 }
+
+/* =========================================
+   PROVIDER REGISTRATION FORM
+========================================= */
+
+.post-service {
+    padding: 70px 20px;
+    background: #f8fafc;
+}
+
+.post-service .card {
+    background: #ffffff;
+    border-radius: 18px;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.06);
+}
+
+.post-service input,
+.post-service select,
+.post-service textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    border: 1px solid #dbe2ea;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 14px;
+    background: #fff;
+}
+
+.post-service input:focus,
+.post-service select:focus,
+.post-service textarea:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.post-service textarea {
+    resize: vertical;
+    min-height: 130px;
+}
+
+.post-service h3 {
+    margin: 28px 0 12px;
+}
+
+.post-service label {
+    display: block;
+    margin: 12px 0 7px;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.post-service input[type="file"] {
+    padding: 10px;
+    background: #f8fafc;
+}
+
+.post-service input[type="checkbox"] {
+    width: auto;
+    margin-right: 8px;
+}
+
+@media (max-width: 600px) {
+
+    .post-service {
+        padding: 45px 15px;
+    }
+
+    .post-service .card {
+        padding: 20px !important;
+        border-radius: 14px;
+    }
+
+    .post-service h2 {
+        font-size: 26px;
+    }
+
+    .post-service h3 {
+        font-size: 18px;
+    }
+
+}
