@@ -667,8 +667,6 @@ window.searchProviders = function () {
     const state =
         document.getElementById("stateFilter")?.value || "";
 
-const category = document.getElementById("categoryFilter").value;
-
     const category =
         document.getElementById("categoryFilter")?.value || "";
 
