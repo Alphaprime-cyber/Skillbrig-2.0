@@ -9,399 +9,44 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
 
-// ======================================================
-// CATEGORY NORMALIZATION
-// ======================================================
-
-function normalizeCategory(category) {
-
-    if (!category) return "";
-
-    const value = category.toLowerCase().trim();
-
-    const categoryMap = {
-
-        "electrician": "electrical",
-        "electricians": "electrical",
-        "electrical": "electrical",
-
-        "plumber": "plumbing",
-        "plumbers": "plumbing",
-        "plumbing": "plumbing",
-
-        "carpenter": "carpentry",
-        "carpenters": "carpentry",
-        "carpentry": "carpentry",
-
-        "mechanic": "mechanic",
-        "mechanics": "mechanic",
-        "auto mechanic": "mechanic",
-
-        "painter": "painting",
-        "painters": "painting",
-        "painting": "painting",
-
-        "barber": "barbing",
-        "barbers": "barbing",
-        "barbing": "barbing",
-
-        "makeup artist": "makeup",
-        "makeup artists": "makeup",
-        "makeup": "makeup",
-
-        "developer": "software development",
-        "developers": "software development",
-        "software development": "software development",
-        "web development": "software development",
-        "mobile app development": "software development",
-
-        "cleaner": "cleaning",
-        "cleaners": "cleaning",
-        "cleaning services": "cleaning",
-
-        "photographer": "photography",
-        "photographers": "photography",
-        "photography": "photography",
-
-        "tailor & fashion designer": "fashion",
-        "tailors & fashion designers": "fashion",
-        "tailoring": "fashion",
-        "fashion design": "fashion",
-
-        "hair stylist": "hair dressing",
-        "hair stylists": "hair dressing",
-        "hair dressing": "hair dressing",
-
-        "ac & refrigeration": "ac & refrigeration",
-        "ac & refrigeration technician": "ac & refrigeration",
-
-        "builder & mason": "masonry",
-        "builders & masons": "masonry",
-        "masonry": "masonry",
-
-        "welder": "welding",
-        "welders": "welding",
-        "welding": "welding",
-
-        "interior designer": "interior decoration",
-        "interior designers": "interior decoration",
-        "interior decoration": "interior decoration",
-
-        "landscaper & gardener": "gardening & landscaping",
-        "landscapers & gardeners": "gardening & landscaping",
-        "gardening & landscaping": "gardening & landscaping",
-
-        "mover & logistics": "logistics",
-        "movers & logistics": "logistics",
-
-        "phone & computer repair": "technology repair",
-        "phone repair": "technology repair",
-        "computer repair": "technology repair",
-        "laptop repair": "technology repair",
-
-        "appliance repair": "appliance repair",
-        "appliance repair technician": "appliance repair",
-
-        "security services": "security",
-
-        "tutor": "education",
-        "tutors": "education",
-        "private tutor": "education",
-
-        "caterer & chef": "catering",
-        "caterers & chefs": "catering",
-        "catering": "catering",
-
-        "spa & massage": "spa & massage",
-        "spa & massage therapist": "spa & massage",
-
-        "car wash & detailing": "car wash",
-        "car wash": "car wash",
-        "car detailing": "car wash",
-        "car detailing": "car wash",
-
-        "auto electrician": "auto electrical",
-        "auto electrical": "auto electrical",
-
-        "generator repair technician": "generator repair",
-        "generator repair": "generator repair",
-
-        "solar installer": "solar installation",
-        "solar installers": "solar installation",
-
-        "roofer": "roofing",
-        "roofers": "roofing",
-        "roofing": "roofing",
-
-        "tiler": "tiling",
-        "tilers": "tiling",
-        "tiling": "tiling",
-
-        "plasterer": "plastering",
-        "plasterers": "plastering",
-
-        "glass & aluminium worker": "glass & aluminium",
-        "glass & aluminium workers": "glass & aluminium",
-
-        "pop & ceiling installer": "pop ceiling",
-        "pop & ceiling installers": "pop ceiling",
-        "pop ceiling": "pop ceiling",
-
-        "flooring specialist": "flooring",
-        "flooring specialists": "flooring",
-
-        "sign writer & graphics designer": "graphics design",
-        "sign writers & graphics designers": "graphics design",
-        "graphic design": "graphics design",
-
-        "videographer": "videography",
-        "videographers": "videography",
-        "videography": "videography",
-
-        "event planner": "event planning",
-        "event planners": "event planning",
-        "event planning": "event planning",
-
-        "dj & music services": "dj services",
-        "dj services": "dj services",
-
-        "printing services": "printing",
-
-        "digital marketer": "digital marketing",
-        "digital marketers": "digital marketing",
-        "digital marketing": "digital marketing",
-
-        "content creator": "content creation",
-        "content creators": "content creation"
-
-    };
-
-    return categoryMap[value] || value;
-}
-
-
-// ======================================================
-// CREATE PROVIDER CARD
-// ======================================================
-
-function createProviderCard(provider, id) {
-
-    return `
-        <div class="card provider-card">
-
-            <h3>
-                ${provider.businessName || provider.name}
-            </h3>
-
-            <p>
-                ${provider.category || "Professional Service"}
-            </p>
-
-            <p>
-                📍 ${provider.state || ""}${provider.location ? ", " + provider.location : ""}
-            </p>
-
-            <p>
-                ⭐ ${provider.averageRating || 0}
-            </p>
-
-            <a href="profile.html?id=${id}">
-                <button type="button">
-                    View Profile
-                </button>
-            </a>
-
-        </div>
-    `;
-}
-
-
-// ======================================================
-// LOAD PROVIDERS
-// ======================================================
-
-window.loadProviders = async function () {
-
-    const list = document.getElementById("providersList");
-
-    if (!list) return;
-
-    list.innerHTML = "<p>Loading providers...</p>";
-
-    try {
-
-        const params = new URLSearchParams(window.location.search);
-
-        const selectedCategory = params.get("category");
-        const selectedState = params.get("state");
-        const keyword = params.get("search");
-
-
-        const snapshot = await getDocs(
-            collection(db, "providers")
-        );
-
-
-        let providers = [];
-
-
-        snapshot.forEach((providerDoc) => {
-
-            const provider = providerDoc.data();
-
-
-            // Only verified providers appear publicly
-
-            if (!provider.verified) return;
-
-
-            // CATEGORY FILTER
-
-            if (
-                selectedCategory &&
-                normalizeCategory(provider.category) !==
-                normalizeCategory(selectedCategory)
-            ) {
-                return;
-            }
-
-
-            // STATE FILTER
-
-            if (
-                selectedState &&
-                provider.state?.toLowerCase() !==
-                selectedState.toLowerCase()
-            ) {
-                return;
-            }
-
-
-            // KEYWORD SEARCH
-
-            if (keyword) {
-
-                const searchText = `
-
-                    ${provider.name || ""}
-
-                    ${provider.businessName || ""}
-
-                    ${provider.category || ""}
-
-                    ${provider.location || ""}
-
-                    ${provider.state || ""}
-
-                    ${provider.description || ""}
-
-                `.toLowerCase();
-
-
-                if (!searchText.includes(keyword.toLowerCase())) {
-                    return;
-                }
-
-            }
-
-
-            providers.push({
-                ...provider,
-                id: providerDoc.id
-            });
-
-        });
-
-
-        // ==================================================
-        // DISPLAY RESULTS
-        // ==================================================
-
-        if (!providers.length) {
-
-            if (selectedCategory) {
-
-                list.innerHTML = `
-                    <p>
-                        No verified providers found for
-                        <strong>${selectedCategory}</strong>.
-                    </p>
-                `;
-
-            } else {
-
-                list.innerHTML = `
-                    <p>
-                        No verified providers available.
-                    </p>
-                `;
-
-            }
-
-            return;
-        }
-
-
-        list.innerHTML = providers
-            .map(provider =>
-                createProviderCard(provider, provider.id)
-            )
-            .join("");
-
-
-    } catch (error) {
-
-        console.error("Error loading providers:", error);
-
-        list.innerHTML = `
-            <p>
-                Unable to load providers right now.
-            </p>
-        `;
-
-    }
-
-};
-
-
-// ======================================================
+// =====================================================
 // REGISTER PROVIDER
-// ======================================================
+// =====================================================
 
 window.registerProvider = async function () {
 
     const name =
-        document.getElementById("providerName")?.value.trim();
+        document.getElementById("providerName")?.value.trim() || "";
 
     const businessName =
-        document.getElementById("businessName")?.value.trim();
+        document.getElementById("businessName")?.value.trim() || "";
 
     const category =
-        document.getElementById("providerCategory")?.value;
+        document.getElementById("providerCategory")?.value || "";
 
     const state =
-        document.getElementById("providerState")?.value;
+        document.getElementById("providerState")?.value || "";
 
     const location =
-        document.getElementById("providerLocation")?.value.trim();
+        document.getElementById("providerLocation")?.value.trim() || "";
 
     const phone =
-        document.getElementById("providerPhone")?.value.trim();
+        document.getElementById("providerPhone")?.value.trim() || "";
 
     const whatsapp =
-        document.getElementById("providerWhatsApp")?.value.trim();
+        document.getElementById("providerWhatsApp")?.value.trim() || "";
 
     const email =
-        document.getElementById("providerEmail")?.value.trim();
+        document.getElementById("providerEmail")?.value.trim() || "";
 
     const experience =
-        document.getElementById("providerExperience")?.value.trim();
+        document.getElementById("providerExperience")?.value.trim() || "";
 
     const businessHours =
-        document.getElementById("providerBusinessHours")?.value.trim();
+        document.getElementById("providerBusinessHours")?.value.trim() || "";
 
     const description =
-        document.getElementById("providerDescription")?.value.trim();
+        document.getElementById("providerDescription")?.value.trim() || "";
 
 
     if (
@@ -414,6 +59,18 @@ window.registerProvider = async function () {
     ) {
 
         alert("Please complete all required fields.");
+
+        return;
+    }
+
+
+    const agreeTerms =
+        document.getElementById("agreeTerms")?.checked;
+
+
+    if (!agreeTerms) {
+
+        alert("Please agree to the Terms & Conditions.");
 
         return;
     }
@@ -454,7 +111,7 @@ window.registerProvider = async function () {
 
 
         alert(
-            "🎉 Registration submitted successfully! Your account is awaiting approval."
+            "🎉 Registration submitted successfully! Your application is awaiting approval."
         );
 
 
@@ -462,49 +119,357 @@ window.registerProvider = async function () {
             .querySelectorAll("input, textarea")
             .forEach(input => {
 
-                if (input.type !== "file") {
+                if (input.type !== "checkbox") {
                     input.value = "";
                 }
 
             });
 
 
-        const categoryField =
-            document.getElementById("providerCategory");
+        document.getElementById("providerCategory").value = "";
 
-        const stateField =
-            document.getElementById("providerState");
+        document.getElementById("providerState").value = "";
 
-
-        if (categoryField) {
-            categoryField.value = "";
-        }
-
-
-        if (stateField) {
-            stateField.value = "";
+        if (document.getElementById("agreeTerms")) {
+            document.getElementById("agreeTerms").checked = false;
         }
 
 
     } catch (error) {
 
-        console.error(error);
+        console.error("Registration error:", error);
 
-        alert(error.message);
+        alert(
+            "Registration failed: " + error.message
+        );
 
     }
 
 };
 
 
-// ======================================================
+
+// =====================================================
+// LOAD PROVIDERS
+// =====================================================
+
+async function getVerifiedProviders() {
+
+    const snapshot =
+        await getDocs(
+            collection(db, "providers")
+        );
+
+
+    const providers = [];
+
+
+    snapshot.forEach(providerDoc => {
+
+        const provider =
+            providerDoc.data();
+
+
+        if (provider.verified === true) {
+
+            providers.push({
+
+                id: providerDoc.id,
+
+                ...provider
+
+            });
+
+        }
+
+    });
+
+
+    return providers;
+
+}
+
+
+
+// =====================================================
+// DISPLAY PROVIDERS
+// =====================================================
+
+function displayProviders(providers) {
+
+    const list =
+        document.getElementById("providersList");
+
+
+    if (!list) return;
+
+
+    if (providers.length === 0) {
+
+        list.innerHTML = `
+            <div class="card">
+
+                <h3>
+                    No providers found
+                </h3>
+
+                <p>
+                    Try another category, state or search term.
+                </p>
+
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    let html = "";
+
+
+    providers.forEach(provider => {
+
+        html += `
+
+            <div class="card provider-card">
+
+                <h3>
+                    ${provider.businessName || provider.name || "Professional"}
+                </h3>
+
+                <p>
+                    <strong>
+                        ${provider.category || "Service Provider"}
+                    </strong>
+                </p>
+
+                <p>
+                    <i class="fas fa-location-dot"></i>
+                    ${provider.state || ""}${provider.location ? ", " + provider.location : ""}
+                </p>
+
+                <p>
+                    ⭐ ${provider.averageRating || 0}
+                </p>
+
+                ${
+                    provider.experience
+                    ? `<p>
+                        ${provider.experience} years experience
+                       </p>`
+                    : ""
+                }
+
+                <a
+                    href="profile.html?id=${provider.id}"
+                    class="search-btn"
+                    style="display:inline-flex;text-decoration:none;"
+                >
+                    View Profile
+                </a>
+
+            </div>
+
+        `;
+
+    });
+
+
+    list.innerHTML = html;
+
+}
+
+
+
+// =====================================================
+// FILTER PROVIDERS
+// =====================================================
+
+async function filterProviders() {
+
+    const search =
+        document
+            .getElementById("providerSearch")
+            ?.value
+            .trim()
+            .toLowerCase() || "";
+
+
+    const category =
+        document
+            .getElementById("providerCategory")
+            ?.value || "";
+
+
+    const state =
+        document
+            .getElementById("providerState")
+            ?.value || "";
+
+
+    const providers =
+        await getVerifiedProviders();
+
+
+    const filtered =
+        providers.filter(provider => {
+
+            const name =
+                (provider.name || "").toLowerCase();
+
+            const businessName =
+                (provider.businessName || "").toLowerCase();
+
+            const providerCategory =
+                (provider.category || "").toLowerCase();
+
+            const providerState =
+                (provider.state || "").toLowerCase();
+
+            const location =
+                (provider.location || "").toLowerCase();
+
+
+            const matchesSearch =
+                !search ||
+                name.includes(search) ||
+                businessName.includes(search) ||
+                providerCategory.includes(search) ||
+                providerState.includes(search) ||
+                location.includes(search);
+
+
+            const matchesCategory =
+                !category ||
+                providerCategory === category.toLowerCase();
+
+
+            const matchesState =
+                !state ||
+                providerState === state.toLowerCase();
+
+
+            return (
+                matchesSearch &&
+                matchesCategory &&
+                matchesState
+            );
+
+        });
+
+
+    displayProviders(filtered);
+
+}
+
+
+
+// =====================================================
+// LOAD PROVIDER DIRECTORY
+// =====================================================
+
+async function loadProviderDirectory() {
+
+    const list =
+        document.getElementById("providersList");
+
+
+    if (!list) return;
+
+
+    list.innerHTML = `
+        <div class="card">
+            <p>Loading providers...</p>
+        </div>
+    `;
+
+
+    try {
+
+        const params =
+            new URLSearchParams(
+                window.location.search
+            );
+
+
+        const search =
+            params.get("search") || "";
+
+        const category =
+            params.get("category") || "";
+
+        const state =
+            params.get("state") || "";
+
+
+        const searchInput =
+            document.getElementById("providerSearch");
+
+        const categorySelect =
+            document.getElementById("providerCategory");
+
+        const stateSelect =
+            document.getElementById("providerState");
+
+
+        if (searchInput) {
+            searchInput.value = search;
+        }
+
+
+        if (categorySelect) {
+            categorySelect.value = category;
+        }
+
+
+        if (stateSelect) {
+            stateSelect.value = state;
+        }
+
+
+        await filterProviders();
+
+
+    } catch (error) {
+
+        console.error(
+            "Error loading providers:",
+            error
+        );
+
+
+        list.innerHTML = `
+            <div class="card">
+
+                <h3>
+                    Unable to load providers
+                </h3>
+
+                <p>
+                    Please check your connection and try again.
+                </p>
+
+            </div>
+        `;
+
+    }
+
+}
+
+
+
+// =====================================================
 // LOAD SINGLE PROVIDER PROFILE
-// ======================================================
+// =====================================================
 
 window.loadProviderProfile = async function () {
 
     const params =
-        new URLSearchParams(window.location.search);
+        new URLSearchParams(
+            window.location.search
+        );
+
 
     const providerId =
         params.get("id");
@@ -517,11 +482,23 @@ window.loadProviderProfile = async function () {
 
         const snapshot =
             await getDoc(
-                doc(db, "providers", providerId)
+                doc(
+                    db,
+                    "providers",
+                    providerId
+                )
             );
 
 
-        if (!snapshot.exists()) return;
+        if (!snapshot.exists()) {
+
+            console.error(
+                "Provider not found."
+            );
+
+            return;
+
+        }
 
 
         const provider =
@@ -570,7 +547,9 @@ window.loadProviderProfile = async function () {
 
         if (businessName)
             businessName.textContent =
-                provider.businessName || provider.name;
+                provider.businessName ||
+                provider.name ||
+                "Professional";
 
 
         if (category)
@@ -655,65 +634,91 @@ window.loadProviderProfile = async function () {
 };
 
 
-// ======================================================
-// HOMEPAGE SEARCH
-// ======================================================
 
-window.searchProviders = function () {
+// =====================================================
+// PAGE INITIALIZATION
+// =====================================================
 
-    const keyword =
-        document.getElementById("searchBox")?.value.trim() || "";
-
-    const state =
-        document.getElementById("stateFilter")?.value || "";
-
-    const category =
-        document.getElementById("categoryFilter")?.value || "";
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
 
-    const params =
-        new URLSearchParams();
+        // Provider directory
+
+        if (
+            document.getElementById(
+                "providersList"
+            )
+        ) {
+
+            loadProviderDirectory();
+
+        }
 
 
-    if (keyword)
-        params.set("search", keyword);
+        // Provider profile
+
+        if (
+            document.getElementById(
+                "businessName"
+            ) &&
+            new URLSearchParams(
+                window.location.search
+            ).get("id")
+        ) {
+
+            loadProviderProfile();
+
+        }
 
 
-    if (state)
-        params.set("state", state);
+        // Directory filters
+
+        const searchInput =
+            document.getElementById(
+                "providerSearch"
+            );
+
+        const categorySelect =
+            document.getElementById(
+                "providerCategory"
+            );
+
+        const stateSelect =
+            document.getElementById(
+                "providerState"
+            );
 
 
-    if (category)
-        params.set("category", category);
+        if (searchInput) {
+
+            searchInput.addEventListener(
+                "input",
+                filterProviders
+            );
+
+        }
 
 
-    window.location.href =
-        "provider.html" +
-        (params.toString()
-            ? "?" + params.toString()
-            : "");
+        if (categorySelect) {
 
-};
+            categorySelect.addEventListener(
+                "change",
+                filterProviders
+            );
 
-
-// ======================================================
-// AUTO INITIALIZATION
-// ======================================================
-
-if (
-    document.getElementById("providersList")
-) {
-
-    loadProviders();
-
-}
+        }
 
 
-if (
-    document.getElementById("businessName") &&
-    document.getElementById("category")
-) {
+        if (stateSelect) {
 
-    loadProviderProfile();
+            stateSelect.addEventListener(
+                "change",
+                filterProviders
+            );
 
-}
+        }
+
+    }
+);
