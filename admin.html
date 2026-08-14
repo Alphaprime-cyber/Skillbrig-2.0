@@ -4,20 +4,17 @@
 <head>
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Admin Dashboard | SkillBridge</title>
 
-    <meta
-        name="description"
-        content="SkillBridge administrator dashboard."
-    >
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-
     <link
         rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        href="css/style.css"
     >
 
     <link
@@ -25,21 +22,22 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     >
 
-    <link rel="stylesheet" href="css/style.css">
-
 </head>
 
 
 <body>
 
 
-<!-- ==============================
+<!-- =========================================
      ADMIN HEADER
-============================== -->
+========================================= -->
 
 <header class="site-header">
 
-    <a href="index.html" class="logo">
+    <a
+        href="index.html"
+        class="logo"
+    >
 
         <span class="logo-icon">
             <i class="fas fa-link"></i>
@@ -54,10 +52,22 @@
 
     <div class="header-actions">
 
-        <a href="index.html" class="provider-btn">
-            <i class="fas fa-house"></i>
+        <a
+            href="index.html"
+            class="provider-btn"
+        >
             View Website
         </a>
+
+
+        <button
+            type="button"
+            class="login-btn"
+            onclick="logoutAdmin()"
+        >
+            <i class="fas fa-right-from-bracket"></i>
+            Logout
+        </button>
 
     </div>
 
@@ -65,63 +75,31 @@
 
 
 
-<!-- ==============================
-     ADMIN HERO
-============================== -->
+<!-- =========================================
+     ADMIN MAIN
+========================================= -->
 
-<section class="hero">
+<main
+    class="section"
+    style="padding-top:50px;"
+>
 
-    <div class="hero-overlay"></div>
-
-    <div class="hero-content">
-
-        <div class="hero-label">
-
-            <i class="fas fa-shield-halved"></i>
-
-            ADMINISTRATION
-
-        </div>
-
-
-        <h1>
-
-            SkillBridge
-            <span>Admin Dashboard</span>
-
-        </h1>
-
-
-        <p>
-
-            Manage providers, verification and
-            the SkillBridge marketplace.
-
-        </p>
-
-    </div>
-
-</section>
-
-
-
-<!-- ==============================
-     DASHBOARD
-============================== -->
-
-<section class="section">
 
     <div class="section-heading">
 
         <div>
 
             <div class="section-label">
-                OVERVIEW
+                ADMINISTRATION
             </div>
 
-            <h2>
-                Dashboard
-            </h2>
+            <h1>
+                SkillBridge Dashboard
+            </h1>
+
+            <p>
+                Manage providers, customers, reviews and service requests.
+            </p>
 
         </div>
 
@@ -129,9 +107,14 @@
 
 
 
-    <!-- STAT CARDS -->
+    <!-- =====================================
+         DASHBOARD CARDS
+    ====================================== -->
 
-    <div class="why-grid">
+    <div
+        class="why-grid"
+        style="margin-bottom:40px;"
+    >
 
 
         <div class="why-card">
@@ -144,11 +127,15 @@
                 Providers
             </h3>
 
-            <p id="providersCount">
+            <p
+                id="providersCount"
+                style="font-size:30px;font-weight:700;"
+            >
                 0
             </p>
 
         </div>
+
 
 
         <div class="why-card">
@@ -158,14 +145,39 @@
             </div>
 
             <h3>
-                Pending Approval
+                Pending
             </h3>
 
-            <p id="pendingCount">
+            <p
+                id="pendingCount"
+                style="font-size:30px;font-weight:700;"
+            >
                 0
             </p>
 
         </div>
+
+
+
+        <div class="why-card">
+
+            <div class="why-icon">
+                <i class="fas fa-circle-check"></i>
+            </div>
+
+            <h3>
+                Verified
+            </h3>
+
+            <p
+                id="verifiedCount"
+                style="font-size:30px;font-weight:700;"
+            >
+                0
+            </p>
+
+        </div>
+
 
 
         <div class="why-card">
@@ -178,11 +190,15 @@
                 Reviews
             </h3>
 
-            <p id="reviewsCount">
+            <p
+                id="reviewsCount"
+                style="font-size:30px;font-weight:700;"
+            >
                 0
             </p>
 
         </div>
+
 
 
         <div class="why-card">
@@ -195,89 +211,149 @@
                 Customers
             </h3>
 
-            <p id="customersCount">
+            <p
+                id="customersCount"
+                style="font-size:30px;font-weight:700;"
+            >
                 0
             </p>
 
         </div>
 
+
     </div>
 
-</section>
 
 
+    <!-- =====================================
+         PROVIDER MANAGEMENT
+    ====================================== -->
 
-<!-- ==============================
-     PROVIDER MANAGEMENT
-============================== -->
+    <section>
 
-<section class="section">
 
-    <div class="section-heading">
+        <div class="section-heading">
 
-        <div>
+            <div>
 
-            <div class="section-label">
-                PROVIDER MANAGEMENT
+                <div class="section-label">
+                    PROVIDER MANAGEMENT
+                </div>
+
+                <h2>
+                    Registered Providers
+                </h2>
+
             </div>
 
-            <h2>
-                Registered Providers
-            </h2>
-
-            <p>
-                Review provider applications and
-                approve or remove providers.
-            </p>
-
         </div>
 
-    </div>
 
 
+        <!-- FILTERS -->
 
-    <!-- SEARCH -->
-
-    <div
-        class="card"
-        style="max-width:900px;margin:0 auto 30px;padding:25px;"
-    >
-
-        <input
-            type="text"
-            id="providerSearch"
-            placeholder="Search providers by name, category or location..."
-            oninput="searchProviders()"
+        <div
+            class="card"
+            style="
+                padding:25px;
+                margin-bottom:25px;
+            "
         >
 
-    </div>
+
+            <input
+                type="text"
+                id="providerSearch"
+                placeholder="Search providers..."
+                oninput="searchProviders()"
+            >
 
 
+            <select id="statusFilter">
 
-    <!-- PROVIDER LIST -->
+                <option value="">
+                    All Statuses
+                </option>
 
-    <div
-        id="providersTable"
-        style="max-width:900px;margin:0 auto;"
-    >
+                <option value="pending">
+                    Pending
+                </option>
 
-        <div class="card" style="padding:30px;">
+                <option value="verified">
+                    Verified
+                </option>
 
-            <p>
-                Loading providers...
-            </p>
+            </select>
+
+
+            <select id="adminCategoryFilter">
+
+                <option value="">
+                    All Categories
+                </option>
+
+                <option>Plumbing</option>
+                <option>Electrical</option>
+                <option>Carpentry</option>
+                <option>Painting</option>
+                <option>Masonry</option>
+                <option>Roofing</option>
+                <option>Tiling</option>
+                <option>Cleaning Services</option>
+                <option>Solar Installation</option>
+                <option>Air Conditioning</option>
+                <option>Auto Mechanic</option>
+                <option>Car Wash</option>
+                <option>Tailoring</option>
+                <option>Hair Dressing</option>
+                <option>Barbing</option>
+                <option>Makeup Artist</option>
+                <option>Phone Repair</option>
+                <option>Computer Repair</option>
+                <option>Web Development</option>
+                <option>Graphic Design</option>
+                <option>Private Tutor</option>
+                <option>Photography</option>
+                <option>Videography</option>
+                <option>Catering</option>
+                <option>Delivery Services</option>
+                <option>Dispatch Rider</option>
+                <option>Other</option>
+
+            </select>
 
         </div>
 
-    </div>
-
-</section>
 
 
+        <!-- PROVIDER RESULTS -->
 
-<!-- ==============================
+        <div id="providersTable">
+
+            <div
+                class="card"
+                style="padding:30px;"
+            >
+
+                <p>
+                    Loading providers...
+                </p>
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+
+<!-- =========================================
      FOOTER
-============================== -->
+========================================= -->
 
 <footer class="footer">
 
@@ -297,15 +373,9 @@
 
 
 
-<!-- ==============================
-     FIREBASE
-============================== -->
-
-<script
-    type="module"
-    src="js/firebase.js"
-></script>
-
+<!-- =========================================
+     ADMIN SCRIPT
+========================================= -->
 
 <script
     type="module"
