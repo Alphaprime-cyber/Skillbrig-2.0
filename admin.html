@@ -6,27 +6,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>SkillBridge Admin Dashboard</title>
+    <title>Admin Dashboard | SkillBridge</title>
 
     <meta
         name="description"
-        content="SkillBridge administration dashboard for managing providers and users."
+        content="SkillBridge administrator dashboard."
     >
 
-    <link
-        rel="preconnect"
-        href="https://fonts.googleapis.com"
-    >
+    <link rel="preconnect" href="https://fonts.googleapis.com">
 
     <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin
-    >
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
     >
 
     <link
@@ -42,9 +33,9 @@
 <body>
 
 
-<!-- =========================================
+<!-- ==============================
      ADMIN HEADER
-========================================= -->
+============================== -->
 
 <header class="site-header">
 
@@ -61,124 +52,22 @@
     </a>
 
 
-    <nav class="desktop-nav">
-
-        <a href="index.html">
-            <i class="fas fa-house"></i>
-            Home
-        </a>
-
-        <a href="providers.html">
-            <i class="fas fa-users"></i>
-            Providers
-        </a>
-
-        <a href="provider.html">
-            <i class="fas fa-user-plus"></i>
-            Become a Provider
-        </a>
-
-    </nav>
-
-
     <div class="header-actions">
 
-        <button
-            type="button"
-            class="login-btn"
-            onclick="logoutAdmin()"
-        >
-            <i class="fas fa-right-from-bracket"></i>
-            Logout
-        </button>
+        <a href="index.html" class="provider-btn">
+            <i class="fas fa-house"></i>
+            View Website
+        </a>
 
     </div>
-
-
-    <button
-        class="menu-btn"
-        id="menuBtn"
-        aria-label="Open menu"
-    >
-
-        <i class="fas fa-bars"></i>
-
-    </button>
 
 </header>
 
 
-<!-- =========================================
-     MOBILE MENU
-========================================= -->
 
-<div
-    class="mobile-menu"
-    id="mobileMenu"
->
-
-    <div class="mobile-menu-header">
-
-        <strong>
-            SkillBridge Admin
-        </strong>
-
-        <button
-            id="closeMenu"
-            aria-label="Close menu"
-        >
-
-            <i class="fas fa-times"></i>
-
-        </button>
-
-    </div>
-
-
-    <a href="index.html">
-
-        <i class="fas fa-house"></i>
-
-        Home
-
-    </a>
-
-
-    <a href="providers.html">
-
-        <i class="fas fa-users"></i>
-
-        Providers
-
-    </a>
-
-
-    <a href="provider.html">
-
-        <i class="fas fa-user-plus"></i>
-
-        Become a Provider
-
-    </a>
-
-
-    <a
-        href="#"
-        onclick="logoutAdmin(); return false;"
-    >
-
-        <i class="fas fa-right-from-bracket"></i>
-
-        Logout
-
-    </a>
-
-</div>
-
-
-<!-- =========================================
+<!-- ==============================
      ADMIN HERO
-========================================= -->
+============================== -->
 
 <section class="hero">
 
@@ -205,8 +94,8 @@
 
         <p>
 
-            Manage providers, review applications
-            and keep the SkillBridge marketplace trusted.
+            Manage providers, verification and
+            the SkillBridge marketplace.
 
         </p>
 
@@ -215,9 +104,10 @@
 </section>
 
 
-<!-- =========================================
+
+<!-- ==============================
      DASHBOARD
-========================================= -->
+============================== -->
 
 <section class="section">
 
@@ -230,7 +120,7 @@
             </div>
 
             <h2>
-                Marketplace Dashboard
+                Dashboard
             </h2>
 
         </div>
@@ -238,9 +128,8 @@
     </div>
 
 
-    <!-- =====================================
-         STAT CARDS
-    ====================================== -->
+
+    <!-- STAT CARDS -->
 
     <div class="why-grid">
 
@@ -248,19 +137,14 @@
         <div class="why-card">
 
             <div class="why-icon">
-
                 <i class="fas fa-users"></i>
-
             </div>
 
             <h3>
-                Total Providers
+                Providers
             </h3>
 
-            <p
-                id="providersCount"
-                style="font-size:32px;font-weight:700;"
-            >
+            <p id="providersCount">
                 0
             </p>
 
@@ -270,19 +154,14 @@
         <div class="why-card">
 
             <div class="why-icon">
-
                 <i class="fas fa-clock"></i>
-
             </div>
 
             <h3>
-                Pending Applications
+                Pending Approval
             </h3>
 
-            <p
-                id="pendingCount"
-                style="font-size:32px;font-weight:700;"
-            >
+            <p id="pendingCount">
                 0
             </p>
 
@@ -292,19 +171,14 @@
         <div class="why-card">
 
             <div class="why-icon">
-
-                <i class="fas fa-circle-check"></i>
-
+                <i class="fas fa-star"></i>
             </div>
 
             <h3>
-                Verified Providers
+                Reviews
             </h3>
 
-            <p
-                id="verifiedCount"
-                style="font-size:32px;font-weight:700;"
-            >
+            <p id="reviewsCount">
                 0
             </p>
 
@@ -314,35 +188,30 @@
         <div class="why-card">
 
             <div class="why-icon">
-
                 <i class="fas fa-user"></i>
-
             </div>
 
             <h3>
                 Customers
             </h3>
 
-            <p
-                id="customersCount"
-                style="font-size:32px;font-weight:700;"
-            >
+            <p id="customersCount">
                 0
             </p>
 
         </div>
-
 
     </div>
 
 </section>
 
 
-<!-- =========================================
-     PROVIDER MANAGEMENT
-========================================= -->
 
-<section class="section providers-section">
+<!-- ==============================
+     PROVIDER MANAGEMENT
+============================== -->
+
+<section class="section">
 
     <div class="section-heading">
 
@@ -353,108 +222,97 @@
             </div>
 
             <h2>
-                Service Providers
+                Registered Providers
             </h2>
+
+            <p>
+                Review provider applications and
+                approve or remove providers.
+            </p>
 
         </div>
 
     </div>
 
 
-    <p class="section-description">
-
-        Review provider applications, approve trusted
-        professionals and manage existing listings.
-
-    </p>
-
 
     <!-- SEARCH -->
 
     <div
-        class="card provider-filters"
-        style="margin-bottom:30px;"
+        class="card"
+        style="max-width:900px;margin:0 auto 30px;padding:25px;"
     >
 
         <input
             type="text"
             id="providerSearch"
-            placeholder="Search providers..."
+            placeholder="Search providers by name, category or location..."
             oninput="searchProviders()"
         >
-
-
-        <select id="statusFilter">
-
-            <option value="">
-                All Statuses
-            </option>
-
-            <option value="pending">
-                Pending
-            </option>
-
-            <option value="verified">
-                Verified
-            </option>
-
-        </select>
-
-
-        <select id="adminCategoryFilter">
-
-            <option value="">
-                All Categories
-            </option>
-
-            <option>Plumbing</option>
-            <option>Electrical</option>
-            <option>Carpentry</option>
-            <option>Painting</option>
-            <option>Auto Mechanic</option>
-            <option>Tailoring</option>
-            <option>Hair Dressing</option>
-            <option>Barbing</option>
-            <option>Makeup Artist</option>
-            <option>Web Development</option>
-            <option>Graphic Design</option>
-            <option>Photography</option>
-            <option>Videography</option>
-            <option>Catering</option>
-            <option>Cleaning Services</option>
-            <option>Other</option>
-
-        </select>
 
     </div>
 
 
-    <!-- PROVIDERS -->
+
+    <!-- PROVIDER LIST -->
 
     <div
         id="providersTable"
-        class="providers-grid"
+        style="max-width:900px;margin:0 auto;"
     >
 
-        <p>
-            Loading providers...
-        </p>
+        <div class="card" style="padding:30px;">
+
+            <p>
+                Loading providers...
+            </p>
+
+        </div>
 
     </div>
 
 </section>
 
 
-<!-- =========================================
+
+<!-- ==============================
      FOOTER
-========================================= -->
+============================== -->
 
 <footer class="footer">
 
-    <div class="footer-container">
+    <div class="footer-bottom">
 
-        <div class="footer-brand">
+        <span>
+            © 2026 SkillBridge. All Rights Reserved.
+        </span>
 
-            <a href="index.html" class="logo">
+        <span>
+            Admin Dashboard
+        </span>
 
-               
+    </div>
+
+</footer>
+
+
+
+<!-- ==============================
+     FIREBASE
+============================== -->
+
+<script
+    type="module"
+    src="js/firebase.js"
+></script>
+
+
+<script
+    type="module"
+    src="js/admin.js"
+></script>
+
+
+</body>
+
+</html>
