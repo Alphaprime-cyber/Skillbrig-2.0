@@ -12,35 +12,14 @@
 
     <title>Admin Login | SkillBridge</title>
 
-    <meta
-        name="description"
-        content="SkillBridge administrator login."
-    >
-
     <link
-        rel="preconnect"
-        href="https://fonts.googleapis.com"
-    >
-
-    <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin
-    >
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
         rel="stylesheet"
+        href="css/style.css"
     >
 
     <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    >
-
-    <link
-        rel="stylesheet"
-        href="css/style.css"
     >
 
 </head>
@@ -49,150 +28,87 @@
 <body>
 
 
-<!-- =========================================
-     HEADER
-========================================= -->
-
-<header class="site-header">
-
-    <a
-        href="index.html"
-        class="logo"
-    >
-
-        <span class="logo-icon">
-
-            <i class="fas fa-link"></i>
-
-        </span>
-
-        <span>
-            Skill<span>Bridge</span>
-        </span>
-
-    </a>
-
-
-    <div class="header-actions">
-
-        <a
-            href="index.html"
-            class="provider-btn"
-        >
-
-            <i class="fas fa-house"></i>
-
-            Back to Website
-
-        </a>
-
-    </div>
-
-</header>
-
-
-
-<!-- =========================================
-     LOGIN
-========================================= -->
-
 <section
     class="section"
-    style="min-height:70vh;display:flex;align-items:center;"
+    style="
+        min-height:100vh;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+    "
 >
+
 
     <div
         class="card"
         style="
-            max-width:500px;
             width:100%;
-            margin:0 auto;
+            max-width:450px;
             padding:35px;
         "
     >
 
 
         <div
-            class="section-heading centered"
-            style="margin-bottom:30px;"
+            style="
+                text-align:center;
+                margin-bottom:30px;
+            "
         >
 
-            <div>
+            <div class="logo">
 
-                <div class="section-label">
+                <span class="logo-icon">
+                    <i class="fas fa-link"></i>
+                </span>
 
-                    <i class="fas fa-shield-halved"></i>
-
-                    ADMINISTRATION
-
-                </div>
-
-
-                <h2>
-                    Admin Login
-                </h2>
-
-
-                <p>
-                    Sign in to manage the SkillBridge marketplace.
-                </p>
+                <span>
+                    Skill<span>Bridge</span>
+                </span>
 
             </div>
+
+
+            <h1>
+                Admin Login
+            </h1>
+
+
+            <p>
+                Sign in to manage SkillBridge.
+            </p>
 
         </div>
 
 
 
-        <!-- EMAIL -->
-
-        <label for="adminEmail">
-
+        <label>
             Email Address
-
         </label>
 
 
         <input
-            id="adminEmail"
             type="email"
+            id="adminEmail"
             placeholder="admin@skillbridge.com"
-            autocomplete="username"
+            required
         >
 
 
 
-        <!-- PASSWORD -->
-
-        <label for="adminPassword">
-
+        <label>
             Password
-
         </label>
 
 
         <input
-            id="adminPassword"
             type="password"
+            id="adminPassword"
             placeholder="Enter your password"
-            autocomplete="current-password"
+            required
         >
 
 
-
-        <!-- MESSAGE -->
-
-        <p
-            id="loginMessage"
-            style="
-                min-height:24px;
-                margin-top:15px;
-                text-align:center;
-            "
-        ></p>
-
-
-
-        <!-- LOGIN BUTTON -->
 
         <button
             type="button"
@@ -200,48 +116,38 @@
             onclick="adminLogin()"
             style="
                 width:100%;
-                margin-top:10px;
+                margin-top:20px;
             "
         >
 
             <i class="fas fa-right-to-bracket"></i>
 
-            Login to Admin Dashboard
+            Login to Dashboard
 
         </button>
 
 
+
+        <div
+            style="
+                text-align:center;
+                margin-top:25px;
+            "
+        >
+
+            <a href="index.html">
+                ← Back to SkillBridge
+            </a>
+
+        </div>
+
+
     </div>
+
 
 </section>
 
 
-
-<!-- =========================================
-     FOOTER
-========================================= -->
-
-<footer class="footer">
-
-    <div class="footer-bottom">
-
-        <span>
-            © 2026 SkillBridge. All Rights Reserved.
-        </span>
-
-        <span>
-            Admin Portal
-        </span>
-
-    </div>
-
-</footer>
-
-
-
-<!-- =========================================
-     ADMIN LOGIN SCRIPT
-========================================= -->
 
 <script
     type="module"
