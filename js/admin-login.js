@@ -1,45 +1,112 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+import { auth } from "./firebase.js";
 
 import {
-  getAuth,
-  signInWithEmailAndPassword
+    signInWithEmailAndPassword
 } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCgV-0KaUdjHyy_YPYRogunS5H01jPBbGg",
-  authDomain: "skillbridge-app-56faf.firebaseapp.com",
-  projectId: "skillbridge-app-56faf",
-  storageBucket: "skillbridge-app-56faf.firebasestorage.app",
-  messagingSenderId: "181813326765",
-  appId: "1:181813326765:web:4732292cd467a8f7d3a724"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
 
 window.adminLogin = async function () {
 
-  const email = document.getElementById("adminEmail").value.trim();
-  const password = document.getElementById("adminPassword").value;
+    const emailInput =
+        document.getElementById("adminEmail");
 
-  try {
+    const passwordInput =
+        document.getElementById("adminPassword");
 
-    await signInWithEmailAndPassword(auth, email, password);
+    const message =
+        document.getElementById("loginMessage");
 
-    if (email === "admin@skillbridge.com") {
 
-      window.location.href = "admin.html";
+    const email =
+        emailInput?.value.trim() || "";
 
-    } else {
+    const password =
+        passwordInput?.value || "";
 
-      alert("You are not authorized as an administrator.");
+
+    if (!email || !password) {
+
+        if (message) {
+
+            message.textContent =
+                "Please enter your email and password.";
+
+        } else {
+
+            alert(
+                "Please enter your email and password."
+            );
+
+        }
+
+        return;
 
     }
 
-  } catch (error) {
 
-    alert(error.message);
+    try {
 
-  }
+        await signInWithEmailAndPassword(
+            auth,
+            email,
+            password
+        );
+
+
+        /*
+         * For now, this checks the administrator
+         * email you already configured.
+         *
+         * Later, we can replace this with a proper
+         * Firestore/admin-role system.
+         */
+
+        if (email.toLowerCase() !== "admin@skillbridge.com") {
+
+            await auth.signOut();
+
+            if (message) {
+
+                message.textContent =
+                    "This account is not authorized as an administrator.";
+
+            } else {
+
+                alert(
+                    "This account is not authorized as an administrator."
+                );
+
+            }
+
+            return;
+
+        }
+
+
+        window.location.href = "admin.html";
+
+
+    } catch (error) {
+
+        console.error(
+            "Admin login error:",
+            error
+        );
+
+
+        if (message) {
+
+            message.textContent =
+                "Login failed. Please check your email and password.";
+
+        } else {
+
+            alert(
+                "Login failed. Please check your email and password."
+            );
+
+        }
+
+    }
 
 };
