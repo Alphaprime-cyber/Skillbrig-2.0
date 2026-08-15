@@ -527,3 +527,112 @@ function escapeHtml(value) {
 loadAdminDashboard();
 
 loadAdminProviders();
+
+// ==================================================
+// LOAD CUSTOMERS
+// ==================================================
+
+window.loadAdminCustomers = async function () {
+
+    const container =
+        document.getElementById("customersTable");
+
+    if (!container) return;
+
+    container.innerHTML = `
+        <div class="card" style="padding:25px;">
+            <p>Loading customers...</p>
+        </div>
+    `;
+
+    try {
+
+        const snapshot =
+            await getDocs(collection(db, "users"));
+
+        let html = "";
+
+        snapshot.forEach((userDoc) => {
+
+            const user = userDoc.data();
+
+            const name =
+                user.name ||
+                user.fullName ||
+                user.displayName ||
+                "Unnamed Customer";
+
+            const email =
+                user.email ||
+                "Email not provided";
+
+            const phone =
+                user.phone ||
+                user.phoneNumber ||
+                "Phone not provided";
+
+            html += `
+
+                <div
+                    class="card"
+                    style="
+                        padding:25px;
+                        margin-bottom:20px;
+                    "
+                >
+
+                    <h3>
+                        ${escapeHtml(name)}
+                    </h3>
+
+                    <p>
+                        <strong>Email:</strong>
+                        ${escapeHtml(email)}
+                    </p>
+
+                    <p>
+                        <strong>Phone:</strong>
+                        ${escapeHtml(phone)}
+                    </p>
+
+                </div>
+
+            `;
+
+        });
+
+        container.innerHTML =
+            html ||
+            `
+                <div class="card" style="padding:25px;">
+                    <p>
+                        No registered customers found.
+                    </p>
+                </div>
+            `;
+
+    } catch (error) {
+
+        console.error(
+            "Customer loading error:",
+            error
+        );
+
+        container.innerHTML = `
+            <div class="card" style="padding:25px;">
+                <p>
+                    Unable to load customers.
+                </p>
+            </div>
+        `;
+
+    }
+
+};
+
+
+// ==================================================
+// START CUSTOMERS
+// ==================================================
+
+loadAdminCustomers();
