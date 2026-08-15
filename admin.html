@@ -10,7 +10,7 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Admin Dashboard | SkillBridge</title>
+    <title>SkillBridge Admin Dashboard</title>
 
     <link
         rel="stylesheet"
@@ -27,17 +27,13 @@
 
 <body>
 
-
-<!-- =========================================
+<!-- ==================================================
      ADMIN HEADER
-========================================= -->
+================================================== -->
 
 <header class="site-header">
 
-    <a
-        href="index.html"
-        class="logo"
-    >
+    <a href="index.html" class="logo">
 
         <span class="logo-icon">
             <i class="fas fa-link"></i>
@@ -56,7 +52,8 @@
             href="index.html"
             class="provider-btn"
         >
-            View Website
+            <i class="fas fa-globe"></i>
+            Website
         </a>
 
 
@@ -74,28 +71,23 @@
 </header>
 
 
-
-<!-- =========================================
-     ADMIN MAIN
-========================================= -->
-<!-- =========================================
+<!-- ==================================================
      ADMIN NAVIGATION
-========================================= -->
-<!-- ADMIN NAVIGATION -->
+================================================== -->
 
 <nav
     class="card"
     style="
-        margin:25px 15px;
+        margin:20px 15px;
         padding:15px;
         display:grid;
-        grid-template-columns:1fr 1fr;
+        grid-template-columns:repeat(2, 1fr);
         gap:10px;
     "
 >
 
     <a
-        href="admin.html"
+        href="#dashboard"
         class="provider-btn"
         style="text-align:center;"
     >
@@ -146,16 +138,50 @@
 </nav>
 
 
+<!-- ==================================================
+     MAIN
+================================================== -->
 
-    <!-- =====================================
-         DASHBOARD CARDS
-    ====================================== -->
+<main
+    class="section"
+    style="padding-top:20px;"
+>
+
+
+<!-- ==================================================
+     DASHBOARD
+================================================== -->
+
+<section id="dashboard">
+
+    <div class="section-heading">
+
+        <div>
+
+            <div class="section-label">
+                ADMINISTRATION
+            </div>
+
+            <h1>
+                SkillBridge Dashboard
+            </h1>
+
+            <p>
+                Manage your marketplace from one place.
+            </p>
+
+        </div>
+
+    </div>
+
 
     <div
         class="why-grid"
-        style="margin-bottom:40px;"
+        style="margin-bottom:50px;"
     >
 
+
+        <!-- PROVIDERS -->
 
         <div class="why-card">
 
@@ -169,7 +195,10 @@
 
             <p
                 id="providersCount"
-                style="font-size:30px;font-weight:700;"
+                style="
+                    font-size:30px;
+                    font-weight:700;
+                "
             >
                 0
             </p>
@@ -177,6 +206,7 @@
         </div>
 
 
+        <!-- PENDING -->
 
         <div class="why-card">
 
@@ -190,7 +220,10 @@
 
             <p
                 id="pendingCount"
-                style="font-size:30px;font-weight:700;"
+                style="
+                    font-size:30px;
+                    font-weight:700;
+                "
             >
                 0
             </p>
@@ -198,6 +231,7 @@
         </div>
 
 
+        <!-- VERIFIED -->
 
         <div class="why-card">
 
@@ -211,7 +245,10 @@
 
             <p
                 id="verifiedCount"
-                style="font-size:30px;font-weight:700;"
+                style="
+                    font-size:30px;
+                    font-weight:700;
+                "
             >
                 0
             </p>
@@ -219,6 +256,7 @@
         </div>
 
 
+        <!-- REVIEWS -->
 
         <div class="why-card">
 
@@ -232,7 +270,10 @@
 
             <p
                 id="reviewsCount"
-                style="font-size:30px;font-weight:700;"
+                style="
+                    font-size:30px;
+                    font-weight:700;
+                "
             >
                 0
             </p>
@@ -240,6 +281,7 @@
         </div>
 
 
+        <!-- CUSTOMERS -->
 
         <div class="why-card">
 
@@ -253,31 +295,115 @@
 
             <p
                 id="customersCount"
-                style="font-size:30px;font-weight:700;"
+                style="
+                    font-size:30px;
+                    font-weight:700;
+                "
             >
                 0
             </p>
 
         </div>
 
+    </div>
+
+</section>
+
+
+<!-- ==================================================
+     PROVIDERS
+================================================== -->
+
+<section
+    id="providers"
+    style="margin-top:60px;"
+>
+
+    <div class="section-heading">
+
+        <div>
+
+            <div class="section-label">
+                PROVIDER MANAGEMENT
+            </div>
+
+            <h2>
+                Registered Providers
+            </h2>
+
+            <p>
+                Review, approve and manage service providers.
+            </p>
+
+        </div>
 
     </div>
 
 
+    <!-- SEARCH -->
 
-    <!-- =====================================
-         PROVIDER MANAGEMENT
-    ====================================== -->
+    <div
+        class="card"
+        style="
+            padding:20px;
+            margin-bottom:25px;
+        "
+    >
 
-    <section id="providers">
+        <input
+            type="text"
+            id="providerSearch"
+            placeholder="Search providers..."
+            oninput="searchProviders()"
+        >
 
-<!-- =========================================
-     QUOTE MANAGEMENT
-========================================= -->
+
+        <select id="statusFilter">
+
+            <option value="">
+                All Statuses
+            </option>
+
+            <option value="pending">
+                Pending
+            </option>
+
+            <option value="verified">
+                Verified
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <!-- PROVIDER LIST -->
+
+    <div id="providersTable">
+
+        <div
+            class="card"
+            style="padding:25px;"
+        >
+
+            <p>
+                Loading providers...
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ==================================================
+     QUOTES
+================================================== -->
 
 <section
     id="quotes"
-    style="margin-top:60px;"
+    style="margin-top:70px;"
 >
 
     <div class="section-heading">
@@ -305,7 +431,7 @@
 
         <div
             class="card"
-            style="padding:30px;"
+            style="padding:25px;"
         >
 
             <p>
@@ -317,128 +443,110 @@
     </div>
 
 </section>
-        <div class="section-heading">
 
-            <div>
 
-                <div class="section-label">
-                    PROVIDER MANAGEMENT
-                </div>
+<!-- ==================================================
+     REVIEWS
+================================================== -->
 
-                <h2>
-                    Registered Providers
-                </h2>
+<section
+    id="reviews"
+    style="margin-top:70px;"
+>
 
+    <div class="section-heading">
+
+        <div>
+
+            <div class="section-label">
+                CUSTOMER FEEDBACK
             </div>
+
+            <h2>
+                Reviews
+            </h2>
+
+            <p>
+                Monitor customer reviews and feedback.
+            </p>
 
         </div>
 
+    </div>
 
 
-        <!-- FILTERS -->
+    <div id="reviewsTable">
 
         <div
             class="card"
-            style="
-                padding:25px;
-                margin-bottom:25px;
-            "
+            style="padding:25px;"
         >
 
-
-            <input
-                type="text"
-                id="providerSearch"
-                placeholder="Search providers..."
-                oninput="searchProviders()"
-            >
-
-
-            <select id="statusFilter">
-
-                <option value="">
-                    All Statuses
-                </option>
-
-                <option value="pending">
-                    Pending
-                </option>
-
-                <option value="verified">
-                    Verified
-                </option>
-
-            </select>
-
-
-            <select id="adminCategoryFilter">
-
-                <option value="">
-                    All Categories
-                </option>
-
-                <option>Plumbing</option>
-                <option>Electrical</option>
-                <option>Carpentry</option>
-                <option>Painting</option>
-                <option>Masonry</option>
-                <option>Roofing</option>
-                <option>Tiling</option>
-                <option>Cleaning Services</option>
-                <option>Solar Installation</option>
-                <option>Air Conditioning</option>
-                <option>Auto Mechanic</option>
-                <option>Car Wash</option>
-                <option>Tailoring</option>
-                <option>Hair Dressing</option>
-                <option>Barbing</option>
-                <option>Makeup Artist</option>
-                <option>Phone Repair</option>
-                <option>Computer Repair</option>
-                <option>Web Development</option>
-                <option>Graphic Design</option>
-                <option>Private Tutor</option>
-                <option>Photography</option>
-                <option>Videography</option>
-                <option>Catering</option>
-                <option>Delivery Services</option>
-                <option>Dispatch Rider</option>
-                <option>Other</option>
-
-            </select>
+            <p>
+                Loading reviews...
+            </p>
 
         </div>
 
+    </div>
+
+</section>
 
 
-        <!-- PROVIDER RESULTS -->
+<!-- ==================================================
+     CUSTOMERS
+================================================== -->
 
-        <div id="providersTable">
+<section
+    id="customers"
+    style="margin-top:70px;"
+>
 
-            <div
-                class="card"
-                style="padding:30px;"
-            >
+    <div class="section-heading">
 
-                <p>
-                    Loading providers...
-                </p>
+        <div>
 
+            <div class="section-label">
+                CUSTOMER MANAGEMENT
             </div>
 
+            <h2>
+                Customers
+            </h2>
+
+            <p>
+                View registered SkillBridge customers.
+            </p>
+
         </div>
 
+    </div>
 
-    </section>
+
+    <div id="customersTable">
+
+        <div
+            class="card"
+            style="padding:25px;"
+        >
+
+            <p>
+                Loading customers...
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
 
 
 </main>
 
 
-
-<!-- =========================================
+<!-- ==================================================
      FOOTER
-========================================= -->
+================================================== -->
 
 <footer class="footer">
 
@@ -457,10 +565,9 @@
 </footer>
 
 
-
-<!-- =========================================
-     ADMIN SCRIPT
-========================================= -->
+<!-- ==================================================
+     ADMIN SCRIPTS
+================================================== -->
 
 <script
     type="module"
@@ -468,6 +575,5 @@
 ></script>
 
 
-</body>
-
-</html>
+<script
+    type="module"
