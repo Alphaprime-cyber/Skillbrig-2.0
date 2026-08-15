@@ -1,4 +1,4 @@
-import { auth, db } from "./firebase.js";
+import { db, auth } from "./firebase.js";
 
 import {
     collection,
@@ -9,42 +9,13 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
 import {
-    onAuthStateChanged,
     signOut
 } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
 
 
-// =====================================================
-// ADMIN AUTHENTICATION
-// =====================================================
-
-onAuthStateChanged(auth, (user) => {
-
-    if (!user) {
-        window.location.href = "admin-login.html";
-        return;
-    }
-
-    if (
-        user.email?.toLowerCase() !==
-        "admin@skillbridge.com"
-    ) {
-        signOut(auth).then(() => {
-            window.location.href = "admin-login.html";
-        });
-
-        return;
-    }
-
-    loadAdminDashboard();
-    loadAdminProviders();
-
-});
-
-
-// =====================================================
-// LOGOUT
-// =====================================================
+// ==================================================
+// ADMIN LOGOUT
+// ==================================================
 
 window.logoutAdmin = async function () {
 
@@ -52,125 +23,105 @@ window.logoutAdmin = async function () {
 
         await signOut(auth);
 
-        window.location.href =
-            "admin-login.html";
+        window.location.href = "admin-login.html";
 
     } catch (error) {
 
-        console.error(
-            "Logout error:",
-            error
-        );
+        console.error("Logout error:", error);
 
-        alert(
-            "Unable to log out. Please try again."
-        );
+        alert("Unable to logout.");
 
     }
 
 };
 
 
-// =====================================================
-// DASHBOARD COUNTS
-// =====================================================
+// ==================================================
+// LOAD DASHBOARD
+// ==================================================
 
 window.loadAdminDashboard = async function () {
 
     try {
 
         const providersSnapshot =
-            await getDocs(
-                collection(db, "providers")
-            );
+            await getDocs(collection(db, "providers"));
 
         const reviewsSnapshot =
-            await getDocs(
-                collection(db, "reviews")
-            );
+            await getDocs(collection(db, "reviews"));
 
         const usersSnapshot =
-            await getDocs(
-                collection(db, "users")
-            );
+            await getDocs(collection(db, "users"));
 
 
         let pending = 0;
+
         let verified = 0;
 
 
-        providersSnapshot.forEach(
-            (providerDoc) => {
+        providersSnapshot.forEach((providerDoc) => {
 
-                const provider =
-                    providerDoc.data();
+            const provider = providerDoc.data();
 
-                if (provider.verified === true) {
-                    verified++;
-                } else {
-                    pending++;
-                }
+
+            if (provider.verified === true) {
+
+                verified++;
+
+            } else {
+
+                pending++;
 
             }
-        );
+
+        });
 
 
         const providersCount =
-            document.getElementById(
-                "providersCount"
-            );
+            document.getElementById("providersCount");
 
         const pendingCount =
-            document.getElementById(
-                "pendingCount"
-            );
+            document.getElementById("pendingCount");
 
         const verifiedCount =
-            document.getElementById(
-                "verifiedCount"
-            );
+            document.getElementById("verifiedCount");
 
         const reviewsCount =
-            document.getElementById(
-                "reviewsCount"
-            );
+            document.getElementById("reviewsCount");
 
         const customersCount =
-            document.getElementById(
-                "customersCount"
-            );
+            document.getElementById("customersCount");
 
 
-        if (providersCount) {
+        if (providersCount)
             providersCount.textContent =
                 providersSnapshot.size;
-        }
 
-        if (pendingCount) {
+
+        if (pendingCount)
             pendingCount.textContent =
                 pending;
-        }
 
-        if (verifiedCount) {
+
+        if (verifiedCount)
             verifiedCount.textContent =
                 verified;
-        }
 
-        if (reviewsCount) {
+
+        if (reviewsCount)
             reviewsCount.textContent =
                 reviewsSnapshot.size;
-        }
 
-        if (customersCount) {
+
+        if (customersCount)
             customersCount.textContent =
                 usersSnapshot.size;
-        }
 
 
     } catch (error) {
 
         console.error(
-            "Dashboard error:",
+            "Dashboard loading error:",
             error
         );
 
@@ -179,23 +130,21 @@ window.loadAdminDashboard = async function () {
 };
 
 
-// =====================================================
+// ==================================================
 // LOAD PROVIDERS
-// =====================================================
+// ==================================================
 
 window.loadAdminProviders = async function () {
 
     const container =
-        document.getElementById(
-            "providersTable"
-        );
+        document.getElementById("providersTable");
 
 
     if (!container) return;
 
 
     container.innerHTML = `
-        <div class="card" style="padding:30px;">
+        <div class="card" style="padding:25px;">
             <p>Loading providers...</p>
         </div>
     `;
@@ -212,191 +161,142 @@ window.loadAdminProviders = async function () {
         let html = "";
 
 
-        snapshot.forEach(
-            (providerDoc) => {
+        snapshot.forEach((providerDoc) => {
 
-                const provider =
-                    providerDoc.data();
-
-
-                const name =
-                    provider.businessName ||
-                    provider.name ||
-                    "Unnamed Provider";
+            const provider =
+                providerDoc.data();
 
 
-                const status =
-                    provider.verified === true
-                        ? "verified"
-                        : "pending";
+            const id =
+                providerDoc.id;
 
 
-                html += `
+            const name =
+                provider.businessName ||
+                provider.name ||
+                "Unnamed Provider";
+
+
+            const category =
+                provider.category ||
+                "Not specified";
+
+
+            const state =
+                provider.state ||
+                "Not specified";
+
+
+            const location =
+                provider.location ||
+                "";
+
+
+            const verified =
+                provider.verified === true;
+
+
+            html += `
+
+                <div
+                    class="card provider-row"
+                    data-status="${verified ? "verified" : "pending"}"
+                    style="
+                        padding:25px;
+                        margin-bottom:20px;
+                    "
+                >
+
+                    <h3>
+                        ${escapeHtml(name)}
+                    </h3>
+
+
+                    <p>
+                        <strong>Category:</strong>
+                        ${escapeHtml(category)}
+                    </p>
+
+
+                    <p>
+                        <strong>Location:</strong>
+                        ${escapeHtml(state)}
+                        ${location
+                            ? ", " + escapeHtml(location)
+                            : ""}
+                    </p>
+
+
+                    <p>
+                        <strong>Status:</strong>
+
+                        ${
+                            verified
+                            ? "✅ Verified"
+                            : "⏳ Pending"
+                        }
+
+                    </p>
+
+
+                    ${
+                        provider.phone
+                        ? `
+                            <p>
+                                <strong>Phone:</strong>
+                                ${escapeHtml(provider.phone)}
+                            </p>
+                        `
+                        : ""
+                    }
+
 
                     <div
-                        class="card provider-row"
-                        data-status="${status}"
-                        data-category="${provider.category || ""}"
                         style="
-                            padding:25px;
-                            margin-bottom:20px;
+                            display:flex;
+                            gap:10px;
+                            flex-wrap:wrap;
+                            margin-top:15px;
                         "
                     >
 
-                        <h3>
-                            ${name}
-                        </h3>
-
-
-                        <p>
-                            <strong>
-                                Category:
-                            </strong>
-                            ${provider.category || "Not specified"}
-                        </p>
-
-
-                        <p>
-                            <strong>
-                                Location:
-                            </strong>
-                            ${provider.state || ""}
-                            ${provider.location ? ", " + provider.location : ""}
-                        </p>
-
-
-                        <p>
-                            <strong>
-                                Phone:
-                            </strong>
-                            ${provider.phone || "Not provided"}
-                        </p>
-
-
-                        <p>
-                            <strong>
-                                Email:
-                            </strong>
-                            ${provider.email || "Not provided"}
-                        </p>
-
-
-                        <p>
-                            <strong>
-                                Experience:
-                            </strong>
-                            ${provider.experience || 0}
-                            years
-                        </p>
-
-
-                        <p>
-                            <strong>
-                                Status:
-                            </strong>
-
-                            ${
-                                provider.verified === true
-                                    ? "✅ Verified"
-                                    : "⏳ Pending Approval"
-                            }
-
-                        </p>
-
-
                         ${
-                            provider.description
-                                ? `
-                                    <p>
-                                        <strong>
-                                            Description:
-                                        </strong>
-                                        ${provider.description}
-                                    </p>
-                                  `
-                                : ""
+                            !verified
+                            ? `
+                                <button
+                                    class="provider-btn"
+                                    onclick="approveProvider('${id}')"
+                                >
+                                    <i class="fas fa-check"></i>
+                                    Approve
+                                </button>
+                            `
+                            : ""
                         }
 
 
-                        <div
-                            style="
-                                display:flex;
-                                gap:10px;
-                                flex-wrap:wrap;
-                                margin-top:20px;
-                            "
+                        <button
+                            class="login-btn"
+                            onclick="rejectProvider('${id}')"
                         >
-
-                            ${
-                                provider.verified !== true
-                                    ? `
-                                        <button
-                                            type="button"
-                                            onclick="
-                                                approveProvider(
-                                                    '${providerDoc.id}'
-                                                )
-                                            "
-                                        >
-                                            <i class="fas fa-check"></i>
-                                            Approve
-                                        </button>
-                                      `
-                                    : ""
-                            }
-
-
-                            ${
-                                provider.verified === true
-                                    ? `
-                                        <button
-                                            type="button"
-                                            onclick="
-                                                unapproveProvider(
-                                                    '${providerDoc.id}'
-                                                )
-                                            "
-                                        >
-                                            <i class="fas fa-clock"></i>
-                                            Move to Pending
-                                        </button>
-                                      `
-                                    : ""
-                            }
-
-
-                            <button
-                                type="button"
-                                onclick="
-                                    rejectProvider(
-                                        '${providerDoc.id}'
-                                    )
-                                "
-                            >
-                                <i class="fas fa-trash"></i>
-                                Remove
-                            </button>
-
-                        </div>
+                            <i class="fas fa-trash"></i>
+                            Remove
+                        </button>
 
                     </div>
 
-                `;
+                </div>
 
-            }
-        );
+            `;
+
+        });
 
 
         container.innerHTML =
             html ||
             `
-                <div
-                    class="card"
-                    style="padding:30px;"
-                >
-                    <p>
-                        No providers have registered yet.
-                    </p>
+                <div class="card" style="padding:25px;">
+                    <p>No providers registered yet.</p>
                 </div>
             `;
 
@@ -410,12 +310,9 @@ window.loadAdminProviders = async function () {
 
 
         container.innerHTML = `
-            <div
-                class="card"
-                style="padding:30px;"
-            >
+            <div class="card" style="padding:25px;">
                 <p>
-                    Unable to load providers right now.
+                    Unable to load providers.
                 </p>
             </div>
         `;
@@ -425,9 +322,9 @@ window.loadAdminProviders = async function () {
 };
 
 
-// =====================================================
+// ==================================================
 // APPROVE PROVIDER
-// =====================================================
+// ==================================================
 
 window.approveProvider = async function (id) {
 
@@ -441,25 +338,24 @@ window.approveProvider = async function (id) {
         );
 
 
-        alert(
-            "✅ Provider approved successfully."
-        );
+        alert("Provider approved successfully.");
 
 
         await loadAdminProviders();
+
         await loadAdminDashboard();
 
 
     } catch (error) {
 
         console.error(
-            "Approve error:",
+            "Approval error:",
             error
         );
 
 
         alert(
-            "Unable to approve this provider."
+            "Unable to approve provider."
         );
 
     }
@@ -467,51 +363,9 @@ window.approveProvider = async function (id) {
 };
 
 
-// =====================================================
-// MOVE VERIFIED PROVIDER BACK TO PENDING
-// =====================================================
-
-window.unapproveProvider = async function (id) {
-
-    try {
-
-        await updateDoc(
-            doc(db, "providers", id),
-            {
-                verified: false
-            }
-        );
-
-
-        alert(
-            "Provider moved back to pending."
-        );
-
-
-        await loadAdminProviders();
-        await loadAdminDashboard();
-
-
-    } catch (error) {
-
-        console.error(
-            "Status update error:",
-            error
-        );
-
-
-        alert(
-            "Unable to update this provider."
-        );
-
-    }
-
-};
-
-
-// =====================================================
+// ==================================================
 // REMOVE PROVIDER
-// =====================================================
+// ==================================================
 
 window.rejectProvider = async function (id) {
 
@@ -531,25 +385,24 @@ window.rejectProvider = async function (id) {
         );
 
 
-        alert(
-            "Provider removed successfully."
-        );
+        alert("Provider removed.");
 
 
         await loadAdminProviders();
+
         await loadAdminDashboard();
 
 
     } catch (error) {
 
         console.error(
-            "Remove provider error:",
+            "Provider removal error:",
             error
         );
 
 
         alert(
-            "Unable to remove this provider."
+            "Unable to remove provider."
         );
 
     }
@@ -557,114 +410,120 @@ window.rejectProvider = async function (id) {
 };
 
 
-// =====================================================
-// SEARCH + FILTER
-// =====================================================
+// ==================================================
+// SEARCH PROVIDERS
+// ==================================================
 
 window.searchProviders = function () {
 
-    const searchInput =
+    const input =
         document.getElementById(
             "providerSearch"
         );
 
-    const statusFilter =
-        document.getElementById(
-            "statusFilter"
-        );
 
-    const categoryFilter =
-        document.getElementById(
-            "adminCategoryFilter"
-        );
+    const searchText =
+        input
+        ? input.value.toLowerCase().trim()
+        : "";
 
 
-    const search =
-        searchInput?.value
-            .trim()
-            .toLowerCase() || "";
-
-
-    const status =
-        statusFilter?.value || "";
-
-
-    const category =
-        categoryFilter?.value
-            .trim()
-            .toLowerCase() || "";
-
-
-    const cards =
+    const rows =
         document.querySelectorAll(
             ".provider-row"
         );
 
 
-    cards.forEach((card) => {
+    rows.forEach((row) => {
 
         const text =
-            card.innerText.toLowerCase();
+            row.innerText.toLowerCase();
 
 
-        const cardStatus =
-            card.dataset.status || "";
-
-
-        const cardCategory =
-            (card.dataset.category || "")
-                .toLowerCase();
-
-
-        const matchesSearch =
-            !search ||
-            text.includes(search);
-
-
-        const matchesStatus =
-            !status ||
-            cardStatus === status;
-
-
-        const matchesCategory =
-            !category ||
-            cardCategory === category;
-
-
-        card.style.display =
-            matchesSearch &&
-            matchesStatus &&
-            matchesCategory
-                ? ""
-                : "none";
+        row.style.display =
+            text.includes(searchText)
+            ? ""
+            : "none";
 
     });
 
 };
 
 
-// =====================================================
-// FILTER EVENTS
-// =====================================================
+// ==================================================
+// STATUS FILTER
+// ==================================================
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
-
-        document
-            .getElementById("statusFilter")
-            ?.addEventListener(
-                "change",
-                searchProviders
-            );
+const statusFilter =
+    document.getElementById(
+        "statusFilter"
+    );
 
 
-        document
-            .getElementById("adminCategoryFilter")
-            ?.addEventListener(
-                "change",
-                searchProviders
-            );
+if (statusFilter) {
 
-    }
-);
+    statusFilter.addEventListener(
+        "change",
+        function () {
+
+            const selected =
+                this.value;
+
+
+            const rows =
+                document.querySelectorAll(
+                    ".provider-row"
+                );
+
+
+            rows.forEach((row) => {
+
+                const status =
+                    row.dataset.status;
+
+
+                if (
+                    !selected ||
+                    status === selected
+                ) {
+
+                    row.style.display = "";
+
+                } else {
+
+                    row.style.display =
+                        "none";
+
+                }
+
+            });
+
+        }
+    );
+
+}
+
+
+// ==================================================
+// ESCAPE HTML
+// ==================================================
+
+function escapeHtml(value) {
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+// ==================================================
+// START DASHBOARD
+// ==================================================
+
+loadAdminDashboard();
+
+loadAdminProviders();
