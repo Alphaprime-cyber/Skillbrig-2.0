@@ -357,4 +357,314 @@ window.loadAdminProviders = async function () {
                                                 )
                                             "
                                         >
-                                            <i class="
+                                            <i class="fas fa-clock"></i>
+                                            Move to Pending
+                                        </button>
+                                      `
+                                    : ""
+                            }
+
+
+                            <button
+                                type="button"
+                                onclick="
+                                    rejectProvider(
+                                        '${providerDoc.id}'
+                                    )
+                                "
+                            >
+                                <i class="fas fa-trash"></i>
+                                Remove
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }
+        );
+
+
+        container.innerHTML =
+            html ||
+            `
+                <div
+                    class="card"
+                    style="padding:30px;"
+                >
+                    <p>
+                        No providers have registered yet.
+                    </p>
+                </div>
+            `;
+
+
+    } catch (error) {
+
+        console.error(
+            "Provider loading error:",
+            error
+        );
+
+
+        container.innerHTML = `
+            <div
+                class="card"
+                style="padding:30px;"
+            >
+                <p>
+                    Unable to load providers right now.
+                </p>
+            </div>
+        `;
+
+    }
+
+};
+
+
+// =====================================================
+// APPROVE PROVIDER
+// =====================================================
+
+window.approveProvider = async function (id) {
+
+    try {
+
+        await updateDoc(
+            doc(db, "providers", id),
+            {
+                verified: true
+            }
+        );
+
+
+        alert(
+            "✅ Provider approved successfully."
+        );
+
+
+        await loadAdminProviders();
+        await loadAdminDashboard();
+
+
+    } catch (error) {
+
+        console.error(
+            "Approve error:",
+            error
+        );
+
+
+        alert(
+            "Unable to approve this provider."
+        );
+
+    }
+
+};
+
+
+// =====================================================
+// MOVE VERIFIED PROVIDER BACK TO PENDING
+// =====================================================
+
+window.unapproveProvider = async function (id) {
+
+    try {
+
+        await updateDoc(
+            doc(db, "providers", id),
+            {
+                verified: false
+            }
+        );
+
+
+        alert(
+            "Provider moved back to pending."
+        );
+
+
+        await loadAdminProviders();
+        await loadAdminDashboard();
+
+
+    } catch (error) {
+
+        console.error(
+            "Status update error:",
+            error
+        );
+
+
+        alert(
+            "Unable to update this provider."
+        );
+
+    }
+
+};
+
+
+// =====================================================
+// REMOVE PROVIDER
+// =====================================================
+
+window.rejectProvider = async function (id) {
+
+    const confirmed =
+        confirm(
+            "Are you sure you want to remove this provider?"
+        );
+
+
+    if (!confirmed) return;
+
+
+    try {
+
+        await deleteDoc(
+            doc(db, "providers", id)
+        );
+
+
+        alert(
+            "Provider removed successfully."
+        );
+
+
+        await loadAdminProviders();
+        await loadAdminDashboard();
+
+
+    } catch (error) {
+
+        console.error(
+            "Remove provider error:",
+            error
+        );
+
+
+        alert(
+            "Unable to remove this provider."
+        );
+
+    }
+
+};
+
+
+// =====================================================
+// SEARCH + FILTER
+// =====================================================
+
+window.searchProviders = function () {
+
+    const searchInput =
+        document.getElementById(
+            "providerSearch"
+        );
+
+    const statusFilter =
+        document.getElementById(
+            "statusFilter"
+        );
+
+    const categoryFilter =
+        document.getElementById(
+            "adminCategoryFilter"
+        );
+
+
+    const search =
+        searchInput?.value
+            .trim()
+            .toLowerCase() || "";
+
+
+    const status =
+        statusFilter?.value || "";
+
+
+    const category =
+        categoryFilter?.value
+            .trim()
+            .toLowerCase() || "";
+
+
+    const cards =
+        document.querySelectorAll(
+            ".provider-row"
+        );
+
+
+    cards.forEach((card) => {
+
+        const text =
+            card.innerText.toLowerCase();
+
+
+        const cardStatus =
+            card.dataset.status || "";
+
+
+        const cardCategory =
+            (card.dataset.category || "")
+                .toLowerCase();
+
+
+        const matchesSearch =
+            !search ||
+            text.includes(search);
+
+
+        const matchesStatus =
+            !status ||
+            cardStatus === status;
+
+
+        const matchesCategory =
+            !category ||
+            cardCategory === category;
+
+
+        card.style.display =
+            matchesSearch &&
+            matchesStatus &&
+            matchesCategory
+                ? ""
+                : "none";
+
+    });
+
+};
+
+
+// =====================================================
+// FILTER EVENTS
+// =====================================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        document
+            .getElementById("statusFilter")
+            ?.addEventListener(
+                "change",
+                searchProviders
+            );
+
+
+        document
+            .getElementById("adminCategoryFilter")
+            ?.addEventListener(
+                "change",
+                searchProviders
+            );
+
+    }
+);
