@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Provider Login | SkillBridge</title>
+
+    <meta
+        name="description"
+        content="Login to your SkillBridge provider account."
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<header class="site-header">
+
+    <a
+        href="index.html"
+        class="logo"
+    >
+
+        <span class="logo-icon">
+            <i class="fas fa-link"></i>
+        </span>
+
+        <span>
+            Skill<span>Bridge</span>
+        </span>
+
+    </a>
+
+
+    <div class="header-actions">
+
+        <a
+            href="index.html"
+            class="provider-btn"
+        >
+            Back to Website
+        </a>
+
+    </div>
+
+</header>
+
+
+
+<main
+    class="section"
+    style="
+        min-height:70vh;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+    "
+>
+
+    <div
+        class="card"
+        style="
+            width:100%;
+            max-width:500px;
+            padding:35px;
+        "
+    >
+
+        <div
+            class="section-label"
+            style="margin-bottom:10px;"
+        >
+            PROVIDER PORTAL
+        </div>
+
+
+        <h1>
+            Welcome Back
+        </h1>
+
+
+        <p>
+            Login to manage your SkillBridge provider account.
+        </p>
+
+
+        <form id="providerLoginForm">
+
+
+            <div style="margin-top:25px;">
+
+                <label for="providerEmail">
+                    Email Address
+                </label>
+
+                <input
+                    type="email"
+                    id="providerEmail"
+                    placeholder="Enter your email"
+                    required
+                >
+
+            </div>
+
+
+            <div style="margin-top:20px;">
+
+                <label for="providerPassword">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="providerPassword"
+                    placeholder="Enter your password"
+                    required
+                >
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="provider-btn"
+                style="
+                    width:100%;
+                    margin-top:25px;
+                    border:none;
+                    cursor:pointer;
+                "
+            >
+
+                <i class="fas fa-right-to-bracket"></i>
+
+                Login
+
+            </button>
+
+
+            <p
+                id="loginMessage"
+                style="
+                    margin-top:15px;
+                    text-align:center;
+                "
+            ></p>
+
+
+        </form>
+
+
+        <div
+            style="
+                margin-top:25px;
+                text-align:center;
+            "
+        >
+
+            <p>
+                Don't have a provider account?
+            </p>
+
+            <a href="provider.html">
+                Become a Provider
+            </a>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+
+<footer class="footer">
+
+    <div class="footer-bottom">
+
+        <span>
+            © 2026 SkillBridge. All Rights Reserved.
+        </span>
+
+        <span>
+            Provider Portal
+        </span>
+
+    </div>
+
+</footer>
+
+
+<script
+    type="module"
+    src="js/provider-login.js"
+></script>
+
+
+</body>
+
+</html>
