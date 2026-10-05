@@ -85,15 +85,29 @@
             padding: 18px;
         }
     }
-    .customer-login-btn,.customer-register-btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 14px;border-radius:9px;font-size:13px;font-weight:600;text-decoration:none;white-space:nowrap}
-    .customer-login-btn{color:#0b6e4f;border:1px solid #b9d9cd;background:#fff}
-    .customer-register-btn{color:#fff;background:#0b6e4f}
-    @media(max-width:1050px){.header-actions .customer-login-btn,.header-actions .customer-register-btn{display:none}}
+    .header-actions{gap:12px}
+    .customer-login-btn,.provider-login-btn{display:inline-flex;align-items:center;justify-content:center;padding:9px 2px;color:#e5edf1;font-size:12px;font-weight:500;white-space:nowrap;transition:color .18s ease}
+    .customer-login-btn:hover,.provider-login-btn:hover{color:#f4c542}
+    .customer-register-btn{display:inline-flex;align-items:center;justify-content:center;padding:9px 13px;border:1px solid rgba(255,255,255,.18);border-radius:8px;background:#0b6e4f;color:#fff;font-size:12px;font-weight:600;white-space:nowrap;transition:background .18s ease,transform .18s ease}
+    .customer-register-btn:hover{background:#0d805c;transform:translateY(-1px)}
+    .provider-login-btn{margin-left:3px;padding-left:14px;border-left:1px solid rgba(255,255,255,.16)}
+    .header-actions .provider-btn{padding:9px 13px;border-radius:8px;font-size:12px;white-space:nowrap}
+    .mobile-menu .customer-menu-link,.mobile-menu .provider-menu-link{margin-top:8px;background:transparent;color:#e5edf1!important;border:1px solid rgba(255,255,255,.12);}
+    .mobile-menu .customer-menu-link:hover,.mobile-menu .provider-menu-link:hover{background:rgba(255,255,255,.06);color:#fff!important}
+    .mobile-menu .customer-register-menu{margin-top:16px;background:#0b6e4f;color:#fff!important;border-color:#0b6e4f}
+    .mobile-menu .provider-menu-cta{margin-top:12px;background:#f4c542;color:#071827!important;border-color:#f4c542}
+    @media(max-width:1100px) and (min-width:769px){.desktop-nav{gap:15px}.desktop-nav a{font-size:13px}.header-actions{gap:8px}.customer-register-btn,.header-actions .provider-btn{padding:8px 10px;font-size:11px}.customer-login-btn,.provider-login-btn{font-size:11px}.provider-login-btn{padding-left:9px}}
+    /* Homepage uses one menu control at every screen size. */
+    body.home-page .desktop-nav,body.home-page .header-actions{display:none!important}
+    body.home-page .menu-btn{display:flex!important;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid rgba(255,255,255,.16);border-radius:10px;background:rgba(255,255,255,.06);color:#fff;font-size:20px;cursor:pointer}
+    body.home-page .mobile-menu{position:fixed;top:88px;right:6%;width:310px;height:auto;max-height:calc(100vh - 108px);overflow-y:auto;padding:18px;border:1px solid rgba(255,255,255,.1);border-radius:14px;background:#071b2a;box-shadow:0 18px 48px rgba(0,0,0,.32);display:flex;flex-direction:column;visibility:hidden;opacity:0;transform:translateY(-8px);transition:opacity .18s ease,transform .18s ease,visibility .18s ease;z-index:2000}
+    body.home-page .mobile-menu.open{top:88px;right:6%;visibility:visible;opacity:1;transform:translateY(0)}
+    @media(max-width:768px){body.home-page .mobile-menu{top:0;right:-100%;width:82%;max-width:360px;height:100vh;max-height:none;padding:22px;border:0;border-radius:0;visibility:visible;opacity:1;transform:none;transition:right .3s ease}body.home-page .mobile-menu.open{top:0;right:0}}
 </style>
 
 </head>
 
-<body>
+<body class="home-page">
 
 <!-- =========================================
 
@@ -119,51 +133,6 @@
 
 </a>
 
-<!-- Desktop Navigation -->
-
-<nav class="desktop-nav">
-
-<a href="index.html" class="active">
-
-            Home
-
-        </a>
-
-<a href="#categories">
-
-            Categories
-
-        </a>
-
-<a href="providers.html">
-
-            Providers
-
-        </a>
-
-<a href="#why">
-
-            About
-
-        </a>
-
-<a href="contact.html">
-
-            Contact
-
-        </a>
-
-</nav>
-
-<!-- Desktop Actions -->
-
-<div class="header-actions">
-<a href="customer/auth.html?mode=login" class="customer-login-btn">Customer Login</a>
-<a href="customer/auth.html?mode=register" class="customer-register-btn">Create Customer Account</a>
-<a href="provider-login.html" class="mobile-provider"><i class="fas fa-right-to-bracket"></i> Provider Login</a>
-<a href="provider.html" class="provider-btn">Become a Provider</a>
-</div>
-
 <!-- Mobile Menu Button -->
 
 <button
@@ -172,7 +141,9 @@
 
         id="menuBtn"
 
-        aria-label="Open menu"
+        aria-label="Open navigation menu"
+        aria-expanded="false"
+        aria-controls="mobileMenu"
 
     >
 
@@ -248,10 +219,10 @@
 
     </a>
 
-<a href="customer/auth.html?mode=login" class="mobile-provider"><i class="fas fa-right-to-bracket"></i> Customer Login</a>
-<a href="customer/auth.html?mode=register" class="mobile-provider"><i class="fas fa-user-plus"></i> Create Customer Account</a>
-<a href="provider-login.html" class="mobile-provider"><i class="fas fa-right-to-bracket"></i> Provider Login</a>
-<a href="provider.html" class="mobile-provider"><i class="fas fa-user-plus"></i> Become a Provider</a>
+<a href="customer/auth.html?mode=login" class="mobile-provider customer-menu-link"><i class="fas fa-right-to-bracket"></i> Customer Login</a>
+<a href="customer/auth.html?mode=register" class="mobile-provider customer-menu-link customer-register-menu"><i class="fas fa-user-plus"></i> Create Customer Account</a>
+<a href="provider-login.html" class="mobile-provider provider-menu-link"><i class="fas fa-right-to-bracket"></i> Provider Login</a>
+<a href="provider.html" class="mobile-provider provider-menu-link provider-menu-cta"><i class="fas fa-user-plus"></i> Become a Provider</a>
 
 </div>
 
@@ -1190,9 +1161,8 @@ const menuBtn = document.getElementById("menuBtn");
 if (menuBtn && mobileMenu) {
 
         menuBtn.addEventListener("click", function () {
-
-            mobileMenu.classList.add("open");
-
+            const isOpen = mobileMenu.classList.toggle("open");
+            menuBtn.setAttribute("aria-expanded", String(isOpen));
         });
 
     }
@@ -1202,9 +1172,17 @@ if (closeMenu && mobileMenu) {
         closeMenu.addEventListener("click", function () {
 
             mobileMenu.classList.remove("open");
+            menuBtn?.setAttribute("aria-expanded", "false");
 
         });
 
+    }
+
+    if (mobileMenu) {
+        mobileMenu.querySelectorAll("a").forEach(link => link.addEventListener("click", () => {
+            mobileMenu.classList.remove("open");
+            menuBtn?.setAttribute("aria-expanded", "false");
+        }));
     }
 
 });

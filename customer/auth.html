@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Create or sign in to your SkillBridge customer account.">
+  <title>Customer Login or Registration | SkillBridge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    body{min-height:100vh;background:#f3f7f6;color:#152a37;font-family:Poppins,sans-serif}.customer-auth{width:min(100% - 32px,520px);margin:58px auto;padding:clamp(24px,5vw,42px);border:1px solid #e1eae6;border-radius:20px;background:#fff;box-shadow:0 18px 48px rgba(12,46,36,.09)}
+    .auth-back{display:inline-flex;margin-bottom:22px;color:#0b6e4f;font-weight:600;text-decoration:none}.auth-logo{color:#102b3a;font-size:24px;font-weight:700}.auth-logo span{color:#0b6e4f}.customer-auth h1{margin:22px 0 8px;font-size:clamp(25px,5vw,32px);letter-spacing:-.7px}.auth-intro{margin:0 0 23px;color:#627583;font-size:14px;line-height:1.6}.auth-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:5px;border-radius:11px;background:#f1f5f3}.auth-tabs button{padding:11px;border:0;border-radius:8px;background:transparent;color:#536874;font:600 14px Poppins,sans-serif;cursor:pointer}.auth-tabs button.active{background:#fff;color:#0b6e4f;box-shadow:0 2px 8px #102b3a14}.auth-form{display:grid;gap:15px;margin-top:22px}.auth-form[hidden]{display:none}.auth-form label{display:grid;gap:7px;color:#334b59;font-size:13px;font-weight:600}.auth-form input{box-sizing:border-box;width:100%;min-height:48px;padding:11px 13px;border:1px solid #d9e2e5;border-radius:9px;font:400 14px Poppins,sans-serif}.auth-form input:focus{outline:0;border-color:#0b8a66;box-shadow:0 0 0 3px #0b8a661c}.auth-form button{min-height:48px;border:0;border-radius:9px;background:#0b6e4f;color:white;font:600 14px Poppins,sans-serif;cursor:pointer}.auth-status{min-height:24px;margin:15px 0 0;color:#526575;font-size:13px}.auth-status.error{color:#ad3030}.auth-status.success{color:#08784f}.auth-note{margin-top:20px;padding:13px 15px;border-radius:10px;background:#eff8f4;color:#48665b;font-size:12px;line-height:1.55}
+  </style>
+</head>
+<body>
+  <main class="customer-auth">
+    <a class="auth-back" href="../index.html">← Back to SkillBridge</a>
+    <div class="auth-logo">Skill<span>Bridge</span></div>
+    <h1 id="authHeading">Customer account</h1>
+    <p class="auth-intro">Sign in to find professionals, request quotes, save providers, and manage your bookings.</p>
+    <div class="auth-tabs" role="tablist" aria-label="Customer account options">
+      <button id="loginTab" type="button" role="tab">Customer Login</button>
+      <button id="registerTab" type="button" role="tab">Create Account</button>
+    </div>
+    <form id="customerLoginForm" class="auth-form" hidden>
+      <label>Email address<input id="customerLoginEmail" type="email" autocomplete="username" required></label>
+      <label>Password<input id="customerLoginPassword" type="password" autocomplete="current-password" required></label>
+      <button type="submit">Sign in to customer account</button>
+    </form>
+    <form id="customerRegisterForm" class="auth-form" hidden>
+      <label>Full name<input id="customerRegisterName" type="text" autocomplete="name" minlength="2" required></label>
+      <label>Email address<input id="customerRegisterEmail" type="email" autocomplete="email" required></label>
+      <label>Password<input id="customerRegisterPassword" type="password" autocomplete="new-password" minlength="6" required></label>
+      <button type="submit">Create customer account</button>
+    </form>
+    <p id="customerAuthStatus" class="auth-status" role="status" aria-live="polite"></p>
+    <p class="auth-note">Customer and provider accounts have separate sign-in pages. Use your provider login from the home page to manage a provider profile.</p>
+  </main>
+  <script type="module" src="../js/customer-auth.js"></script>
+</body>
+</html>

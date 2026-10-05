@@ -1,86 +1,475 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Provider Dashboard | SkillBridge</title>
+    <meta name="description" content="Manage your SkillBridge provider profile.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .dashboard-wrap{max-width:900px;margin:0 auto}.dashboard-card{padding:clamp(22px,4vw,42px)}
+        .dashboard-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+        .dashboard-form label{display:grid;gap:7px}.dashboard-form input,.dashboard-form select,.dashboard-form textarea{width:100%;box-sizing:border-box;padding:13px 14px;border:1px solid #d7dce3;border-radius:9px;font:inherit}
+        .dashboard-form textarea{min-height:125px;resize:vertical}.dashboard-form .wide{grid-column:1/-1}
+        .dashboard-status{min-height:1.5em;margin:12px 0}.dashboard-status.error{color:#a52828}.dashboard-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:22px}
+        .dashboard-toolbar a{margin-right:12px}.dashboard-note{padding:14px;border-radius:10px;background:rgba(120,120,120,.09)}
+        [hidden]{display:none!important}@media(max-width:640px){.dashboard-form{grid-template-columns:1fr}.dashboard-form .wide{grid-column:auto}}
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-
-<title>Provider Dashboard | SkillBridge</title>
-
-<link rel="stylesheet" href="style.css">
-
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
+        /* Dashboard refresh */
+        body{background:#f3f6f8;color:#182b3a}
+        .site-header{box-shadow:0 8px 28px rgba(7,24,39,.14)}
+        .hero{min-height:280px;padding:122px 6% 52px;text-align:left;background:radial-gradient(circle at 80% 25%,#176b62 0,transparent 32%),linear-gradient(120deg,#071827,#0d3541 78%,#0b6e4f)}
+        .hero::before{opacity:.09}.hero-overlay{background:linear-gradient(90deg,rgba(7,24,39,.38),transparent 70%)}
+        .hero-content{max-width:1120px}.hero-label{margin-bottom:12px}.hero h1{margin:0;font-size:clamp(34px,5vw,52px);letter-spacing:-1.5px}.hero p{margin:12px 0 0;font-size:15px}
+        main.section{padding:32px 6% 72px}.dashboard-wrap{max-width:1120px}
+        .dashboard-card{padding:clamp(22px,4vw,38px);border:1px solid #e3e9ed;border-radius:20px;background:#fff;box-shadow:0 18px 50px rgba(7,24,39,.08)}
+        #dashboardLoginPanel{max-width:580px;margin:-6px auto 0}.dashboard-card h2{margin:7px 0 22px;color:#102536;font-size:clamp(23px,3vw,30px);letter-spacing:-.7px}
+        #dashboardLoginPanel>p:last-child{margin-top:20px;color:#64748b;font-size:14px}#dashboardLoginPanel>p:last-child a{color:#0b6e4f;font-weight:600}
+        .dashboard-toolbar{align-items:center;padding-bottom:20px;margin-bottom:20px;border-bottom:1px solid #e9eef1}
+        .dashboard-toolbar h2{margin:5px 0 0}.dashboard-note{display:flex;align-items:flex-start;gap:11px;padding:16px 18px;border:1px solid #cce7dc;background:#f0faf5;color:#225846;font-size:14px;line-height:1.55}
+        .dashboard-note:before{content:"";width:9px;height:9px;flex:0 0 9px;margin-top:6px;border-radius:50%;background:#19a66a;box-shadow:0 0 0 4px #d7f1e4}
+        .dashboard-note.pending{border-color:#f0dfbd;background:#fff9eb;color:#76551b}.dashboard-note.pending:before{background:#e9a327;box-shadow:0 0 0 4px #fff0cf}
+        #dashboardPublicProfile{display:inline-flex;align-items:center;gap:8px;padding:10px 15px;border:1px solid #cfe4dc;border-radius:9px;color:#0b6e4f;font-size:13px;font-weight:600}
+        #dashboardPublicProfile:after{content:"↗";font-size:16px}#dashboardProfileForm{margin-top:18px;gap:17px 20px}
+        .dashboard-form label{color:#34495a;font-size:13px;font-weight:600}.dashboard-form input,.dashboard-form select,.dashboard-form textarea{margin-top:2px;border:1px solid #dce4e8;border-radius:10px;background:#fbfcfd;color:#172b3b;font-size:14px;transition:border-color .18s,box-shadow .18s}
+        .dashboard-form input,.dashboard-form select{min-height:48px}.dashboard-form textarea{min-height:138px;line-height:1.6}
+        .dashboard-form input:focus,.dashboard-form select:focus,.dashboard-form textarea:focus{outline:0;border-color:#0b8a66;box-shadow:0 0 0 3px rgba(11,138,102,.13);background:#fff}
+        .dashboard-form button[type=submit]{min-height:48px;justify-self:start;padding:0 24px;border-radius:10px;box-shadow:0 8px 18px rgba(11,110,79,.18)}
+        .dashboard-status{max-width:1120px;margin:14px auto 0;color:#526575;font-size:14px}.dashboard-status.error{padding:12px 15px;border-radius:10px;background:#fff0ef;color:#a52828}
+        #dashboardLogout{display:inline-flex;align-items:center;gap:8px;flex:0 0 auto;margin:0;border-color:#dce4e8;color:#44596a;background:#fff}.footer{margin-top:0}
+        .provider-requests-panel{margin-top:20px}.provider-requests-panel h2{margin:0 0 6px;color:#102536;font-size:22px}.provider-requests-panel>p{color:#647687;font-size:13px}.provider-request-list{display:grid;gap:14px;margin-top:18px}.provider-request-card{padding:18px;border:1px solid #e3e9ed;border-radius:13px;background:#fff}.provider-request-card h3{margin:0;color:#102536;font-size:16px}.provider-request-card p{margin:7px 0;color:#5d7180;font-size:13px;line-height:1.6;white-space:pre-wrap}.provider-request-card label{display:grid;gap:6px;margin-top:10px;font-size:12px;font-weight:600}.provider-request-card input,.provider-request-card textarea{width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid #d7dce3;border-radius:9px;font:inherit}.provider-request-card .request-respond{margin-top:12px;padding:10px 16px;border:0;border-radius:9px;background:#0b6e4f;color:white;font:600 13px Poppins,sans-serif;cursor:pointer}.request-status{display:inline-block;padding:5px 9px;border-radius:20px;background:#edf6f2;color:#0b7456;font-size:11px;font-weight:700;text-transform:capitalize}
+        @media(max-width:640px){.hero{min-height:240px;padding:112px 6% 38px}.hero h1{font-size:35px}.hero p{font-size:14px}.dashboard-card{border-radius:15px}.dashboard-form button[type=submit]{width:100%;justify-self:stretch}}
+    </style>
 </head>
-
-<body>
-
-<header class="header">
-
-<div class="logo">
-
-<i class="fas fa-bridge"></i>
-
-<span>SkillBridge</span>
-
-</div>
-
+<body class="provider-dashboard-page">
+<header class="site-header">
+    <a href="index.html" class="logo"><span class="logo-icon"><i class="fas fa-link"></i></span><span>Skill<span>Bridge</span></span></a>
+    <nav class="desktop-nav"><a href="index.html">Home</a><a href="providers.html">Providers</a><a href="provider.html">Register</a><a href="dashboard.html" class="active">Dashboard</a></nav>
+    <div class="header-actions"><a href="providers.html" class="provider-btn">Find a Provider</a></div>
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu"><i class="fas fa-bars"></i></button>
 </header>
-
-<section class="dashboard">
-
-<h1>Provider Dashboard</h1>
-
-<div class="dashboard-grid">
-
-<div class="dashboard-card">
-
-<h2 id="totalRequests">0</h2>
-
-<p>Quote Requests</p>
-
+<div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-header"><strong>SkillBridge</strong><button id="closeMenu" aria-label="Close menu"><i class="fas fa-times"></i></button></div>
+    <a href="index.html">Home</a><a href="providers.html">Providers</a><a href="provider.html">Register</a><a href="dashboard.html">Dashboard</a>
 </div>
+<section class="hero"><div class="hero-overlay"></div><div class="hero-content"><div class="hero-label"><i class="fas fa-user-tie"></i> PROVIDER ACCOUNT</div><h1>Provider <span>Dashboard</span></h1><p>Update your information and keep your public profile current.</p></div></section>
+<main class="section"><div class="dashboard-wrap">
+    <section id="dashboardLoginPanel" class="card dashboard-card" hidden>
+        <div class="section-label">WELCOME BACK</div><h2>Sign in to your provider account</h2>
+        <form id="dashboardLoginForm" class="dashboard-form">
+            <label class="wide">Email address<input id="dashboardLoginEmail" type="email" autocomplete="username" required></label>
+            <label class="wide">Password<input id="dashboardPassword" type="password" autocomplete="current-password" required></label>
+            <button class="search-btn wide" type="submit">Sign in</button>
+        </form>
+        <p>New to SkillBridge? <a href="provider.html">Register as a provider</a></p>
+    </section>
+    <section id="dashboardProfilePanel" class="card dashboard-card" hidden>
+        <div class="dashboard-toolbar"><div><div class="section-label">YOUR ACCOUNT</div><h2>Manage your provider profile</h2></div><button id="dashboardLogout" class="login-btn" type="button" hidden><i class="fas fa-right-from-bracket" aria-hidden="true"></i> Sign out</button></div>
+        <p id="dashboardApproval" class="dashboard-note" role="status"></p>
+        <p><a id="dashboardPublicProfile" href="#" hidden>View public profile</a></p>
+        <form id="dashboardProfileForm" class="dashboard-form">
+            <label>Your name<input id="dashboardName" autocomplete="name" required></label>
+            <label>Business name<input id="dashboardBusinessName" autocomplete="organization"></label>
+            <label>Service category<select id="dashboardCategory" required>
 
-<div class="dashboard-card">
 
-<h2 id="totalReviews">0</h2>
 
-<p>Reviews</p>
+            <option value="">
 
-</div>
+                Select your service category *
 
-<div class="dashboard-card">
+            </option>
 
-<h2 id="averageRating">0.0</h2>
 
-<p>Average Rating</p>
 
-</div>
 
-<div class="dashboard-card">
 
-<h2 id="skillScore">50</h2>
+            <optgroup label="Home Services">
 
-<p>SkillScore</p>
 
-</div>
 
-</div>
+                <option>Plumbing</option>
 
-<h2>Incoming Quote Requests</h2>
+                <option>Electrical</option>
 
-<div id="requestsList">
+                <option>Carpentry</option>
 
-Loading...
+                <option>Painting</option>
 
-</div>
+                <option>Masonry</option>
 
-</section>
+                <option>Roofing</option>
 
-<script type="module" src="app.js"></script>
+                <option>Tiling</option>
 
+                <option>POP Ceiling</option>
+
+                <option>Interior Decoration</option>
+
+                <option>Cleaning Services</option>
+
+                <option>Laundry & Dry Cleaning</option>
+
+                <option>Pest Control</option>
+
+                <option>Gardening & Landscaping</option>
+
+                <option>Borehole Drilling</option>
+
+                <option>Water Treatment</option>
+
+                <option>Generator Repair</option>
+
+                <option>Solar Installation</option>
+
+                <option>Air Conditioning</option>
+
+                <option>Refrigeration</option>
+
+
+
+            </optgroup>
+
+
+
+
+
+            <optgroup label="Automobile">
+
+
+
+                <option>Auto Mechanic</option>
+
+                <option>Car Wash</option>
+
+                <option>Car Detailing</option>
+
+                <option>Tyre Repair</option>
+
+                <option>Panel Beating</option>
+
+                <option>Auto Electrical</option>
+
+                <option>Vehicle Towing</option>
+
+
+
+            </optgroup>
+
+
+
+
+
+            <optgroup label="Fashion & Beauty">
+
+
+
+                <option>Tailoring</option>
+
+                <option>Fashion Design</option>
+
+                <option>Hair Dressing</option>
+
+                <option>Barbing</option>
+
+                <option>Makeup Artist</option>
+
+                <option>Nail Technician</option>
+
+                <option>Spa & Massage</option>
+
+                <option>Wig Making</option>
+
+                <option>Fashion Accessories</option>
+
+
+
+            </optgroup>
+
+
+
+
+
+            <optgroup label="Technology">
+
+
+
+                <option>Phone Repair</option>
+
+                <option>Computer Repair</option>
+
+                <option>Laptop Repair</option>
+
+                <option>Web Development</option>
+
+                <option>Mobile App Development</option>
+
+                <option>Graphic Design</option>
+
+                <option>UI/UX Design</option>
+
+                <option>Cyber Security</option>
+
+                <option>Digital Marketing</option>
+
+                <option>Software Development</option>
+
+                <option>IT Support</option>
+
+                <option>Data Analysis</option>
+
+
+
+            </optgroup>
+
+
+
+
+
+            <optgroup label="Education">
+
+
+
+                <option>Private Tutor</option>
+
+                <option>Music Teacher</option>
+
+                <option>Language Teacher</option>
+
+                <option>Exam Preparation</option>
+
+                <option>Computer Training</option>
+
+
+
+            </optgroup>
+
+
+
+
+
+            <optgroup label="Business & Professional">
+
+
+
+                <option>Accountant</option>
+
+                <option>Lawyer</option>
+
+                <option>Business Consultant</option>
+
+                <option>Real Estate Agent</option>
+
+                <option>Insurance Agent</option>
+
+                <option>Event Consultant</option>
+
+
+
+            </optgroup>
+
+
+
+
+
+            <optgroup label="Events & Entertainment">
+
+
+
+                <option>Photography</option>
+
+                <option>Videography</option>
+
+                <option>DJ Services</option>
+
+                <option>MC Services</option>
+
+                <option>Event Planning</option>
+
+                <option>Catering</option>
+
+                <option>Cake Baking</option>
+
+                <option>Decoration</option>
+
+                <option>Sound & Lighting</option>
+
+
+
+            </optgroup>
+
+
+
+
+
+            <optgroup label="Logistics & Moving">
+
+
+
+                <option>Movers & Relocation</option>
+
+                <option>Delivery Services</option>
+
+                <option>Dispatch Rider</option>
+
+                <option>Truck Services</option>
+
+                <option>Logistics Services</option>
+
+
+
+            </optgroup>
+
+
+
+
+
+            <optgroup label="Other Services">
+
+
+
+                <option>Security Services</option>
+
+                <option>Personal Trainer</option>
+
+                <option>Fitness Coach</option>
+
+                <option>Caregiver</option>
+
+                <option>Pet Services</option>
+
+                <option>Gardener</option>
+
+                <option>Other</option>
+
+
+
+            </optgroup>
+
+
+
+        </select></label>
+            <label>State<select id="dashboardState" required>
+
+
+
+            <option value="">
+
+                Select State *
+
+            </option>
+
+
+
+            <option>Abia</option>
+
+            <option>Adamawa</option>
+
+            <option>Akwa Ibom</option>
+
+            <option>Anambra</option>
+
+            <option>Bauchi</option>
+
+            <option>Bayelsa</option>
+
+            <option>Benue</option>
+
+            <option>Borno</option>
+
+            <option>Cross River</option>
+
+            <option>Delta</option>
+
+            <option>Ebonyi</option>
+
+            <option>Edo</option>
+
+            <option>Ekiti</option>
+
+            <option>Enugu</option>
+
+            <option>FCT - Abuja</option>
+
+            <option>Gombe</option>
+
+            <option>Imo</option>
+
+            <option>Jigawa</option>
+
+            <option>Kaduna</option>
+
+            <option>Kano</option>
+
+            <option>Katsina</option>
+
+            <option>Kebbi</option>
+
+            <option>Kogi</option>
+
+            <option>Kwara</option>
+
+            <option>Lagos</option>
+
+            <option>Nasarawa</option>
+
+            <option>Niger</option>
+
+            <option>Ogun</option>
+
+            <option>Ondo</option>
+
+            <option>Osun</option>
+
+            <option>Oyo</option>
+
+            <option>Plateau</option>
+
+            <option>Rivers</option>
+
+            <option>Sokoto</option>
+
+            <option>Taraba</option>
+
+            <option>Yobe</option>
+
+            <option>Zamfara</option>
+
+
+
+        </select></label>
+            <label>City or LGA<input id="dashboardLocation" required></label>
+            <label>Phone<input id="dashboardPhone" type="tel" autocomplete="tel" required></label>
+            <label>WhatsApp<input id="dashboardWhatsapp" type="tel"></label>
+            <label>Email<input id="dashboardEmail" type="email" autocomplete="email" required></label>
+            <label>Years of experience<input id="dashboardExperience" type="number" min="0"></label>
+            <label>Business hours<input id="dashboardBusinessHours"></label>
+            <label class="wide">About your services<textarea id="dashboardDescription"></textarea></label>
+            <button class="search-btn wide" type="submit">Save profile</button>
+        </form>
+    </section>
+    <section id="providerRequestsPanel" class="card dashboard-card provider-requests-panel" hidden>
+        <div class="section-label">CUSTOMER ENQUIRIES</div><h2>Quote Requests</h2><p>Reply with an estimate so the customer can decide whether to book.</p>
+        <div id="providerRequestList" class="provider-request-list"><p>Loading requests...</p></div>
+        <p id="providerRequestStatus" class="dashboard-status" role="status" aria-live="polite"></p>
+    </section>
+    <p id="dashboardStatus" class="dashboard-status" role="status" aria-live="polite"></p>
+</div></main>
+<footer class="footer"><div class="footer-container"><div class="footer-brand"><a href="index.html" class="logo"><span class="logo-icon"><i class="fas fa-link"></i></span><span>Skill<span>Bridge</span></span></a><p>Connecting customers with trusted professionals across Nigeria.</p></div></div><div class="footer-bottom"><span>© 2026 SkillBridge. All Rights Reserved.</span><span>Built for Nigeria 🇳🇬</span></div></footer>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const menu = document.getElementById("mobileMenu");
+    document.getElementById("menuBtn")?.addEventListener("click", () => menu?.classList.add("open"));
+    document.getElementById("closeMenu")?.addEventListener("click", () => menu?.classList.remove("open"));
+    document.querySelectorAll(".mobile-menu a").forEach((link) => link.addEventListener("click", () => menu?.classList.remove("open")));
+});
+</script>
+<script type="module" src="js/providers.js"></script>
+<script type="module" src="js/provider-requests.js"></script>
 </body>
-
 </html>
+

@@ -1,36 +1,49 @@
-Customer Dashboard | SkillBridge Customer Dashboard Logout 
-
-0 
-
-Quote Requests
-
-0 
-
-Bookings
-
-0 
-
-Favourite Providers
-
-0 
-
-Reviews
-
-Quick Actions 
-
-Find Professionals 
-
-Search for trusted providers
-
-Saved Providers 
-
-View your favourite providers
-
-Messages 
-
-Chat with service providers
-
-My Profile 
-
-Manage your account
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Manage your SkillBridge customer account, bookings, quotes, and reviews.">
+  <title>Customer Dashboard | SkillBridge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <style>
+    body{min-height:100vh;background:#f3f7f6;color:#152a37;font-family:Poppins,sans-serif}.customer-dashboard{width:calc(100% - 36px);max-width:1120px;margin:48px auto 72px}.customer-heading{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:28px}.customer-heading h1{margin:5px 0;color:#102b3a;font-size:clamp(27px,5vw,38px)}.customer-heading p{margin:0;color:#627583}.customer-heading button{padding:11px 16px;border:1px solid #d6e2de;border-radius:9px;background:white;color:#284555;font:600 13px Poppins,sans-serif;cursor:pointer}.customer-heading button i{margin-right:7px}.customer-stats,.customer-links{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}.customer-stat,.customer-link{padding:22px;border:1px solid #e1eae6;border-radius:15px;background:white;box-shadow:0 10px 30px #102b3a0a}.customer-stat span{display:block;color:#627583;font-size:13px}.customer-stat strong{display:block;margin-top:7px;color:#0b6e4f;font-size:30px}.customer-section-title{margin:34px 0 15px;color:#102b3a;font-size:21px}.customer-link{display:block;color:#102b3a;text-decoration:none;transition:transform .18s,border-color .18s}.customer-link:hover{transform:translateY(-2px);border-color:#acd5c4}.customer-link i{display:grid;width:42px;height:42px;place-items:center;margin-bottom:15px;border-radius:11px;background:#edf8f4;color:#0b6e4f}.customer-link strong{display:block;margin-bottom:5px}.customer-link span{color:#627583;font-size:13px}.customer-activity{padding:20px;border:1px solid #e1eae6;border-radius:15px;background:#fff;color:#627583}.customer-activity p{margin:8px 0}.customer-activity p:first-child{margin-top:0}.customer-status{min-height:1.5em;color:#a52828;font-size:14px}
+    @media(max-width:760px){.customer-dashboard{width:calc(100% - 32px);margin:30px auto 54px}.customer-heading{align-items:flex-start}.customer-stats,.customer-links{grid-template-columns:repeat(2,minmax(0,1fr))}.customer-stat,.customer-link{padding:17px}}
+    @media(max-width:420px){.customer-heading{flex-direction:column}.customer-stats,.customer-links{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a href="../index.html" class="logo"><span class="logo-icon"><i class="fas fa-link"></i></span><span>Skill<span>Bridge</span></span></a>
+    <nav class="desktop-nav"><a href="../index.html">Home</a><a href="../providers.html">Find Professionals</a><a href="dashboard.html" class="active">Customer Dashboard</a></nav>
+  </header>
+  <main class="customer-dashboard">
+    <div class="customer-heading"><div><div class="section-label">CUSTOMER ACCOUNT</div><h1>Welcome, <span id="customerName">Customer</span></h1><p id="customerEmail"></p></div><button id="customerLogoutMobile" type="button"><i class="fas fa-right-from-bracket"></i> Sign out</button></div>
+    <section class="customer-stats" aria-label="Account summary">
+      <div class="customer-stat"><span>Quote Requests</span><strong id="quoteCount">0</strong></div>
+      <div class="customer-stat"><span>Bookings</span><strong id="bookingCount">0</strong></div>
+    <div class="customer-stat"><span>Favourite Providers</span><strong aria-label="Count unavailable">—</strong></div>
+      <div class="customer-stat"><span>Reviews</span><strong id="reviewCount">0</strong></div>
+    </section>
+    <h2 class="customer-section-title">Quick Actions</h2>
+    <nav class="customer-links" aria-label="Customer account links">
+      <a class="customer-link" href="../providers.html"><i class="fas fa-magnifying-glass"></i><strong>Find Professionals</strong><span>Search for trusted providers</span></a>
+      <a class="customer-link" href="favourites.html"><i class="fas fa-heart"></i><strong>Saved Providers</strong><span>View your favourite providers</span></a>
+      <a class="customer-link" href="messages.html"><i class="fas fa-comments"></i><strong>Messages</strong><span>Chat with service providers</span></a>
+      <a class="customer-link" href="profile.html"><i class="fas fa-user"></i><strong>My Profile</strong><span>Manage your account</span></a>
+    </nav>
+    <h2 class="customer-section-title">Recent Activity</h2>
+    <div id="activityList" class="customer-activity">Loading your account activity…</div>
+    <p id="customerDashboardStatus" class="customer-status" role="status" aria-live="polite"></p>
+  </main>
+  <script>
+    document.getElementById("customerLogout")?.addEventListener("click", () => window.dispatchEvent(new Event("customer-logout")));
+    document.getElementById("customerLogoutMobile")?.addEventListener("click", () => window.dispatchEvent(new Event("customer-logout")));
+  </script>
+  <script type="module" src="../js/customer-dashboard.js"></script>
+</body>
+</html>

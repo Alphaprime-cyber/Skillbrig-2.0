@@ -1,55 +1,42 @@
+import { auth, db } from "./firebase.js";
+import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
+import { collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
-import { db } from "./firebase.js";
-import { auth } from "./firebase.js";
+const byId = (id) => document.getElementById(id);
+const loginUrl = "auth.html?mode=login";
 
-import {
-collection,
-getDocs,
-query,
-where
-} from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
-
-import {
-onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
+window.addEventListener("customer-logout", async () => {
+  try {
+    await signOut(auth);
+    window.location.assign(loginUrl);
+  } catch (error) {
+    byId("customerDashboardStatus").textContent = error.message || "Could not sign out. Please try again.";
+  }
+});
 
 onAuthStateChanged(auth, async (user) => {
+  if (!user) {
+    window.location.replace(loginUrl);
+    return;
+  }
 
-if (!user) {
+  byId("customerName").textContent = user.displayName || "Customer";
+  byId("customerEmail").textContent = user.email || "";
 
-window.location = "login.html";
-return;
+  try {
+    const email = user.email;
+    const [bookings, quotes, reviews] = await Promise.all([
+      getDocs(query(collection(db, "bookings"), where("customerEmail", "==", email))),
+      getDocs(query(collection(db, "quotes"), where("customerEmail", "==", email))),
+      getDocs(query(collection(db, "reviews"), where("customerEmail", "==", email))),
+    ]);
 
-}
-
-const email = user.email;
-
-// Load Bookings
-const bookings = await getDocs(
-query(collection(db,"bookings"),
-where("customerEmail","==",email))
-);
-
-// Load Quotes
-const quotes = await getDocs(
-query(collection(db,"quotes"),
-where("customerEmail","==",email))
-);
-
-// Load Reviews
-const reviews = await getDocs(
-query(collection(db,"reviews"),
-where("customerEmail","==",email))
-);
-
-document.getElementById("bookingCount").textContent = bookings.size;
-document.getElementById("quoteCount").textContent = quotes.size;
-document.getElementById("reviewCount").textContent = reviews.size;
-
-document.getElementById("activityList").innerHTML = `
-<p>📅 Bookings: ${bookings.size}</p>
-<p>📩 Quotes: ${quotes.size}</p>
-<p>⭐ Reviews: ${reviews.size}</p>
-`;
-
+    byId("bookingCount").textContent = bookings.size;
+    byId("quoteCount").textContent = quotes.size;
+    byId("reviewCount").textContent = reviews.size;
+    byId("activityList").innerHTML = `<p>Bookings: ${bookings.size}</p><p>Quote requests: ${quotes.size}</p><p>Reviews: ${reviews.size}</p>`;
+  } catch (error) {
+    byId("activityList").textContent = "Your account is signed in, but activity could not be loaded.";
+    byId("customerDashboardStatus").textContent = error.message || "Please check your connection and try again.";
+  }
 });
