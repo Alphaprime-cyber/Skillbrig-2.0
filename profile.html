@@ -1,346 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Provider Profile | SkillBridge</title>
-
-<link rel="stylesheet" href="style.css">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillBridge | Provider Profile</title>
+    <meta name="description" content="View a SkillBridge professional profile and contact details.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .profile-wrap{max-width:960px;margin:0 auto}.profile-card{padding:clamp(24px,5vw,52px)}
+        .profile-heading{margin-bottom:30px}.profile-heading h1{margin:10px 0 8px;overflow-wrap:anywhere}
+        .profile-meta{display:flex;flex-wrap:wrap;gap:12px 24px;margin:20px 0;color:inherit}
+        .profile-section{padding:22px 0;border-top:1px solid rgba(120,120,120,.2)}
+        .profile-section h2{font-size:1.2rem;margin:0 0 12px}.profile-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:14px}
+        .profile-stat{padding:16px;border-radius:12px;background:rgba(120,120,120,.08)}.profile-stat strong{display:block;font-size:1.2rem;margin-top:6px}
+        .profile-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}.profile-actions a{display:inline-flex;align-items:center;gap:9px;text-decoration:none}
+        .profile-actions a[aria-disabled="true"]{opacity:.5;pointer-events:none}.profile-status{min-height:1.5em;color:#a33}
+        .reviews-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,.75fr);gap:24px;align-items:start}
+        .review-list{display:grid;gap:14px}.review-item{padding:16px;border:1px solid rgba(120,120,120,.2);border-radius:12px}
+        .review-item h3{font-size:1rem;margin:0 0 4px}.review-item p{margin:10px 0 0;white-space:pre-wrap;overflow-wrap:anywhere}
+        .review-date{font-size:.85rem;opacity:.72}.review-stars{color:#e49a00;letter-spacing:.08em}
+        .review-form{display:grid;gap:12px;padding:18px;border-radius:14px;background:rgba(120,120,120,.08)}
+        .review-form label{display:grid;gap:6px}.review-form input,.review-form textarea{width:100%;padding:11px;border:1px solid rgba(120,120,120,.35);border-radius:8px;font:inherit}
+        .star-picker{display:flex;flex-direction:row-reverse;justify-content:flex-end;gap:4px}.star-picker input{position:absolute;opacity:0;pointer-events:none}
+        .star-picker label{display:block;font-size:1.8rem;cursor:pointer;color:#aaa}.star-picker label:hover,.star-picker label:hover~label,.star-picker input:checked~label{color:#e49a00}
+        .review-notice{min-height:1.4em}.review-notice.error{color:#a33}.review-auth{display:grid;gap:10px}.review-auth[hidden]{display:none}
+        .quote-request-form,.quote-auth-form{display:grid;gap:12px;padding:18px;border-radius:14px;background:rgba(120,120,120,.08)}
+        .quote-request-form label,.quote-auth-form label{display:grid;gap:6px}.quote-request-form input,.quote-request-form textarea,.quote-auth-form input{width:100%;padding:11px;border:1px solid rgba(120,120,120,.35);border-radius:8px;font:inherit}
+        .quote-request-form[hidden],.quote-auth-form[hidden]{display:none}.quote-notice{min-height:1.4em}.quote-notice.error{color:#a33}
+        @media(max-width:700px){.reviews-grid{grid-template-columns:1fr}}
+    </style>
 </head>
-
 <body>
-
-<header class="header">
-
-<div class="logo">
-<i class="fas fa-bridge"></i>
-<span>SkillBridge</span>
-</div>
-
-<nav>
-
-<a href="index.html">Home</a>
-<a href="provider.html">Become a Provider</a>
-<a href="contact.html">Contact</a>
-
-</nav>
-
+<header class="site-header">
+    <a href="index.html" class="logo"><span class="logo-icon"><i class="fas fa-link"></i></span><span>Skill<span>Bridge</span></span></a>
+    <nav class="desktop-nav">
+        <a href="index.html">Home</a><a href="index.html#categories">Categories</a><a href="providers.html" class="active">Providers</a><a href="index.html#why">About</a><a href="contact.html">Contact</a>
+    </nav>
+    <div class="header-actions"><a href="provider.html" class="provider-btn">Become a Provider</a><a href="dashboard.html" class="login-btn">Login</a></div>
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu"><i class="fas fa-bars"></i></button>
 </header>
-
-<section class="provider-profile">
-
-<div class="cover-image">
-
-<img id="coverImage"
-src="images/default-cover.jpg"
-alt="Cover Image">
-
+<div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-header"><strong>SkillBridge</strong><button id="closeMenu" aria-label="Close menu"><i class="fas fa-times"></i></button></div>
+    <a href="index.html"><i class="fas fa-house"></i> Home</a><a href="index.html#categories"><i class="fas fa-layer-group"></i> Categories</a><a href="providers.html"><i class="fas fa-user-tie"></i> Providers</a><a href="index.html#why"><i class="fas fa-circle-info"></i> About</a><a href="contact.html"><i class="fas fa-envelope"></i> Contact</a><a href="provider.html" class="mobile-provider"><i class="fas fa-user-plus"></i> Become a Provider</a>
 </div>
+<section class="hero"><div class="hero-overlay"></div><div class="hero-content"><div class="hero-label"><i class="fas fa-user-tie"></i> SKILLBRIDGE PROFESSIONAL</div><h1>Provider <span>Profile</span></h1><p>Connect with a verified professional across Nigeria.</p></div></section>
+<main class="section">
+    <div class="profile-wrap">
+        <article class="card profile-card">
+            <div class="profile-heading">
+                <div class="section-label">PROVIDER PROFILE</div>
+                <h1 id="businessName">Loading profile...</h1>
+                <p id="category"></p>
+                <div class="profile-meta"><span id="location"></span><span id="experience"></span><span id="businessHours"></span></div>
+            </div>
+            <p id="profileStatus" class="profile-status" role="status" aria-live="polite"></p>
+            <section class="profile-section"><h2>About</h2><p id="description">Loading provider information...</p></section>
+            <section class="profile-section"><h2>Provider details</h2>
+                <div class="profile-stats">
+                    <div class="profile-stat">Rating<strong id="rating">—</strong></div>
+                    <div class="profile-stat">Reviews<strong id="totalReviews">—</strong></div>
+                    <div class="profile-stat">Jobs completed<strong id="jobsCompleted">—</strong></div>
+                    <div class="profile-stat">SkillBridge score<strong id="skillScore">—</strong></div>
+                </div>
+            </section>
+            <section class="profile-section" id="quoteRequestSection">
+                <h2>Request a quote</h2>
+                <p>Tell this provider what you need. They’ll reply with an estimate.</p>
+                <form id="quoteAuthForm" class="quote-auth-form" hidden>
+                    <p>Sign in or create a customer account to request a quote.</p>
+                    <label>Email<input id="quoteEmail" type="email" autocomplete="email" required></label>
+                    <label>Password<input id="quotePassword" type="password" autocomplete="current-password" minlength="8" required></label>
+                    <label id="quoteNameWrap" hidden>Your name<input id="quoteName" type="text" autocomplete="name" maxlength="80"></label>
+                    <div style="display:flex;gap:10px;flex-wrap:wrap"><button class="login-btn" type="submit">Sign in</button><button class="provider-btn" id="createQuoteAccount" type="button">Create account</button></div>
+                </form>
+                <form id="quoteRequestForm" class="quote-request-form" hidden>
+                    <label>What service do you need?<input id="quoteService" maxlength="120" required placeholder="For example, repair a leaking tap"></label>
+                    <label>Describe the work<textarea id="quoteDescription" rows="4" maxlength="2000" required placeholder="Add useful details about the job"></textarea></label>
+                    <label>Preferred date (optional)<input id="quotePreferredDate" type="date"></label>
+                    <button class="search-btn" type="submit">Send quote request</button>
+                </form>
+                <p id="quoteNotice" class="quote-notice" role="status" aria-live="polite"></p>
+            </section>
+            <section class="profile-section" id="reviewsSection" aria-labelledby="reviewsHeading">
+                <h2 id="reviewsHeading">Customer reviews</h2>
+                <p id="reviewSummary">Loading reviews...</p>
+                <div class="reviews-grid">
+                    <div id="reviewsList" class="review-list" aria-live="polite"></div>
+                    <div>
+                        <form id="reviewAuthForm" class="review-auth" hidden>
+                            <p>Sign in or create a customer account to leave a review.</p>
+                            <label>Email<input id="reviewEmail" type="email" autocomplete="email" required></label>
+                            <label>Password<input id="reviewPassword" type="password" autocomplete="current-password" minlength="8" required></label>
+                            <label id="reviewNameWrap" hidden>Your name<input id="reviewName" type="text" autocomplete="name" maxlength="80"></label>
+                            <div style="display:flex;gap:10px;flex-wrap:wrap"><button class="login-btn" type="submit">Sign in</button><button class="provider-btn" id="createCustomerAccount" type="button">Create account</button></div>
+                        </form>
+                        <button id="reviewSignOut" class="login-btn" type="button" hidden>Sign out of review account</button>
+                        <form id="reviewForm" class="review-form" hidden>
+                            <strong>Share your experience</strong>
+                            <fieldset style="border:0;padding:0;margin:0"><legend>Rating (required)</legend><div class="star-picker" role="radiogroup" aria-label="Rating">
+                                <input id="star5" type="radio" name="reviewRating" value="5" required><label for="star5" aria-label="5 stars">★</label>
+                                <input id="star4" type="radio" name="reviewRating" value="4"><label for="star4" aria-label="4 stars">★</label>
+                                <input id="star3" type="radio" name="reviewRating" value="3"><label for="star3" aria-label="3 stars">★</label>
+                                <input id="star2" type="radio" name="reviewRating" value="2"><label for="star2" aria-label="2 stars">★</label>
+                                <input id="star1" type="radio" name="reviewRating" value="1"><label for="star1" aria-label="1 star">★</label>
+                            </div></fieldset>
+                            <label>Your review<textarea id="reviewComment" rows="5" maxlength="2000" required placeholder="What should others know about your experience?"></textarea></label>
+                            <button class="search-btn" type="submit">Submit review</button>
+                        </form>
+                        <p id="reviewNotice" class="review-notice" role="status" aria-live="polite"></p>
+                    </div>
+                </div>
+            </section>
+            <div class="profile-actions" aria-label="Contact provider">
+                <a id="callButton" class="search-btn" aria-disabled="true"><i class="fas fa-phone"></i> Call</a>
+                <a id="whatsappButton" class="provider-btn" aria-disabled="true"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                <a id="emailButton" class="login-btn" aria-disabled="true"><i class="fas fa-envelope"></i> Email</a>
+            </div>
+            <p style="margin-top:24px"><a href="providers.html">← Back to Providers</a></p>
+        </article>
+    </div>
+</main>
+<footer class="footer"><div class="footer-container"><div class="footer-brand"><a href="index.html" class="logo"><span class="logo-icon"><i class="fas fa-link"></i></span><span>Skill<span>Bridge</span></span></a><p>Connecting customers with trusted and verified professionals across Nigeria.</p></div></div><div class="footer-bottom"><span>© 2026 SkillBridge. All Rights Reserved.</span><span>Built for Nigeria 🇳🇬</span></div></footer>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const menu = document.getElementById("mobileMenu");
+    document.getElementById("menuBtn")?.addEventListener("click", () => menu?.classList.add("open"));
+    document.getElementById("closeMenu")?.addEventListener("click", () => menu?.classList.remove("open"));
+    document.querySelectorAll(".mobile-menu a").forEach(link => link.addEventListener("click", () => menu?.classList.remove("open")));
+});
+</script>
+<script type="module" src="js/firebase.js"></script>
+<script type="module" src="js/providers.js"></script>
+<script type="module" src="js/reviews.js"></script>
+<script type="module" src="js/quote-requests.js"></script>
+</body>
+</html>
 
-<div class="profile-card">
-
-<img
-id="profileImage"
-src="images/default-provider.png"
-class="profile-photo">
-
-<h1 id="businessName">
-
-Loading...
-
-</h1>
-
-<div class="verified-badge">
-
-✅ VERIFIED PROVIDER
-
-</div>
-
-<p id="rating">
-
-⭐ 0.0
-
-</p>
-
-<p id="skillScore">
-
-🏆 SkillScore 50
-
-</p>
-
-<p id="category"></p>
-
-<p id="experience"></p>
-
-<p id="location"></p>
-
-<p id="businessHours"></p>
-
-<p id="description"></p>
-<section class="dashboard">
-
-<div class="dashboard-grid">
-
-<div class="dashboard-card">
-<i class="fas fa-star"></i>
-<h3 id="averageRating">0.0</h3>
-<p>Average Rating</p>
-</div>
-
-<div class="dashboard-card">
-<i class="fas fa-comments"></i>
-<h3 id="totalReviews">0</h3>
-<p>Reviews</p>
-</div>
-
-<div class="dashboard-card">
-<i class="fas fa-briefcase"></i>
-<h3 id="jobsCompleted">0</h3>
-<p>Jobs Completed</p>
-</div>
-
-<div class="dashboard-card">
-<i class="fas fa-user-check"></i>
-<h3 id="yearsExperience">0</h3>
-<p>Years Experience</p>
-</div>
-
-</div>
-
-</section>
-
-<hr>
-
-<p>
-
-<strong>Member Since:</strong>
-
-<span id="memberSince">
-
-2026
-
-</span>
-
-</p>
-
-<p>
-
-<strong>Total Reviews:</strong>
-
-<span id="totalReviews">
-
-0
-
-</span>
-
-</p>
-
-<p>
-
-<strong>Jobs Completed:</strong>
-
-<span id="jobsCompleted">
-
-0
-
-</span>
-
-</p>
-
-<div class="profile-buttons">
-
-<a id="callButton">
-<button class="call-btn">
-<i class="fas fa-phone"></i> Call
-</button>
-</a>
-
-<a id="whatsappButton" target="_blank">
-<button class="whatsapp-btn">
-<i class="fab fa-whatsapp"></i> WhatsApp
-</button>
-</a>
-
-<a id="emailButton">
-<button class="email-btn">
-<i class="fas fa-envelope"></i> Email
-</button>
-</a>
-
-<button class="profile-btn" onclick="window.location='booking.html?id='+providerId">
-<i class="fas fa-calendar-check"></i> Book Now
-</button>
-
-<button class="profile-btn" onclick="saveFavourite()">
-<i class="fas fa-heart"></i> Save
-</button>
-
-</div>
-
-</div>
-
-</section>
-
-<section class="quote-section">
-
-<h2>
-
-Request a Quote
-
-</h2>
-
-<input
-type="text"
-id="customerName"
-placeholder="Your Name">
-
-<input
-type="tel"
-id="customerPhone"
-placeholder="Phone Number">
-
-<input
-type="text"
-id="customerLocation"
-placeholder="Your Location">
-
-<input
-type="date"
-id="preferredDate">
-
-<textarea
-id="jobDescription"
-placeholder="Describe the work you need..."></textarea>
-
-<button onclick="requestQuote()">
-
-Send Request
-
-</button>
-
-</section>
-
-<section class="portfolio">
-
-<h2>
-
-Portfolio
-
-</h2>
-
-<div
-id="portfolioGallery"
-class="gallery">
-
-<p>
-
-No portfolio uploaded yet.
-
-</p>
-
-</div>
-
-</section>
-
-<section class="reviews">
-
-<h2>
-
-Customer Reviews
-
-</h2>
-
-<div class="review-form">
-
-<input
-type="text"
-id="reviewName"
-placeholder="Your Name">
-
-<select id="reviewRating">
-
-<option value="5">⭐⭐⭐⭐⭐ Excellent</option>
-<option value="4">⭐⭐⭐⭐ Very Good</option>
-<option value="3">⭐⭐⭐ Good</option>
-<option value="2">⭐⭐ Fair</option>
-<option value="1">⭐ Poor</option>
-
-</select>
-
-<textarea
-id="reviewComment"
-placeholder="Share your experience..."></textarea>
-
-<button onclick="submitReview()">
-
-Submit Review
-
-</button>
-<section class="why-us">
-
-<h2>Share this Provider</h2>
-
-<div class="social-icons">
-
-<a href="#"><i class="fab fa-facebook"></i></a>
-
-<a href="#"><i class="fab fa-x-twitter"></i></a>
-
-<a href="#"><i class="fab fa-linkedin"></i></a>
-
-<a href="#"><i class="fab fa-whatsapp"></i></a>
-
-</div>
-
-</section>
-
-<section class="featured-providers">
-
-<h2>Similar Professionals</h2>
-
-<div id="similarProviders" class="providers-grid">
-
-Loading...
-
-</div>
-
-</section>
-
-</div>
-
-<div id="reviewsList">
-
-<p>
-
-No reviews yet.
-
-</p>
-
-</div>
-
-</section>
-
-<footer class="footer">
-
-<p>
-
-© 2026 SkillBridge. All Rights Reserved.
-
-</p>
-
-</footer>
-
-<script type="module" src="

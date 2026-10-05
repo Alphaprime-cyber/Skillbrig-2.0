@@ -2,6 +2,7 @@ import { auth, db } from "./firebase.js";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  sendPasswordResetEmail,
   signOut,
   updateProfile,
 } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
@@ -49,6 +50,34 @@ async function requireCustomerAccount(user) {
 
 byId("loginTab").addEventListener("click", () => showMode("login"));
 byId("registerTab").addEventListener("click", () => showMode("register"));
+
+byId("customerForgotPassword").addEventListener("click", async (event) => {
+  const email = byId("customerLoginEmail").value.trim();
+  if (!email) {
+    showStatus("Enter your email address above first, then select Forgot password?", "error");
+    byId("customerLoginEmail").focus();
+    return;
+  }
+
+  const button = event.currentTarget;
+  button.disabled = true;
+  showStatus("Sending password reset email…");
+  try {
+    await sendPasswordResetEmail(auth, email);
+    showStatus("If an account exists for that email, a password reset link has been sent. Check your inbox and spam folder.", "success");
+  } catch (error) {
+    console.error("Customer password reset error:", error);
+    if (error?.code === "auth/invalid-email") {
+      showStatus("Enter a valid email address and try again.", "error");
+    } else if (error?.code === "auth/network-request-failed") {
+      showStatus("Connection problem. Check your internet and try again.", "error");
+    } else {
+      showStatus("We couldn't send the reset email. Check the email address and try again.", "error");
+    }
+  } finally {
+    button.disabled = false;
+  }
+});
 
 byId("customerLoginForm").addEventListener("submit", async (event) => {
   event.preventDefault();
