@@ -1,1152 +1,1238 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>SkillBridge | Find Trusted Professionals</title>
+<title>SkillBridge | Find Trusted Professionals</title>
 
-    <meta
+<meta
+
         name="description"
+
         content="SkillBridge connects customers with trusted and verified professionals across Nigeria."
+
     >
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link
+<link
+
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+
         rel="stylesheet"
+
     >
 
-    <link
+<link
+
         rel="stylesheet"
+
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+
     >
 
-    <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+    /* Balance the eight homepage categories into two clean rows. */
+    .categories .category-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 18px;
+    }
+
+    .categories .category-icon {
+        color: #0b6e4f;
+        background: #edf8f4;
+    }
+
+    /* Firebase renders text-only provider cards; keep their content stacked. */
+    .providers-section .provider-card {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        padding: 22px;
+        height: 100%;
+    }
+
+    .providers-section .provider-card h3,
+.providers-section .provider-card p {
+        width: 100%;
+    }
+
+    .providers-section .provider-card h3 {
+        margin-bottom: 2px;
+    }
+
+    .providers-section .provider-card .search-btn {
+        margin-top: 6px;
+    }
+
+    @media (max-width: 768px) {
+        .categories .category-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .providers-section .provider-card {
+            padding: 18px;
+        }
+    }
+    .customer-login-btn,.customer-register-btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 14px;border-radius:9px;font-size:13px;font-weight:600;text-decoration:none;white-space:nowrap}
+    .customer-login-btn{color:#0b6e4f;border:1px solid #b9d9cd;background:#fff}
+    .customer-register-btn{color:#fff;background:#0b6e4f}
+    @media(max-width:1050px){.header-actions .customer-login-btn,.header-actions .customer-register-btn{display:none}}
+</style>
+
 </head>
 
 <body>
 
-
 <!-- =========================================
+
      HEADER
+
 ========================================= -->
 
 <header class="site-header">
 
-    <a href="index.html" class="logo">
+<a href="index.html" class="logo">
 
-        <span class="logo-icon">
+<span class="logo-icon">
+
             <i class="fas fa-link"></i>
+
         </span>
 
-        <span>
+<span>
+
             Skill<span>Bridge</span>
+
         </span>
 
-    </a>
-
-
-    <!-- Desktop Navigation -->
-
-    <nav class="desktop-nav">
-
-        <a href="index.html" class="active">
-            Home
-        </a>
-
-        <a href="#categories">
-            Categories
-        </a>
-
-        <a href="providers.html">
-            Providers
-        </a>
-
-        <a href="#why">
-            About
-        </a>
-
-        <a href="contact.html">
-            Contact
-        </a>
-
-    </nav>
-
-
-    <!-- Desktop Actions -->
-
-    <div class="header-actions">
-
-        <a href="provider.html" class="provider-btn">
-            Become a Provider
-        </a>
-
-        <a
-    href="provider-login.html"
-    class="mobile-provider"
->
-    <i class="fas fa-right-to-bracket"></i>
-    Login
 </a>
 
-    </div>
+<!-- Desktop Navigation -->
 
+<nav class="desktop-nav">
 
-    <!-- Mobile Menu Button -->
+<a href="index.html" class="active">
 
-    <button
+            Home
+
+        </a>
+
+<a href="#categories">
+
+            Categories
+
+        </a>
+
+<a href="providers.html">
+
+            Providers
+
+        </a>
+
+<a href="#why">
+
+            About
+
+        </a>
+
+<a href="contact.html">
+
+            Contact
+
+        </a>
+
+</nav>
+
+<!-- Desktop Actions -->
+
+<div class="header-actions">
+<a href="customer/auth.html?mode=login" class="customer-login-btn">Customer Login</a>
+<a href="customer/auth.html?mode=register" class="customer-register-btn">Create Customer Account</a>
+<a href="provider-login.html" class="mobile-provider"><i class="fas fa-right-to-bracket"></i> Provider Login</a>
+<a href="provider.html" class="provider-btn">Become a Provider</a>
+</div>
+
+<!-- Mobile Menu Button -->
+
+<button
+
         class="menu-btn"
+
         id="menuBtn"
+
         aria-label="Open menu"
+
     >
+
         <i class="fas fa-bars"></i>
+
     </button>
 
 </header>
 
-
 <!-- =========================================
+
      MOBILE MENU
+
 ========================================= -->
 
 <div class="mobile-menu" id="mobileMenu">
 
-    <div class="mobile-menu-header">
+<div class="mobile-menu-header">
 
-        <strong>SkillBridge</strong>
+<strong>SkillBridge</strong>
 
-        <button
+<button
+
             id="closeMenu"
+
             aria-label="Close menu"
+
         >
+
             <i class="fas fa-times"></i>
+
         </button>
-
-    </div>
-
-
-    <a href="index.html">
-        <i class="fas fa-house"></i>
-        Home
-    </a>
-
-    <a href="#categories">
-        <i class="fas fa-layer-group"></i>
-        Categories
-    </a>
-
-    <a href="provider.html">
-        <i class="fas fa-user-tie"></i>
-        Providers
-    </a>
-
-    <a href="#why">
-        <i class="fas fa-circle-info"></i>
-        About
-    </a>
-
-    <a href="contact.html">
-        <i class="fas fa-envelope"></i>
-        Contact
-    </a>
-
-    <a href="#" class="mobile-provider">
-        <i class="fas fa-right-to-bracket"></i>
-        Login
-    </a>
-
-    <a href="provider.html" class="mobile-provider">
-        <i class="fas fa-user-plus"></i>
-        Become a Provider
-    </a>
 
 </div>
 
+<a href="index.html">
+
+        <i class="fas fa-house"></i>
+
+        Home
+
+    </a>
+
+<a href="#categories">
+
+        <i class="fas fa-layer-group"></i>
+
+        Categories
+
+    </a>
+
+<a href="providers.html">
+
+        <i class="fas fa-user-tie"></i>
+
+        Providers
+
+    </a>
+
+<a href="#why">
+
+        <i class="fas fa-circle-info"></i>
+
+        About
+
+    </a>
+
+<a href="contact.html">
+
+        <i class="fas fa-envelope"></i>
+
+        Contact
+
+    </a>
+
+<a href="customer/auth.html?mode=login" class="mobile-provider"><i class="fas fa-right-to-bracket"></i> Customer Login</a>
+<a href="customer/auth.html?mode=register" class="mobile-provider"><i class="fas fa-user-plus"></i> Create Customer Account</a>
+<a href="provider-login.html" class="mobile-provider"><i class="fas fa-right-to-bracket"></i> Provider Login</a>
+<a href="provider.html" class="mobile-provider"><i class="fas fa-user-plus"></i> Become a Provider</a>
+
+</div>
 
 <!-- =========================================
+
      HERO
+
 ========================================= -->
 
 <section class="hero">
 
-    <div class="hero-overlay"></div>
+<div class="hero-overlay"></div>
 
-    <div class="hero-content">
+<div class="hero-content">
 
-        <div class="hero-label">
+<div class="hero-label">
+
             <i class="fas fa-circle-check"></i>
+
             Nigeria's Trusted Professional Marketplace
+
         </div>
 
+<h1>
 
-        <h1>
             Find Trusted
+
             <span>Professionals</span>
+
             Across Nigeria
+
         </h1>
 
+<p>
 
-        <p>
             Connect with verified electricians, plumbers, mechanics,
+
             developers, cleaners, photographers and other skilled
+
             professionals near you.
+
         </p>
 
+<!-- SEARCH -->
 
-        <!-- SEARCH -->
+<div class="search-box">
 
-        <div class="search-box">
+<div class="search-field">
 
-            <div class="search-field">
+<i class="fas fa-magnifying-glass"></i>
 
-                <i class="fas fa-magnifying-glass"></i>
+<div>
 
-                <div>
                     <label>Service</label>
 
-                    <input
+<input
+
                         type="text"
+
                         id="searchBox"
+
                         placeholder="What service do you need?"
+
                     >
+
                 </div>
 
-            </div>
+</div>
 
+<div class="search-field">
 
-            <div class="search-field">
+<i class="fas fa-location-dot"></i>
 
-                <i class="fas fa-location-dot"></i>
+<div>
 
-                <div>
                     <label>Location</label>
 
-                    <select id="stateFilter">
+<select id="stateFilter">
 
-                        <option value="">
+<option value="">
+
                             All States
+
                         </option>
 
-                        <option>Abia</option>
+<option>Abia</option>
+
                         <option>Adamawa</option>
+
                         <option>Akwa Ibom</option>
+
                         <option>Anambra</option>
+
                         <option>Bauchi</option>
+
                         <option>Bayelsa</option>
+
                         <option>Benue</option>
+
                         <option>Borno</option>
+
                         <option>Cross River</option>
+
                         <option>Delta</option>
+
                         <option>Ebonyi</option>
+
                         <option>Edo</option>
+
                         <option>Ekiti</option>
+
                         <option>Enugu</option>
+
                         <option>FCT - Abuja</option>
+
                         <option>Gombe</option>
+
                         <option>Imo</option>
+
                         <option>Jigawa</option>
+
                         <option>Kaduna</option>
+
                         <option>Kano</option>
+
                         <option>Katsina</option>
+
                         <option>Kebbi</option>
+
                         <option>Kogi</option>
+
                         <option>Kwara</option>
+
                         <option>Lagos</option>
+
                         <option>Nasarawa</option>
+
                         <option>Niger</option>
+
                         <option>Ogun</option>
+
                         <option>Ondo</option>
+
                         <option>Osun</option>
+
                         <option>Oyo</option>
+
                         <option>Plateau</option>
+
                         <option>Rivers</option>
+
                         <option>Sokoto</option>
+
                         <option>Taraba</option>
+
                         <option>Yobe</option>
+
                         <option>Zamfara</option>
 
-                    </select>
+</select>
 
-                </div>
+</div>
 
-            </div>
+</div>
 
+<div class="search-field">
 
-            <div class="search-field">
+<i class="fas fa-briefcase"></i>
 
-                <i class="fas fa-briefcase"></i>
+<div>
 
-                <div>
                     <label>Category</label>
 
 <select id="categoryFilter">
 
-    <option value="">
+<option value="">
+
         All Categories
+
     </option>
 
-    <optgroup label="Home Services">
+<optgroup label="Home Services">
+
         <option>Plumbing</option>
+
         <option>Electrical</option>
+
         <option>Carpentry</option>
+
         <option>Painting</option>
+
         <option>Masonry</option>
+
         <option>Roofing</option>
+
         <option>Tiling</option>
+
         <option>POP Ceiling</option>
+
         <option>Interior Decoration</option>
+
         <option>Cleaning Services</option>
+
         <option>Laundry & Dry Cleaning</option>
+
         <option>Pest Control</option>
+
         <option>Gardening & Landscaping</option>
+
         <option>Borehole Drilling</option>
+
         <option>Water Treatment</option>
+
         <option>Generator Repair</option>
+
         <option>Solar Installation</option>
+
         <option>Air Conditioning</option>
+
         <option>Refrigeration</option>
+
     </optgroup>
 
-    <optgroup label="Automobile">
+<optgroup label="Automobile">
+
         <option>Auto Mechanic</option>
+
         <option>Car Wash</option>
+
         <option>Car Detailing</option>
+
         <option>Tyre Repair</option>
+
         <option>Panel Beating</option>
+
         <option>Auto Electrical</option>
+
         <option>Vehicle Towing</option>
+
     </optgroup>
 
-    <optgroup label="Fashion & Beauty">
+<optgroup label="Fashion & Beauty">
+
         <option>Tailoring</option>
+
         <option>Fashion Design</option>
+
         <option>Hair Dressing</option>
+
         <option>Barbing</option>
+
         <option>Makeup Artist</option>
+
         <option>Nail Technician</option>
+
         <option>Spa & Massage</option>
+
         <option>Wig Making</option>
+
         <option>Fashion Accessories</option>
+
     </optgroup>
 
-    <optgroup label="Technology">
+<optgroup label="Technology">
+
         <option>Phone Repair</option>
+
         <option>Computer Repair</option>
+
         <option>Laptop Repair</option>
+
         <option>Web Development</option>
+
         <option>Mobile App Development</option>
+
         <option>Graphic Design</option>
+
         <option>UI/UX Design</option>
+
         <option>Cyber Security</option>
+
         <option>Digital Marketing</option>
+
         <option>Software Development</option>
+
         <option>IT Support</option>
+
         <option>Data Analysis</option>
+
     </optgroup>
 
-    <optgroup label="Education">
+<optgroup label="Education">
+
         <option>Private Tutor</option>
+
         <option>Music Teacher</option>
+
         <option>Language Teacher</option>
+
         <option>Exam Preparation</option>
+
         <option>Computer Training</option>
+
     </optgroup>
 
-    <optgroup label="Business & Professional">
+<optgroup label="Business & Professional">
+
         <option>Accountant</option>
+
         <option>Lawyer</option>
+
         <option>Business Consultant</option>
+
         <option>Real Estate Agent</option>
+
         <option>Insurance Agent</option>
+
         <option>Event Consultant</option>
+
     </optgroup>
 
-    <optgroup label="Events & Entertainment">
+<optgroup label="Events & Entertainment">
+
         <option>Photography</option>
+
         <option>Videography</option>
+
         <option>DJ Services</option>
+
         <option>MC Services</option>
+
         <option>Event Planning</option>
+
         <option>Catering</option>
+
         <option>Cake Baking</option>
+
         <option>Decoration</option>
+
         <option>Sound & Lighting</option>
+
     </optgroup>
 
-    <optgroup label="Logistics & Moving">
+<optgroup label="Logistics & Moving">
+
         <option>Movers & Relocation</option>
+
         <option>Delivery Services</option>
+
         <option>Dispatch Rider</option>
+
         <option>Truck Services</option>
+
         <option>Logistics Services</option>
+
     </optgroup>
 
-    <optgroup label="Other Services">
+<optgroup label="Other Services">
+
         <option>Security Services</option>
+
         <option>Personal Trainer</option>
+
         <option>Fitness Coach</option>
+
         <option>Caregiver</option>
+
         <option>Pet Services</option>
+
         <option>Gardener</option>
+
         <option>Other</option>
+
     </optgroup>
 
 </select>
-                    
 
-                </div>
+</div>
 
-            </div>
+</div>
 
+<button
 
-            <button
                 class="search-btn"
+
                 onclick="searchProviders()"
+
             >
+
                 <i class="fas fa-search"></i>
+
                 Search
+
             </button>
 
-        </div>
+</div>
 
+<!-- TRUST ITEMS -->
 
-        <!-- TRUST ITEMS -->
+<div class="hero-trust">
 
-        <div class="hero-trust">
+<div>
 
-            <div>
                 <i class="fas fa-circle-check"></i>
+
                 Verified Professionals
+
             </div>
 
-            <div>
+<div>
+
                 <i class="fas fa-shield-halved"></i>
+
                 Trusted Listings
+
             </div>
 
-            <div>
+<div>
+
                 <i class="fas fa-bolt"></i>
+
                 Fast Response
+
             </div>
 
-            <div>
+<div>
+
                 <i class="fas fa-map-location-dot"></i>
+
                 Across Nigeria
+
             </div>
 
-        </div>
+</div>
 
-    </div>
+</div>
 
 </section>
 
-
 <!-- =========================================
+
      CATEGORIES
+
 ========================================= -->
 
 <section
+
     class="section categories"
+
     id="categories"
+
 >
 
-    <div class="section-heading">
+<div class="section-heading">
 
-        <div>
+<div>
 
-            <div class="section-label">
+<div class="section-label">
+
                 EXPLORE SERVICES
+
             </div>
 
-            <h2>
+<h2>
+
                 Browse Popular Categories
+
             </h2>
 
-        </div>
+</div>
 
-      <a href="categories.html">
+<a href="categories.html">
+
     View all
+
     <i class="fas fa-arrow-right"></i>
+
 </a>
-      
 
-    </div>
+</div>
 
-
-    <div class="category-grid">
-
+<div class="category-grid">
 
 <a href="#" class="category-card">
-    <div class="category-icon">⚡</div>
+
+    <div class="category-icon"><i class="fas fa-bolt" aria-hidden="true"></i></div>
+
     <strong>Electricians</strong>
+
 </a>
 
 <a href="#" class="category-card">
-    <div class="category-icon">🚰</div>
+
+    <div class="category-icon"><i class="fas fa-wrench" aria-hidden="true"></i></div>
+
     <strong>Plumbers</strong>
+
 </a>
 
 <a href="#" class="category-card">
-    <div class="category-icon">🪚</div>
+
+    <div class="category-icon"><i class="fas fa-hammer" aria-hidden="true"></i></div>
+
     <strong>Carpenters</strong>
+
 </a>
 
 <a href="#" class="category-card">
-    <div class="category-icon">🚗</div>
+
+    <div class="category-icon"><i class="fas fa-car" aria-hidden="true"></i></div>
+
     <strong>Mechanics</strong>
+
 </a>
 
 <a href="#" class="category-card">
-    <div class="category-icon">🎨</div>
+
+    <div class="category-icon"><i class="fas fa-paintbrush" aria-hidden="true"></i></div>
+
     <strong>Painters</strong>
+
 </a>
 
 <a href="#" class="category-card">
-    <div class="category-icon">💇</div>
+
+    <div class="category-icon"><i class="fas fa-scissors" aria-hidden="true"></i></div>
+
     <strong>Barbers</strong>
+
 </a>
 
 <a href="#" class="category-card">
-    <div class="category-icon">💄</div>
+
+    <div class="category-icon"><i class="fas fa-star" aria-hidden="true"></i></div>
+
     <strong>Makeup Artists</strong>
+
 </a>
 
 <a href="#" class="category-card">
-    <div class="category-icon">💻</div>
+
+    <div class="category-icon"><i class="fas fa-laptop-code" aria-hidden="true"></i></div>
+
     <strong>Developers</strong>
+
 </a>
 
-<a href="#" class="category-card">
-    <div class="category-icon">🧹</div>
-    <strong>Cleaners</strong>
-</a>
-
-<a href="#" class="category-card">
-    <div class="category-icon">📷</div>
-    <strong>Photographers</strong>
-</a>
-
-<a href="#" class="category-card">
-    <div class="category-icon">🧵</div>
-    <strong>Tailors & Fashion Designers</strong>
-</a>
-
-<a href="#" class="category-card">
-    <div class="category-icon">❄️</div>
-    <strong>AC & Refrigeration</strong>
-</a>
-
-<a href="#" class="category-card">
-    <div class="category-icon">🧱</div>
-    <strong>Builders & Masons</strong>
-</a>
-
-<a href="#" class="category-card">
-    <div class="category-icon">🔧</div>
-    <strong>Welders</strong>
-</a>
-
-<a href="#" class="category-card">
-    <div class="category-icon">🏠</div>
-    <strong>Interior Designers</strong>
-</a>
-
-<a href="#" class="category-card">
-    <div class="category-icon">🌳</div>
-    <strong>Landscapers & Gardeners</strong>
-</a>
-
-<a href="#" class="category-card">
-    <div class="category-icon">🚚</div>
-    <strong>Movers & Logistics</strong>
-</a>
-
-<a href="#" class="category-card">
-    <div class="category-icon">📱</div>
-    <strong>Phone & Computer Repair</strong>
-</a>
-
-<a href="#" class="category-card">
-    <div class="category-icon">📺</div>
-    <strong>Appliance Repair</strong>
-</a>
-
-<a href="#" class="category-card">
-    <div class="category-icon">🛡️</div>
-    <strong>Security Services</strong>
-</a>
-
-<a href="#" class="category-card">
-    <div class="category-icon">📚</div>
-    <strong>Tutors</strong>
-</a>
-
-<a href="#" class="category-card">
-    <div class="category-icon">🍽️</div>
-    <strong>Caterers & Chefs</strong>
-</a>
-
-<a href="#" class="category-card">
-    <div class="category-icon">💆</div>
-    <strong>Spa & Massage</strong>
-</a>
-
-<a href="#" class="category-card">
-    <div class="category-icon">🚘</div>
-    <strong>Car Wash & Detailing</strong>
-</a>
-
-<a href="#" class="category-card">
-    <div class="category-icon">💇‍♀️</div>
-    <strong>Hair Stylists</strong>
-</a>
-
-<a href="#" class="category-card">
-    <div class="category-icon">🔌</div>
-    <strong>Auto Electricians</strong>
-</a>
-
-<a href="#" class="category-card">
-    <div class="category-icon">⚙️</div>
-    <strong>Generator Repair</strong>
-</a>
-
-<a href="#" class="category-card">
-    <div class="category-icon">☀️</div>
-    <strong>Solar Installers</strong>
-</a>
-
-<a href="#" class="category-card">
-    <div class="category-icon">🏗️</div>
-    <strong>Roofers</strong>
-</a>
-
-<a href="#" class="category-card">
-    <div class="category-icon">🧱</div>
-    <strong>Tilers</strong>
-</a>
-
-<a href="#" class="category-card">
-    <div class="category-icon">🔨</div>
-    <strong>Plasterers</strong>
-</a>
-
-<a href="#" class="category-card">
-    <div class="category-icon">🪟</div>
-    <strong>Glass & Aluminium Workers</strong>
-</a>
-
-<a href="#" class="category-card">
-    <div class="category-icon">🏠</div>
-    <strong>POP & Ceiling Installers</strong>
-</a>
-
-<a href="#" class="category-card">
-    <div class="category-icon">🪵</div>
-    <strong>Flooring Specialists</strong>
-</a>
-
-<a href="#" class="category-card">
-    <div class="category-icon">🖌️</div>
-    <strong>Sign Writers & Graphics Designers</strong>
-</a>
-
-<a href="#" class="category-card">
-    <div class="category-icon">🎥</div>
-    <strong>Videographers</strong>
-</a>
-
-<a href="#" class="category-card">
-    <div class="category-icon">🎉</div>
-    <strong>Event Planners</strong>
-</a>
-
-<a href="#" class="category-card">
-    <div class="category-icon">🎧</div>
-    <strong>DJ & Music Services</strong>
-</a>
-
-<a href="#" class="category-card">
-    <div class="category-icon">🖨️</div>
-    <strong>Printing Services</strong>
-</a>
-
-<a href="#" class="category-card">
-    <div class="category-icon">📈</div>
-    <strong>Digital Marketers</strong>
-</a>
-
-<a href="#" class="category-card">
-    <div class="category-icon">🎬</div>
-    <strong>Content Creators</strong>
-</a>
-            </div>
-
-            <strong>
-                Electricians
-            </strong>
-
-        </a>
-
-
-        <a href="#" class="category-card">
-
-            <div class="category-icon">
-                🚰
-            </div>
-
-            <strong>
-                Plumbers
-            </strong>
-
-        </a>
-
-
-        <a href="#" class="category-card">
-
-            <div class="category-icon">
-                🪚
-            </div>
-
-            <strong>
-                Carpenters
-            </strong>
-
-        </a>
-
-
-        <a href="#" class="category-card">
-
-            <div class="category-icon">
-                🚗
-            </div>
-
-            <strong>
-                Mechanics
-            </strong>
-
-        </a>
-
-
-        <a href="#" class="category-card">
-
-            <div class="category-icon">
-                🎨
-            </div>
-
-            <strong>
-                Painters
-            </strong>
-
-        </a>
-
-
-        <a href="#" class="category-card">
-
-            <div class="category-icon">
-                💇
-            </div>
-
-            <strong>
-                Barbers
-            </strong>
-
-        </a>
-
-
-        <a href="#" class="category-card">
-
-            <div class="category-icon">
-                💄
-            </div>
-
-            <strong>
-                Makeup Artists
-            </strong>
-
-        </a>
-
-
-        <a href="#" class="category-card">
-
-            <div class="category-icon">
-                💻
-            </div>
-
-            <strong>
-                Developers
-            </strong>
-
-        </a>
-
-
-        <a href="#" class="category-card">
-
-            <div class="category-icon">
-                🧹
-            </div>
-
-            <strong>
-                Cleaners
-            </strong>
-
-        </a>
-
-
-        <a href="#" class="category-card">
-
-            <div class="category-icon">
-                📷
-            </div>
-
-            <strong>
-                Photographers
-            </strong>
-
-        </a>
-
-<a href="#" class="category-card">
-    <div class="category-icon">💇‍♀️</div>
-    <strong>Hair Stylists</strong>
-</a>
     </div>
 
 </section>
 
-
 <!-- =========================================
+
      FEATURED PROVIDERS
+
 ========================================= -->
 
 <section class="section providers-section">
 
-    <div class="section-heading">
+<div class="section-heading">
 
-        <div>
+<div>
 
-            <div class="section-label">
+<div class="section-label">
+
                 VERIFIED EXPERTS
+
             </div>
 
-            <h2>
+<h2>
+
                 Featured Professionals
+
             </h2>
 
-        </div>
+</div>
 
-        <a href="provider.html">
+<a href="providers.html">
+
             View providers
+
             <i class="fas fa-arrow-right"></i>
+
         </a>
 
-    </div>
+</div>
 
+<p class="section-description">
 
-    <p class="section-description">
         Discover trusted professionals verified by SkillBridge.
+
     </p>
 
+<div
 
-    <div
         id="providersList"
+
         class="providers-grid"
+
     >
 
-        <!-- Firebase providers will appear here -->
+<!-- Firebase providers will appear here -->
 
-    </div>
+</div>
 
 </section>
 
-
 <!-- =========================================
+
      STATS
+
 ========================================= -->
 
 <section class="stats-section">
 
-    <div class="stat">
+<div class="stat">
 
-        <strong>
+<strong>
+
             500+
+
         </strong>
 
-        <span>
+<span>
+
             Verified Professionals
+
         </span>
 
-    </div>
+</div>
 
+<div class="stat">
 
-    <div class="stat">
+<strong>
 
-        <strong>
             36
+
         </strong>
 
-        <span>
+<span>
+
             States Covered
+
         </span>
 
-    </div>
+</div>
 
+<div class="stat">
 
-    <div class="stat">
+<strong>
 
-        <strong>
             10K+
+
         </strong>
 
-        <span>
+<span>
+
             Customers Served
+
         </span>
 
-    </div>
+</div>
 
+<div class="stat">
 
-    <div class="stat">
+<strong>
 
-        <strong>
             4.8/5
+
         </strong>
 
-        <span>
+<span>
+
             Average Rating
+
         </span>
 
-    </div>
+</div>
 
 </section>
 
-
 <!-- =========================================
+
      WHY SKILLBRIDGE
+
 ========================================= -->
 
 <section
+
     class="why-section"
+
     id="why"
+
 >
 
-    <div class="section-heading centered">
-
-        <div>
-
-            <div class="section-label">
-                WHY SKILLBRIDGE
-<h2>
-    Why Choose SkillBridge?
-</h2>
-
-<p>
-    We make it easier and safer to find the right
-    professional for your job.
-</p>
-
-        </div>
-
+<div class="section-heading centered">
+    <div>
+        <div class="section-label">WHY SKILLBRIDGE</div>
+        <h2>Why Choose SkillBridge?</h2>
+        <p>We make it easier and safer to find the right professional for your job.</p>
     </div>
-
+</div>
 
     <div class="why-grid">
 
+<div class="why-card">
 
-        <div class="why-card">
+<div class="why-icon">
 
-            <div class="why-icon">
                 <i class="fas fa-user-check"></i>
+
             </div>
 
-            <h3>
+<h3>
+
                 Verified Professionals
+
             </h3>
 
-            <p>
+<p>
+
                 Providers are reviewed and verified before
+
                 appearing on SkillBridge.
+
             </p>
-
-        </div>
-
-
-        <div class="why-card">
-
-            <div class="why-icon">
-                <i class="fas fa-bolt"></i>
-            </div>
-
-            <h3>
-                Fast Response
-            </h3>
-
-            <p>
-                Contact professionals directly by phone
-                or WhatsApp.
-            </p>
-
-        </div>
-
-
-        <div class="why-card">
-
-            <div class="why-icon">
-                <i class="fas fa-star"></i>
-            </div>
-
-            <h3>
-                Trusted Reviews
-            </h3>
-
-            <p>
-                Ratings and reviews help you choose the
-                right professional.
-            </p>
-
-        </div>
-
-
-        <div class="why-card">
-
-            <div class="why-icon">
-                <i class="fas fa-shield-halved"></i>
-            </div>
-
-            <h3>
-                Safe & Secure
-            </h3>
-
-            <p>
-    We prioritize your safety with verified listings
-    and trusted professionals.
-</p>
 
 </div>
 
+<div class="why-card">
+
+<div class="why-icon">
+
+                <i class="fas fa-bolt"></i>
+
+            </div>
+
+<h3>
+
+                Fast Response
+
+            </h3>
+
+<p>
+
+                Contact professionals directly by phone
+
+                or WhatsApp.
+
+            </p>
+
+</div>
+
+<div class="why-card">
+
+<div class="why-icon">
+
+                <i class="fas fa-star"></i>
+
+            </div>
+
+<h3>
+
+                Trusted Reviews
+
+            </h3>
+
+<p>
+
+                Ratings and reviews help you choose the
+
+                right professional.
+
+            </p>
+
+</div>
+
+<div class="why-card">
+
+<div class="why-icon">
+
+                <i class="fas fa-shield-halved"></i>
+
+            </div>
+
+<h3>
+
+                Safe & Secure
+
+            </h3>
+
+<p>
+
+    We prioritize your safety with verified listings
+
+    and trusted professionals.
+
+</p>
+
+</div>
 
 </div>
 
 </section>
 
-
 <!-- =========================================
+
      FOOTER
+
 ========================================= -->
 
 <footer class="footer">
 
-    <div class="footer-container">
+<div class="footer-container">
 
-        <div class="footer-brand">
+<div class="footer-brand">
 
-            <a href="index.html" class="logo">
+<a href="index.html" class="logo">
+
                 <span class="logo-icon">
+
                     <i class="fas fa-link"></i>
+
                 </span>
 
-                <span>
+<span>
+
                     Skill<span>Bridge</span>
+
                 </span>
+
             </a>
 
-            <p>
+<p>
+
                 Connecting customers with trusted and verified
+
                 professionals across Nigeria.
+
             </p>
 
-        </div>
+</div>
 
+<div class="footer-column">
 
-        <div class="footer-column">
+<h3>Quick Links</h3>
 
-            <h3>Quick Links</h3>
+<a href="index.html">Home</a>
 
-            <a href="index.html">Home</a>
             <a href="#categories">Categories</a>
+
             <a href="provider.html">Become a Provider</a>
+
             <a href="contact.html">Contact</a>
 
-        </div>
+</div>
 
+<div class="footer-column">
 
-        <div class="footer-column">
+<h3>Support</h3>
 
-            <h3>Support</h3>
+<a href="#">Privacy Policy</a>
 
-            <a href="#">Privacy Policy</a>
             <a href="#">Terms & Conditions</a>
+
             <a href="#">Help Centre</a>
+
             <a href="#">FAQs</a>
 
-        </div>
+</div>
 
+<div class="footer-column">
 
-        <div class="footer-column">
+<h3>Follow Us</h3>
 
-            <h3>Follow Us</h3>
+<div class="social-icons">
 
-            <div class="social-icons">
+<a href="#" aria-label="Facebook">
 
-                <a href="#" aria-label="Facebook">
                     <i class="fab fa-facebook"></i>
+
                 </a>
 
-                <a href="#" aria-label="Instagram">
+<a href="#" aria-label="Instagram">
+
                     <i class="fab fa-instagram"></i>
+
                 </a>
 
-                <a href="#" aria-label="LinkedIn">
+<a href="#" aria-label="LinkedIn">
+
                     <i class="fab fa-linkedin"></i>
+
                 </a>
 
-                <a href="#" aria-label="WhatsApp">
+<a href="#" aria-label="WhatsApp">
+
                     <i class="fab fa-whatsapp"></i>
+
                 </a>
 
-            </div>
+</div>
 
-        </div>
+</div>
 
-    </div>
+</div>
 
+<div class="footer-bottom">
 
-    <div class="footer-bottom">
+<span>
 
-        <span>
             © 2026 SkillBridge. All Rights Reserved.
+
         </span>
 
-        <span>
+<span>
+
             Built for Nigeria 🇳🇬
+
         </span>
 
-    </div>
+</div>
 
 </footer>
 
 <script>
+
 document.addEventListener("DOMContentLoaded", function () {
 
-    const menuBtn = document.getElementById("menuBtn");
+const menuBtn = document.getElementById("menuBtn");
+
     const closeMenu = document.getElementById("closeMenu");
+
     const mobileMenu = document.getElementById("mobileMenu");
 
-    if (menuBtn && mobileMenu) {
+if (menuBtn && mobileMenu) {
+
         menuBtn.addEventListener("click", function () {
+
             mobileMenu.classList.add("open");
+
         });
+
     }
 
-    if (closeMenu && mobileMenu) {
+if (closeMenu && mobileMenu) {
+
         closeMenu.addEventListener("click", function () {
+
             mobileMenu.classList.remove("open");
+
         });
+
     }
 
 });
+
 </script>
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const providersList = document.getElementById("providersList");
+    const MAX_FEATURED_PROVIDERS = 4;
+
+    if (!providersList) return;
+
+    const limitProviders = () => {
+        const cards = Array.from(providersList.children);
+        cards.slice(MAX_FEATURED_PROVIDERS).forEach(card => card.remove());
+    };
+
+    limitProviders();
+
+    const observer = new MutationObserver(limitProviders);
+    observer.observe(providersList, { childList: true });
+});
+</script>
+
+<!-- Load verified providers from the existing Firebase directory module -->
+<script type="module" src="js/providers.js"></script>
+
 </body>
+
 </html>
