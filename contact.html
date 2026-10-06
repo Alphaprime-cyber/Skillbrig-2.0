@@ -1,79 +1,187 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <title>Contact - SkillBridge</title>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Contact the SkillBridge team for help with finding professionals, your account, or becoming a provider.">
+    <meta name="theme-color" content="#071827">
+    <title>Contact SkillBridge | We're Here to Help</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
     <style>
-        body{
-            font-family:Arial,sans-serif;
-            background:#f5f5f5;
-            margin:0;
-            text-align:center;
+        body.contact-page { background: #f5f7fa; }
+        .contact-main { min-height: 100vh; padding: 118px 6% 72px; }
+        .contact-hero { max-width: 760px; margin: 0 auto 34px; text-align: center; }
+        .contact-eyebrow { display: inline-flex; align-items: center; gap: 8px; padding: 8px 13px; border: 1px solid #e6d68b; border-radius: 999px; background: #fff9df; color: #725b00; font-size: 12px; font-weight: 600; }
+        .contact-hero h1 { margin: 17px 0 10px; color: #071827; font-size: clamp(36px, 5vw, 54px); line-height: 1.12; letter-spacing: -1.7px; }
+        .contact-hero h1 span { color: #0b6e4f; }
+        .contact-hero p { max-width: 630px; margin: 0 auto; color: #64748b; font-size: 16px; }
+        .contact-layout { display: grid; grid-template-columns: minmax(260px, .78fr) minmax(0, 1.22fr); gap: 24px; max-width: 1050px; margin: 0 auto; align-items: start; }
+        .contact-aside, .contact-form-card { border: 1px solid #e5eaf0; border-radius: 18px; background: #fff; box-shadow: 0 12px 35px rgba(7,24,39,.07); }
+        .contact-aside { padding: 27px; color: #fff; background: #071827; }
+        .contact-aside h2 { margin: 0 0 8px; color: #fff; font-size: 23px; }
+        .contact-aside > p { margin: 0 0 23px; color: #b8c6d2; font-size: 14px; }
+        .contact-method { display: flex; align-items: flex-start; gap: 14px; padding: 17px 0; border-top: 1px solid rgba(255,255,255,.12); }
+        .contact-method-icon { display: grid; width: 42px; height: 42px; flex: 0 0 42px; place-items: center; border-radius: 12px; background: rgba(244,197,66,.14); color: #f4c542; }
+        .contact-method strong { display: block; margin: 0 0 3px; color: #fff; font-size: 14px; }
+        .contact-method span, .contact-method a { color: #c3d0da; font-size: 13px; overflow-wrap: anywhere; }
+        .contact-method a:hover { color: #f4c542; }
+        .contact-note { margin-top: 20px; padding: 14px; border-radius: 12px; background: rgba(255,255,255,.07); color: #d4dee6; font-size: 12px; }
+        .contact-note i { margin-right: 7px; color: #f4c542; }
+        .contact-form-card { padding: 30px; }
+        .contact-form-card h2 { margin: 0 0 5px; color: #071827; font-size: 22px; }
+        .contact-form-intro { margin: 0 0 22px; color: #64748b; font-size: 13px; }
+        .contact-form { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .contact-field { display: flex; flex-direction: column; gap: 7px; min-width: 0; }
+        .contact-field.full { grid-column: 1 / -1; }
+        .contact-field label { color: #243447; font-size: 13px; font-weight: 600; }
+        .contact-field input, .contact-field select, .contact-field textarea { width: 100%; border: 1px solid #dce3ea; border-radius: 10px; outline: none; background: #fff; color: #1f2937; font: inherit; font-size: 14px; transition: border-color .18s, box-shadow .18s; }
+        .contact-field input, .contact-field select { min-height: 48px; padding: 0 13px; }
+        .contact-field textarea { min-height: 150px; padding: 12px 13px; resize: vertical; }
+        .contact-field input:focus, .contact-field select:focus, .contact-field textarea:focus { border-color: #0b6e4f; box-shadow: 0 0 0 3px rgba(11,110,79,.12); }
+        .contact-submit { grid-column: 1 / -1; display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 50px; border: 0; border-radius: 10px; background: #f4c542; color: #071827; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; transition: transform .18s, background .18s; }
+        .contact-submit:hover { transform: translateY(-1px); background: #ffd95a; }
+        .contact-form-hint { grid-column: 1 / -1; margin: -5px 0 0; color: #748195; font-size: 11px; text-align: center; }
+        .contact-footer { margin-top: 24px; color: #768397; font-size: 12px; text-align: center; }
+        .contact-footer a { color: #0b6e4f; font-weight: 600; }
+        .contact-footer a:hover { text-decoration: underline; }
+        @media (max-width: 760px) {
+            .contact-main { padding: 100px 18px 48px; }
+            .contact-hero { margin-bottom: 25px; }
+            .contact-hero h1 { letter-spacing: -1px; }
+            .contact-hero p { font-size: 14px; }
+            .contact-layout { grid-template-columns: 1fr; gap: 16px; }
+            .contact-aside, .contact-form-card { padding: 22px; }
         }
-
-        header{
-            background:teal;
-            color:white;
-            padding:20px;
-        }
-
-        a{
-            color:white;
-            text-decoration:none;
-            margin:10px;
-            font-weight:bold;
-        }
-
-        .container{
-            background:white;
-            width:80%;
-            max-width:500px;
-            margin:40px auto;
-            padding:20px;
-            border-radius:10px;
-            box-shadow:0 2px 10px rgba(0,0,0,.1);
-        }
-
-        .home{
-            color:teal;
+        @media (max-width: 480px) {
+            .contact-form { grid-template-columns: 1fr; gap: 13px; }
+            .contact-field.full, .contact-submit, .contact-form-hint { grid-column: auto; }
+            .contact-form-card { padding: 20px 17px; }
+            .contact-aside { padding: 21px 18px; }
         }
     </style>
-
 </head>
+<body class="contact-page home-page">
+    <header class="site-header">
+        <a href="index.html" class="logo" aria-label="SkillBridge home">
+            <span class="logo-icon"><i class="fas fa-link" aria-hidden="true"></i></span>
+            <span>Skill<span>Bridge</span></span>
+        </a>
+        <button class="menu-btn" id="menuBtn" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobileMenu">
+            <i class="fas fa-bars" aria-hidden="true"></i>
+        </button>
+    </header>
 
-<body>
+    <nav class="mobile-menu" id="mobileMenu" aria-label="Main navigation">
+        <div class="mobile-menu-header">
+            <strong>SkillBridge</strong>
+            <button id="closeMenu" type="button" aria-label="Close menu"><i class="fas fa-times" aria-hidden="true"></i></button>
+        </div>
+        <a href="index.html"><i class="fas fa-house" aria-hidden="true"></i>Home</a>
+        <a href="index.html#categories"><i class="fas fa-layer-group" aria-hidden="true"></i>Categories</a>
+        <a href="providers.html"><i class="fas fa-user-tie" aria-hidden="true"></i>Providers</a>
+        <a href="index.html#why"><i class="fas fa-circle-info" aria-hidden="true"></i>About</a>
+        <a href="contact.html" aria-current="page"><i class="fas fa-envelope" aria-hidden="true"></i>Contact</a>
+        <a href="customer/auth.html?mode=login" class="mobile-provider customer-menu-link"><i class="fas fa-right-to-bracket" aria-hidden="true"></i>Customer Login</a>
+        <a href="customer/auth.html?mode=register" class="mobile-provider customer-menu-link customer-register-menu"><i class="fas fa-user-plus" aria-hidden="true"></i>Create Customer Account</a>
+        <a href="provider-login.html" class="mobile-provider provider-menu-link"><i class="fas fa-right-to-bracket" aria-hidden="true"></i>Provider Login</a>
+        <a href="provider.html" class="mobile-provider provider-menu-link provider-menu-cta"><i class="fas fa-user-plus" aria-hidden="true"></i>Become a Provider</a>
+    </nav>
 
-<header>
+    <main class="contact-main">
+        <section class="contact-hero" aria-labelledby="contactTitle">
+            <span class="contact-eyebrow"><i class="fas fa-circle-check" aria-hidden="true"></i> SkillBridge Support</span>
+            <h1 id="contactTitle">How can we <span>help?</span></h1>
+            <p>Questions about finding a professional, your account, or joining SkillBridge? Send us a message and we’ll help you find the right next step.</p>
+        </section>
 
-<h1>🛠 SkillBridge</h1>
+        <section class="contact-layout" aria-label="Contact SkillBridge">
+            <aside class="contact-aside">
+                <h2>Get in touch</h2>
+                <p>Choose the option that works best for you.</p>
+                <div class="contact-method">
+                    <span class="contact-method-icon"><i class="fas fa-envelope" aria-hidden="true"></i></span>
+                    <div><strong>Email support</strong><a href="mailto:support@skillbridge.com">support@skillbridge.com</a></div>
+                </div>
+                <div class="contact-method">
+                    <span class="contact-method-icon"><i class="fas fa-magnifying-glass" aria-hidden="true"></i></span>
+                    <div><strong>Looking for a professional?</strong><span>Browse the directory and view provider profiles.</span></div>
+                </div>
+                <div class="contact-method">
+                    <span class="contact-method-icon"><i class="fas fa-briefcase" aria-hidden="true"></i></span>
+                    <div><strong>Want to offer your services?</strong><a href="provider.html">Start provider registration</a></div>
+                </div>
+                <div class="contact-note"><i class="fas fa-lock" aria-hidden="true"></i>Your message is prepared in your email app; it is not saved on this website.</div>
+            </aside>
 
-<a href="index.html">Home</a>
+            <div class="contact-form-card">
+                <h2>Send us a message</h2>
+                <p class="contact-form-intro">Fill in the details and your email app will open with the message ready to send.</p>
+                <form class="contact-form" id="contactForm">
+                    <div class="contact-field">
+                        <label for="contactName">Your name</label>
+                        <input id="contactName" name="name" type="text" autocomplete="name" maxlength="100" required placeholder="e.g. Ada Okafor">
+                    </div>
+                    <div class="contact-field">
+                        <label for="contactEmail">Email address</label>
+                        <input id="contactEmail" name="email" type="email" autocomplete="email" maxlength="160" required placeholder="you@example.com">
+                    </div>
+                    <div class="contact-field full">
+                        <label for="contactTopic">What do you need help with?</label>
+                        <select id="contactTopic" name="topic" required>
+                            <option value="" disabled selected>Select a topic</option>
+                            <option>Finding or contacting a provider</option>
+                            <option>My customer account</option>
+                            <option>Provider registration or profile</option>
+                            <option>Bookings or quote requests</option>
+                            <option>Something else</option>
+                        </select>
+                    </div>
+                    <div class="contact-field full">
+                        <label for="contactMessage">Message</label>
+                        <textarea id="contactMessage" name="message" minlength="10" maxlength="3000" required placeholder="Tell us a little about how we can help..."></textarea>
+                    </div>
+                    <button class="contact-submit" type="submit"><i class="fas fa-paper-plane" aria-hidden="true"></i>Prepare email</button>
+                    <p class="contact-form-hint">Your email will only be sent after you review and press Send in your email app.</p>
+                </form>
+            </div>
+        </section>
+        <p class="contact-footer">Ready to explore? <a href="providers.html">Find a professional</a> or <a href="index.html">return to the homepage</a>.</p>
+    </main>
 
-<a href="services.html">Services</a>
+    <script>
+        const menuBtn = document.getElementById("menuBtn");
+        const closeMenu = document.getElementById("closeMenu");
+        const mobileMenu = document.getElementById("mobileMenu");
 
-<a href="contact.html">Contact</a>
+        function setMenuOpen(isOpen) {
+            mobileMenu.classList.toggle("open", isOpen);
+            menuBtn.setAttribute("aria-expanded", String(isOpen));
+        }
 
-</header>
+        menuBtn.addEventListener("click", () => setMenuOpen(!mobileMenu.classList.contains("open")));
+        closeMenu.addEventListener("click", () => setMenuOpen(false));
+        mobileMenu.querySelectorAll("a").forEach(link => link.addEventListener("click", () => setMenuOpen(false)));
+        document.addEventListener("keydown", event => {
+            if (event.key === "Escape") setMenuOpen(false);
+        });
 
-<div class="container">
-
-<h2>Contact Us</h2>
-
-<p>Email:</p>
-
-<p><strong>support@skillbridge.com</strong></p>
-
-<p>Phone:</p>
-
-<p><strong>+2348000000000</strong></p>
-
-<br>
-
-<a class="home" href="index.html">⬅ Back to Home</a>
-
-</div>
-
+        document.getElementById("contactForm").addEventListener("submit", event => {
+            event.preventDefault();
+            const form = new FormData(event.currentTarget);
+            const subject = `[SkillBridge] ${form.get("topic")}`;
+            const body = [
+                `Name: ${form.get("name")}`,
+                `Reply email: ${form.get("email")}`,
+                `Topic: ${form.get("topic")}`,
+                "",
+                form.get("message")
+            ].join("\n");
+            window.location.href = `mailto:support@skillbridge.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        });
+    </script>
 </body>
-
 </html>
