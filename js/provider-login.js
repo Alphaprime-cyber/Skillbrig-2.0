@@ -82,109 +82,58 @@ loginForm?.addEventListener("submit", async function (event) {
     message.textContent = "Logging in...";
 
 
+    let user;
     try {
-
-        // ------------------------------------------
-        // FIREBASE LOGIN
-        // ------------------------------------------
-
-        const credential =
-            await signInWithEmailAndPassword(
-                auth,
-                email,
-                password
-            );
-
-
-        const user =
-            credential.user;
-
-
-        // ------------------------------------------
-        // FIND PROVIDER RECORD
-        // ------------------------------------------
-
-        const providerQuery =
-            query(
-                collection(db, "providers"),
-                where("email", "==", user.email)
-            );
-
-
-        const snapshot =
-            await getDocs(providerQuery);
-
-
-        if (snapshot.empty) {
-
-            await signOut(auth);
-
-            message.textContent =
-                "No provider account was found for this email.";
-
-            return;
-
+        const credential = await signInWithEmailAndPassword(auth, email, password);
+        user = credential.user;
+    } catch (error) {
+        console.error("Provider authentication error:", error);
+        if (["auth/invalid-credential", "auth/wrong-password", "auth/user-not-found"].includes(error?.code)) {
+            message.textContent = "That email and password did not match a SkillBridge account. Check the email used when registering, or use Forgot password? to reset it.";
+        } else if (error?.code === "auth/too-many-requests") {
+            message.textContent = "Too many attempts. Wait a little while, then try again or reset your password.";
+        } else if (error?.code === "auth/network-request-failed") {
+            message.textContent = "Could not reach Firebase. Check your internet connection and try again.";
+        } else if (error?.code === "auth/invalid-email") {
+            message.textContent = "Enter a valid email address and try again.";
+        } else {
+            message.textContent = "We couldn't sign you in. Please check your details and try again.";
         }
-
-
-        // ------------------------------------------
-        // CHECK VERIFICATION
-        // ------------------------------------------
-
-        let providerVerified = false;
-
-
-        snapshot.forEach((providerDoc) => {
-
-            const provider =
-                providerDoc.data();
-
-            if (provider.verified === true) {
-
-                providerVerified = true;
-
-            }
-
-        });
-
-
-        if (!providerVerified) {
-
-            await signOut(auth);
-
-            message.textContent =
-                "Your provider account is still awaiting approval.";
-
-            return;
-
-        }
-
-
-        // ------------------------------------------
-        // SUCCESS
-        // ------------------------------------------
-
-        message.textContent =
-            "Login successful. Opening your dashboard...";
-
-
-        window.location.href =
-            "provider-dashboard.html";
-
-
+        return;
     }
 
-    catch (error) {
-
-        console.error(
-            "Provider login error:",
-            error
+    try {
+        const providerQuery = query(
+            collection(db, "providers"),
+            where("email", "==", user.email)
         );
+        const snapshot = await getDocs(providerQuery);
 
+        if (snapshot.empty) {
+            await signOut(auth);
+            message.textContent = "Your email and password were accepted, but no provider profile is linked to this account. Check that you used the email from provider registration.";
+            return;
+        }
 
-        message.textContent =
-            "Invalid email or password.";
+        const providerVerified = snapshot.docs.some((providerDoc) => providerDoc.data().verified === true);
+        if (!providerVerified) {
+            await signOut(auth);
+            message.textContent = "Your provider account is still awaiting approval.";
+            return;
+        }
 
+        message.textContent = "Login successful. Opening your dashboard...";
+        window.location.href = "provider-dashboard.html";
+    } catch (error) {
+        console.error("Provider profile lookup error:", error);
+        await signOut(auth).catch((signOutError) => console.error("Unable to clear failed login session:", signOutError));
+        if (error?.code === "permission-denied") {
+            message.textContent = "Your password was accepted, but SkillBridge could not read your provider profile. The Firestore rules need to allow you to read your own provider record.";
+        } else if (error?.code === "unavailable" || error?.code === "deadline-exceeded") {
+            message.textContent = "Your password was accepted, but the provider profile could not be loaded. Check your connection and try again.";
+        } else {
+            message.textContent = "Your password was accepted, but we couldn't load the provider profile. Please try again or contact SkillBridge support.";
+        }
     }
 
 });
