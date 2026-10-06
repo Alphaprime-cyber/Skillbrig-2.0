@@ -8,10 +8,8 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
 
 import {
-    collection,
-    getDocs,
-    query,
-    where
+    doc,
+    getDoc
 } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
 
@@ -103,19 +101,17 @@ loginForm?.addEventListener("submit", async function (event) {
     }
 
     try {
-        const providerQuery = query(
-            collection(db, "providers"),
-            where("email", "==", user.email)
-        );
-        const snapshot = await getDocs(providerQuery);
+        // Provider registration stores the profile at providers/{auth uid}.
+        // Read just this account's document so Firestore can enforce owner-only access.
+        const snapshot = await getDoc(doc(db, "providers", user.uid));
 
-        if (snapshot.empty) {
+        if (!snapshot.exists()) {
             await signOut(auth);
             message.textContent = "Your email and password were accepted, but no provider profile is linked to this account. Check that you used the email from provider registration.";
             return;
         }
 
-        const providerVerified = snapshot.docs.some((providerDoc) => providerDoc.data().verified === true);
+        const providerVerified = snapshot.data().verified === true;
         if (!providerVerified) {
             await signOut(auth);
             message.textContent = "Your provider account is still awaiting approval.";
