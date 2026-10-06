@@ -2282,3 +2282,45 @@ body {
     }
 
 }
+
+/* Password visibility control shared by login and registration forms. */
+.password-input-wrap {
+    position: relative;
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+
+.password-input-wrap > input {
+    width: 100%;
+    padding-right: 48px !important;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    display: inline-flex;
+    width: 34px;
+    height: 34px;
+    align-items: center;
+    justify-content: center;
+    transform: translateY(-50%);
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: #526575;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.password-toggle:hover,
+.password-toggle:focus-visible {
+    background: rgba(11, 110, 79, .09);
+    color: #0b6e4f;
+}
+
+.password-toggle:focus-visible {
+    outline: 2px solid #0b6e4f;
+    outline-offset: 1px;
+}
