@@ -10,6 +10,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
 import {
+    onAuthStateChanged,
     signOut
 } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
 
@@ -467,12 +468,7 @@ function escapeHtml(value) {
 
 
 // ==================================================
-// START DASHBOARD
-// ==================================================
-
-loadAdminDashboard();
-
-loadAdminProviders();
+// Dashboard data is loaded after Firebase restores the saved sign-in.
 
 // ==================================================
 // LOAD CUSTOMERS
@@ -550,8 +546,11 @@ window.loadAdminCustomers = async function () {
 };
 
 
-// ==================================================
-// START CUSTOMERS
-// ==================================================
-
-loadAdminCustomers();
+// Wait for Firebase Auth to restore the saved admin session before making
+// Firestore requests; otherwise the first reads can be rejected as signed out.
+onAuthStateChanged(auth, (user) => {
+    if (!user) return;
+    loadAdminDashboard();
+    loadAdminProviders();
+    loadAdminCustomers();
+});
