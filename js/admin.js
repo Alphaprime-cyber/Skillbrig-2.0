@@ -6,6 +6,7 @@ import {
     updateDoc,
     deleteDoc,
     doc
+    serverTimestamp 
 } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
 import {
@@ -327,41 +328,26 @@ window.loadAdminProviders = async function () {
 // ==================================================
 
 window.approveProvider = async function (id) {
-
-    try {
-
-        await updateDoc(
-            doc(db, "providers", id),
-            {
-                verified: true
-            }
-        );
-
-
-        alert("Provider approved successfully.");
-
-
-        await loadAdminProviders();
-
-        await loadAdminDashboard();
-
-
-    } catch (error) {
-
-        console.error(
-            "Approval error:",
-            error
-        );
-
-
-        alert(
-            "Unable to approve provider."
-        );
-
+  try {
+    const user = auth.currentUser;
+    if (!user) {
+      throw new Error("You must be signed in as an admin.");
     }
 
-};
+    await updateDoc(doc(db, "providers", id), {
+      verified: true,
+      verificationUpdatedAt: serverTimestamp(),
+      verificationUpdatedBy: user.uid
+    });
 
+    alert("Provider approved successfully.");
+    await loadAdminProviders();
+    await loadAdminDashboard();
+  } catch (error) {
+    console.error("Approval error:", error);
+    alert(`Unable to approve provider: ${error.message}`);
+  }
+};
 
 // ==================================================
 // REMOVE PROVIDER
