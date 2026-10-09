@@ -42,92 +42,52 @@ window.logoutAdmin = async function () {
 // ==================================================
 
 window.loadAdminDashboard = async function () {
+    const setCount = (id, value) => {
+        const element = document.getElementById(id);
+        if (element) element.textContent = String(value);
+    };
 
+    // Provider totals must not be hidden by a failure in another collection.
     try {
-
-        const providersSnapshot =
-            await getDocs(collection(db, "providers"));
-
-        const reviewsSnapshot =
-            await getDocs(collection(db, "reviews"));
-
-        const usersSnapshot =
-            await getDocs(collection(db, "users"));
-
-
+        const providersSnapshot = await getDocs(collection(db, "providers"));
         let pending = 0;
-
         let verified = 0;
-
+        let reviews = 0;
 
         providersSnapshot.forEach((providerDoc) => {
-
             const provider = providerDoc.data();
-
-
-            if (provider.verified === true) {
-
-                verified++;
-
-            } else {
-
-                pending++;
-
-            }
-
+            if (provider.verified === true) verified++;
+            else pending++;
+            reviews += Number(provider.totalReviews) || 0;
         });
 
-
-        const providersCount =
-            document.getElementById("providersCount");
-
-        const pendingCount =
-            document.getElementById("pendingCount");
-
-        const verifiedCount =
-            document.getElementById("verifiedCount");
-
-        const reviewsCount =
-            document.getElementById("reviewsCount");
-
-        const customersCount =
-            document.getElementById("customersCount");
-
-
-        if (providersCount)
-            providersCount.textContent =
-                providersSnapshot.size;
-
-
-        if (pendingCount)
-            pendingCount.textContent =
-                pending;
-
-
-        if (verifiedCount)
-            verifiedCount.textContent =
-                verified;
-
-
-        if (reviewsCount)
-            reviewsCount.textContent =
-                reviewsSnapshot.size;
-
-
-        if (customersCount)
-            customersCount.textContent =
-                usersSnapshot.size;
-
-
+        setCount("providersCount", providersSnapshot.size);
+        setCount("pendingCount", pending);
+        setCount("verifiedCount", verified);
+        setCount("reviewsCount", reviews);
     } catch (error) {
-
-        console.error(
-            "Dashboard loading error:",
-            error
-        );
-
+        console.error("Unable to load admin provider totals:", error);
+        ["providersCount", "pendingCount", "verifiedCount", "reviewsCount"]
+            .forEach((id) => setCount(id, "—"));
     }
 
+    // The app stores customer details with quote requests/bookings, not in a
+    // Firestore users collection. Count distinct customers with marketplace activity.
+    try {
+        const [requests, bookings] = await Promise.all([
+            getDocs(collection(db, "quoteRequests")),
+            getDocs(collection(db, "bookings"))
+        ]);
+        const customerIds = new Set();
+        [requests, bookings].forEach((snapshot) => snapshot.forEach((item) => {
+            const uid = item.data().customerUid;
+            if (uid) customerIds.add(uid);
+        }));
+        setCount("customersCount", customerIds.size);
+    } catch (error) {
+        console.error("Unable to load active customer total:", error);
+        setCount("customersCount", "—");
+    }
 };
 
 
@@ -519,101 +479,74 @@ loadAdminProviders();
 // ==================================================
 
 window.loadAdminCustomers = async function () {
-
-    const container =
-        document.getElementById("customersTable");
-
+    const container = document.getElementById("customersTable");
     if (!container) return;
 
     container.innerHTML = `
-        <div class="card" style="padding:25px;">
-            <p>Loading customers...</p>
-        </div>
+        <div class="card" style="padding:25px;"><p>Loading customers...</p></div>
     `;
 
     try {
+        const [requests, bookings] = await Promise.all([
+            getDocs(collection(db, "quoteRequests")),
+            getDocs(collection(db, "bookings"))
+        ]);
+        const customers = new Map();
 
-        const snapshot =
-            await getDocs(collection(db, "users"));
+        const addActivity = (item, kind) => {
+            const data = item.data();
+            const uid = data.customerUid;
+            if (!uid) return;
 
-        let html = "";
+            if (!customers.has(uid)) {
+                customers.set(uid, {
+                    name: data.customerName || "SkillBridge customer",
+                    email: data.customerEmail || "Email not provided",
+                    phone: data.customerPhone || "Phone not provided",
+                    services: new Set(),
+                    requests: 0,
+                    bookings: 0
+                });
+            }
+            const customer = customers.get(uid);
+            if (data.customerName) customer.name = data.customerName;
+            if (data.customerEmail) customer.email = data.customerEmail;
+            if (data.customerPhone) customer.phone = data.customerPhone;
+            if (data.service) customer.services.add(data.service);
+            if (kind === "request") customer.requests++;
+            if (kind === "booking") customer.bookings++;
+        };
 
-        snapshot.forEach((userDoc) => {
+        requests.forEach((item) => addActivity(item, "request"));
+        bookings.forEach((item) => addActivity(item, "booking"));
 
-            const user = userDoc.data();
-
-            const name =
-                user.name ||
-                user.fullName ||
-                user.displayName ||
-                "Unnamed Customer";
-
-            const email =
-                user.email ||
-                "Email not provided";
-
-            const phone =
-                user.phone ||
-                user.phoneNumber ||
-                "Phone not provided";
-
-            html += `
-
-                <div
-                    class="card"
-                    style="
-                        padding:25px;
-                        margin-bottom:20px;
-                    "
-                >
-
-                    <h3>
-                        ${escapeHtml(name)}
-                    </h3>
-
-                    <p>
-                        <strong>Email:</strong>
-                        ${escapeHtml(email)}
-                    </p>
-
-                    <p>
-                        <strong>Phone:</strong>
-                        ${escapeHtml(phone)}
-                    </p>
-
-                </div>
-
-            `;
-
-        });
-
-        container.innerHTML =
-            html ||
-            `
+        if (!customers.size) {
+            container.innerHTML = `
                 <div class="card" style="padding:25px;">
-                    <p>
-                        No registered customers found.
-                    </p>
+                    <p>No customers with quote requests or bookings yet.</p>
                 </div>
             `;
+            return;
+        }
 
+        container.innerHTML = [...customers.values()].map((customer) => `
+            <div class="card" style="padding:25px; margin-bottom:20px;">
+                <h3>${escapeHtml(customer.name)}</h3>
+                <p><strong>Email:</strong> ${escapeHtml(customer.email)}</p>
+                <p><strong>Phone:</strong> ${escapeHtml(customer.phone)}</p>
+                <p><strong>Services:</strong> ${escapeHtml([...customer.services].join(", ") || "None listed")}</p>
+                <p><strong>Quote requests:</strong> ${customer.requests}</p>
+                <p><strong>Bookings:</strong> ${customer.bookings}</p>
+            </div>
+        `).join("");
     } catch (error) {
-
-        console.error(
-            "Customer loading error:",
-            error
-        );
-
+        console.error("Customer activity loading error:", error);
         container.innerHTML = `
             <div class="card" style="padding:25px;">
-                <p>
-                    Unable to load customers.
-                </p>
+                <p>Unable to load customer activity. Check Firestore rules and try again.</p>
             </div>
         `;
-
     }
-
 };
 
 
