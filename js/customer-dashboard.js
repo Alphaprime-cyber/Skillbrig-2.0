@@ -24,17 +24,15 @@ onAuthStateChanged(auth, async (user) => {
   byId("customerEmail").textContent = user.email || "";
 
   try {
-    const email = user.email;
-    const [bookings, quotes, reviews] = await Promise.all([
-      getDocs(query(collection(db, "bookings"), where("customerEmail", "==", email))),
-      getDocs(query(collection(db, "quotes"), where("customerEmail", "==", email))),
-      getDocs(query(collection(db, "reviews"), where("customerEmail", "==", email))),
+    const [bookings, quotes] = await Promise.all([
+      getDocs(query(collection(db, "bookings"), where("customerUid", "==", user.uid))),
+      getDocs(query(collection(db, "quoteRequests"), where("customerUid", "==", user.uid))),
     ]);
 
     byId("bookingCount").textContent = bookings.size;
     byId("quoteCount").textContent = quotes.size;
-    byId("reviewCount").textContent = reviews.size;
-    byId("activityList").innerHTML = `<p>Bookings: ${bookings.size}</p><p>Quote requests: ${quotes.size}</p><p>Reviews: ${reviews.size}</p>`;
+    byId("reviewCount").textContent = "—";
+    byId("activityList").innerHTML = `<p>Bookings: ${bookings.size}</p><p>Quote requests: ${quotes.size}</p>`;
   } catch (error) {
     byId("activityList").textContent = "Your account is signed in, but activity could not be loaded.";
     byId("customerDashboardStatus").textContent = error.message || "Please check your connection and try again.";

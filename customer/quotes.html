@@ -1,51 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>My Quotes | SkillBridge</title>
-
-<link rel="stylesheet" href="../css/style.css">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Track your SkillBridge quote requests and provider replies.">
+  <title>My Quote Requests | SkillBridge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <style>
+    body{min-height:100vh;background:#f3f7f6;color:#152a37;font-family:Poppins,sans-serif}
+    .quotes-page{width:calc(100% - 36px);max-width:1000px;margin:44px auto 72px}
+    .quotes-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:24px}
+    .quotes-heading h1{margin:6px 0;color:#102b3a;font-size:clamp(27px,5vw,38px)}
+    .quotes-heading p{margin:0;color:#627583}
+    .quotes-heading .search-btn{white-space:nowrap;text-decoration:none}
+    .quote-list{display:grid;gap:18px}
+    .quote-card,.quote-empty{padding:clamp(20px,4vw,30px);border:1px solid #e1eae6;border-radius:16px;background:#fff;box-shadow:0 10px 30px #102b3a0a}
+    .quote-card-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px}
+    .quote-card h2{margin:5px 0 0;color:#102b3a;font-size:20px}
+    .quote-card p,.quote-empty p{color:#526575;line-height:1.65;overflow-wrap:anywhere}
+    .quote-status{display:inline-flex;align-items:center;padding:6px 10px;border-radius:999px;background:#fff6dc;color:#795916;font-size:12px;font-weight:700;text-transform:capitalize}
+    .quote-status-responded,.quote-status-accepted{background:#e8f7ef;color:#14764e}
+    .quote-date{font-size:13px}
+    .quote-waiting{padding:12px 14px;border-radius:10px;background:#f4f7f8}
+    .provider-quote-reply{margin:16px 0;padding:16px;border:1px solid #d3e9dd;border-radius:12px;background:#f1faf5}
+    .provider-quote-reply h3{margin:0;color:#175a40;font-size:15px}
+    .provider-quote-reply p{margin:8px 0 0;color:#365d4c;white-space:pre-wrap}
+    .provider-quote-reply .quote-amount{font-size:22px;font-weight:700;color:#0b6e4f}
+    .quote-profile-link{display:inline-flex;margin-top:8px;color:#0b6e4f;font-size:13px;font-weight:600;text-decoration:none}
+    .quote-profile-link:hover{text-decoration:underline}
+    .quotes-status{min-height:1.5em;color:#a52828;font-size:14px}
+    .quote-empty h2{margin-top:0;color:#102b3a}
+    @media(max-width:620px){.quotes-page{width:calc(100% - 30px);margin:28px auto 48px}.quotes-heading{align-items:flex-start;flex-direction:column}.quote-card-heading{flex-direction:column}}
+  </style>
 </head>
-
 <body>
-
-<header class="admin-header">
-
-<h1>
-<i class="fas fa-file-signature"></i>
-My Quote Requests
-</h1>
-
-<a href="dashboard.html">
-<button>← Dashboard</button>
-</a>
-
-</header>
-
-<section class="dashboard">
-
-<div id="quotesList" class="providers-grid">
-
-Loading quotes...
-
-</div>
-
-</section>
-
-<script type="module" src="../js/customer-quotes.js"></script>
-
+  <header class="site-header">
+    <a href="../index.html" class="logo"><span class="logo-icon"><i class="fas fa-link"></i></span><span>Skill<span>Bridge</span></span></a>
+    <nav class="desktop-nav"><a href="../index.html">Home</a><a href="dashboard.html">Customer Dashboard</a><a href="messages.html">Messages</a></nav>
+  </header>
+  <main class="quotes-page">
+    <div class="quotes-heading">
+      <div><div class="section-label">CUSTOMER ACCOUNT</div><h1>My Quote Requests</h1><p>Track your requests and read each provider’s estimate and reply.</p></div>
+      <a class="search-btn" href="dashboard.html">← Customer Dashboard</a>
+    </div>
+    <p id="quotePageStatus" class="quotes-status" role="status" aria-live="polite">Loading your quote requests…</p>
+    <section id="quotesList" class="quote-list" aria-label="Your quote requests"></section>
+  </main>
+  <script type="module" src="../js/customer-quotes.js"></script>
 </body>
-
 </html>
