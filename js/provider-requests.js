@@ -15,11 +15,7 @@ const list = document.getElementById("providerRequestList");
 const status = document.getElementById("providerRequestStatus");
 
 const escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, (character) => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;"
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
 })[character]);
 
 function setStatus(message, isError = false) {
@@ -38,9 +34,7 @@ function formatAmount(value) {
     const amount = Number(value);
     if (!Number.isFinite(amount)) return "";
     return new Intl.NumberFormat("en-NG", {
-        style: "currency",
-        currency: "NGN",
-        maximumFractionDigits: 2
+        style: "currency", currency: "NGN", maximumFractionDigits: 2
     }).format(amount);
 }
 
@@ -53,25 +47,33 @@ function renderRequests(requests) {
 
     list.innerHTML = requests.map(({ id, data }) => {
         const state = String(data.status || "pending").toLowerCase();
-        const isPending = state === "pending";
-        const responseForm = isPending ? `
+        const canRespond = state === "pending" || state === "revision_requested";
+        const responseForm = canRespond ? `
+            ${state === "revision_requested" ? `
+                <div class="provider-quote-follow-up">
+                    <strong>Customer asked for clarification or a change:</strong>
+                    <p>${escapeHtml(data.customerMessage || "No details provided")}</p>
+                </div>
+                <p><strong>Previous estimate:</strong> ${escapeHtml(formatAmount(data.quoteAmount) || "Not provided")}</p>
+                <p><strong>Previous message:</strong> ${escapeHtml(data.providerResponse || "Not provided")}</p>` : ""}
             <form class="provider-response-form" data-quote-id="${escapeHtml(id)}">
-                <label>Estimate amount (₦)
-                    <input name="quoteAmount" type="number" min="1" step="0.01" required>
+                <label>${state === "revision_requested" ? "Updated estimate amount (₦)" : "Estimate amount (₦)"}
+                    <input name="quoteAmount" type="number" min="1" step="0.01" value="${state === "revision_requested" ? escapeHtml(data.quoteAmount ?? "") : ""}" required>
                 </label>
-                <label>Message to the customer
-                    <textarea name="providerResponse" rows="3" maxlength="1000" required></textarea>
+                <label>${state === "revision_requested" ? "Updated message to the customer" : "Message to the customer"}
+                    <textarea name="providerResponse" rows="3" maxlength="1000" required>${state === "revision_requested" ? escapeHtml(data.providerResponse || "") : ""}</textarea>
                 </label>
-                <button class="request-respond" type="submit">Send estimate</button>
+                <button class="request-respond" type="submit">${state === "revision_requested" ? "Update and resend estimate" : "Send estimate"}</button>
             </form>` : `
             <p><strong>Your estimate:</strong> ${escapeHtml(formatAmount(data.quoteAmount) || "Not provided")}</p>
-            <p><strong>Your message:</strong> ${escapeHtml(data.providerResponse || "No message provided")}</p>`;
+            <p><strong>Your message:</strong> ${escapeHtml(data.providerResponse || "No message provided")}</p>
+            ${state === "declined" ? '<p class="dashboard-note">The customer declined this estimate.</p>' : ""}`;
 
         return `
             <article class="provider-request-card">
                 <div class="dashboard-toolbar">
                     <h3>${escapeHtml(data.service || "Service request")}</h3>
-                    <span class="request-status">${escapeHtml(state)}</span>
+                    <span class="request-status">${escapeHtml(state.replaceAll("_", " "))}</span>
                 </div>
                 <p><strong>Customer:</strong> ${escapeHtml(data.customerName || "Customer")}</p>
                 <p><strong>Email:</strong> ${escapeHtml(data.customerEmail || "Not provided")}</p>
@@ -87,12 +89,8 @@ async function loadRequests(user) {
     if (!list) return;
     list.innerHTML = "<p>Loading quote requests...</p>";
     setStatus("");
-
     try {
-        const requestQuery = query(
-            collection(db, "quoteRequests"),
-            where("providerId", "==", user.uid)
-        );
+        const requestQuery = query(collection(db, "quoteRequests"), where("providerId", "==", user.uid));
         const snapshot = await getDocs(requestQuery);
         const requests = snapshot.docs
             .map((requestDoc) => ({ id: requestDoc.id, data: requestDoc.data() }))
@@ -114,7 +112,6 @@ list?.addEventListener("submit", async (event) => {
     const quoteAmount = Number(new FormData(form).get("quoteAmount"));
     const providerResponse = String(new FormData(form).get("providerResponse") || "").trim();
     const button = form.querySelector("button[type='submit']");
-
     if (!user || !quoteId) return setStatus("Please sign in again before sending an estimate.", true);
     if (!Number.isFinite(quoteAmount) || quoteAmount <= 0 || !providerResponse || providerResponse.length > 1000) {
         return setStatus("Enter an amount above zero and a message of no more than 1,000 characters.", true);
@@ -133,7 +130,9 @@ list?.addEventListener("submit", async (event) => {
         await loadRequests(user);
     } catch (error) {
         console.error("Provider estimate could not be sent:", error);
-        setStatus("Unable to send the estimate. Check your connection and try again.", true);
+        setStatus(error?.code === "permission-denied"
+            ? "Unable to send the estimate. Make sure the latest Firestore rules are published."
+            : "Unable to send the estimate. Check your connection and try again.", true);
         button.disabled = false;
     }
 });
@@ -141,15 +140,14 @@ list?.addEventListener("submit", async (event) => {
 if (panel && list) {
     onAuthStateChanged(auth, (user) => {
         panel.hidden = !user;
-        document.querySelectorAll("[data-provider-quotes-link]").forEach((link) => {
-            link.hidden = !user;
-        });
+        document.querySelectorAll("[data-provider-quotes-link]").forEach((link) => { link.hidden = !user; });
         if (user) {
             loadRequests(user);
             if (window.location.hash === "#providerRequestsPanel") {
                 requestAnimationFrame(() => panel.scrollIntoView({ behavior: "smooth", block: "start" }));
             }
+        } else {
+            list.innerHTML = "";
         }
-        else list.innerHTML = "";
     });
 }

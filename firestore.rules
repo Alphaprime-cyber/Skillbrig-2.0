@@ -121,6 +121,30 @@ service cloud.firestore {
         && request.resource.data.providerResponse.size() <= 1000
         && request.resource.data.respondedAt == request.time;
 
+      // The addressed provider can update an estimate after the customer requests clarification.
+      allow update: if signedIn()
+        && resource.data.providerId == request.auth.uid
+        && resource.data.status == 'revision_requested'
+        && request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['status', 'quoteAmount', 'providerResponse', 'respondedAt'])
+        && request.resource.data.status == 'responded'
+        && request.resource.data.quoteAmount is number
+        && request.resource.data.quoteAmount > 0
+        && request.resource.data.providerResponse is string
+        && request.resource.data.providerResponse.size() > 0
+        && request.resource.data.providerResponse.size() <= 1000
+        && request.resource.data.respondedAt == request.time;
+      // A customer may ask their provider for clarification or a revised estimate.
+      allow update: if signedIn()
+        && resource.data.customerUid == request.auth.uid
+        && resource.data.status == 'responded'
+        && request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['status', 'customerMessage', 'customerMessageAt'])
+        && request.resource.data.status == 'revision_requested'
+        && request.resource.data.customerMessage is string
+        && request.resource.data.customerMessage.size() > 0
+        && request.resource.data.customerMessage.size() <= 1000
+        && request.resource.data.customerMessageAt == request.time;
       // The customer can accept only in the same atomic batch that creates the booking.
       allow update: if signedIn()
         && resource.data.customerUid == request.auth.uid

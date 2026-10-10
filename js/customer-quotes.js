@@ -56,20 +56,34 @@ function renderQuotes(quotes) {
     list.innerHTML = quotes.map(({ id, data }) => {
         quoteDataById.set(id, data);
         const quoteStatus = String(data.status || "pending").toLowerCase();
-        const hasReply = ["responded", "accepted", "declined"].includes(quoteStatus);
+        const hasReply = ["responded", "accepted", "declined", "revision_requested"].includes(quoteStatus);
         const profileUrl = `../profile.html?id=${encodeURIComponent(data.providerId || "")}`;
         let followUp = "";
+
         if (quoteStatus === "responded") {
             followUp = `
                 <div class="quote-actions">
                     <button class="quote-action quote-accept" type="button" data-quote-action="accept" data-quote-id="${escapeHtml(id)}">Accept quote</button>
                     <button class="quote-action quote-decline" type="button" data-quote-action="decline" data-quote-id="${escapeHtml(id)}">Decline</button>
-                </div>`;
+                    <button class="quote-action quote-clarify" type="button" data-quote-action="open-revision" data-quote-id="${escapeHtml(id)}">Ask for clarification or a change</button>
+                </div>
+                <form class="quote-revision-form" data-revision-form data-quote-id="${escapeHtml(id)}" hidden>
+                    <label for="revision-${escapeHtml(id)}">What should the provider clarify or change?</label>
+                    <textarea id="revision-${escapeHtml(id)}" name="customerMessage" maxlength="1000" rows="3" required placeholder="For example, ask what the estimate includes or request an updated estimate."></textarea>
+                    <button class="quote-action quote-accept" type="submit">Send to provider</button>
+                </form>`;
+        } else if (quoteStatus === "revision_requested") {
+            followUp = `
+                <p class="quote-follow-up quote-waiting-revision">Your message was sent. Waiting for the provider to reply.</p>`;
         } else if (quoteStatus === "accepted") {
             followUp = `<p class="quote-follow-up quote-accepted-note">You accepted this estimate. A booking has been added to <a href="bookings.html">My Bookings</a>.</p>`;
         } else if (quoteStatus === "declined") {
             followUp = `<p class="quote-follow-up quote-declined-note">You declined this estimate.</p>`;
         }
+
+        const customerMessage = data.customerMessage
+            ? `<div class="customer-quote-message"><strong>Your question or requested change:</strong><p>${escapeHtml(data.customerMessage)}</p></div>`
+            : "";
 
         return `
             <article class="quote-card card" data-quote-card="${escapeHtml(id)}">
@@ -78,7 +92,7 @@ function renderQuotes(quotes) {
                         <div class="section-label">${escapeHtml(data.service || "SERVICE REQUEST")}</div>
                         <h2>${escapeHtml(data.providerName || "Provider")}</h2>
                     </div>
-                    <span class="quote-status quote-status-${escapeHtml(quoteStatus)}">${escapeHtml(quoteStatus)}</span>
+                    <span class="quote-status quote-status-${escapeHtml(quoteStatus)}">${escapeHtml(quoteStatus.replaceAll("_", " "))}</span>
                 </div>
                 <p><strong>Your request:</strong> ${escapeHtml(data.description || "No description provided")}</p>
                 <p><strong>Preferred date:</strong> ${escapeHtml(data.preferredDate || "Flexible")}</p>
@@ -90,6 +104,7 @@ function renderQuotes(quotes) {
                         <p>${escapeHtml(data.providerResponse || "No message provided")}</p>
                     </div>` : `
                     <p class="quote-waiting">Waiting for ${escapeHtml(data.providerName || "the provider")} to reply.</p>`}
+                ${customerMessage}
                 ${followUp}
                 <a class="quote-profile-link" href="${escapeHtml(profileUrl)}">View provider profile</a>
             </article>`;
@@ -113,9 +128,19 @@ list?.addEventListener("click", async (event) => {
     if (!button) return;
     event.preventDefault();
 
+    const action = button.dataset.quoteAction;
+    const card = button.closest("[data-quote-card]");
+    if (action === "open-revision") {
+        const form = card?.querySelector("[data-revision-form]");
+        if (form) {
+            form.hidden = false;
+            form.querySelector("textarea")?.focus();
+        }
+        return;
+    }
+
     const user = auth.currentUser;
     const quoteId = button.dataset.quoteId;
-    const action = button.dataset.quoteAction;
     const quote = quoteDataById.get(quoteId);
     if (!user || !quote || quote.status !== "responded") {
         if (status) status.textContent = "This quote has already been updated. Refresh the page to see its current status.";
@@ -123,7 +148,6 @@ list?.addEventListener("click", async (event) => {
     }
     if (action === "decline" && !window.confirm("Decline this provider’s estimate?")) return;
 
-    const card = button.closest("[data-quote-card]");
     card?.querySelectorAll("button").forEach((item) => { item.disabled = true; });
     if (status) status.textContent = action === "accept" ? "Accepting the estimate and creating your booking…" : "Declining the estimate…";
 
@@ -131,10 +155,7 @@ list?.addEventListener("click", async (event) => {
         const quoteRef = doc(db, "quoteRequests", quoteId);
         if (action === "accept") {
             const batch = writeBatch(db);
-            batch.update(quoteRef, {
-                status: "accepted",
-                acceptedAt: serverTimestamp()
-            });
+            batch.update(quoteRef, { status: "accepted", acceptedAt: serverTimestamp() });
             batch.set(doc(db, "bookings", quoteId), {
                 quoteRequestId: quoteId,
                 customerUid: user.uid,
@@ -152,10 +173,7 @@ list?.addEventListener("click", async (event) => {
             await batch.commit();
             if (status) status.textContent = "Quote accepted. Your booking is ready in My Bookings.";
         } else if (action === "decline") {
-            await updateDoc(quoteRef, {
-                status: "declined",
-                declinedAt: serverTimestamp()
-            });
+            await updateDoc(quoteRef, { status: "declined", declinedAt: serverTimestamp() });
             if (status) status.textContent = "You declined the estimate.";
         } else {
             return;
@@ -166,10 +184,50 @@ list?.addEventListener("click", async (event) => {
         console.error("Could not update customer quote:", error);
         if (status) {
             status.textContent = error?.code === "permission-denied"
-                ? "This action was denied. Publish the updated Firestore rules, then try again."
+                ? "This action was denied. Check that the latest Firestore rules are published."
                 : "Could not update this quote. Please refresh and try again.";
         }
         card?.querySelectorAll("button").forEach((item) => { item.disabled = false; });
+    }
+});
+
+list?.addEventListener("submit", async (event) => {
+    const form = event.target.closest("[data-revision-form]");
+    if (!form) return;
+    event.preventDefault();
+
+    const user = auth.currentUser;
+    const quoteId = form.dataset.quoteId;
+    const quote = quoteDataById.get(quoteId);
+    const customerMessage = String(new FormData(form).get("customerMessage") || "").trim();
+    const button = form.querySelector("button[type='submit']");
+    if (!user || !quote || quote.status !== "responded") {
+        if (status) status.textContent = "This quote is no longer awaiting a response. Refresh the page and try again.";
+        return;
+    }
+    if (!customerMessage || customerMessage.length > 1000) {
+        if (status) status.textContent = "Enter a message of up to 1,000 characters.";
+        return;
+    }
+
+    button.disabled = true;
+    if (status) status.textContent = "Sending your question to the provider…";
+    try {
+        await updateDoc(doc(db, "quoteRequests", quoteId), {
+            status: "revision_requested",
+            customerMessage,
+            customerMessageAt: serverTimestamp()
+        });
+        if (status) status.textContent = "Your question was sent. The provider can now reply with clarification or an updated estimate.";
+        await reloadQuotes(user);
+    } catch (error) {
+        console.error("Could not send quote clarification request:", error);
+        if (status) {
+            status.textContent = error?.code === "permission-denied"
+                ? "This request was denied. Publish the updated Firestore rules, then try again."
+                : "Could not send your message. Please refresh and try again.";
+        }
+        button.disabled = false;
     }
 });
 
