@@ -3,7 +3,7 @@ import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.11.0/f
 import {
     collection,
     doc,
-    getDocs,
+    onSnapshot,
     query,
     serverTimestamp,
     updateDoc,
@@ -14,6 +14,10 @@ import {
 const list = document.getElementById("quotesList");
 const status = document.getElementById("quotePageStatus");
 const quoteDataById = new Map();
+
+let stopQuoteWatch = null;
+let currentQuotes = [];
+let notificationPanel = null;
 
 const escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, (character) => ({
     "&": "&amp;",
@@ -26,7 +30,10 @@ const escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, (character
 function formatDate(value) {
     const date = value?.toDate?.();
     if (!date || Number.isNaN(date.getTime())) return "Date not available";
-    return new Intl.DateTimeFormat("en-NG", { dateStyle: "medium", timeStyle: "short" }).format(date);
+    return new Intl.DateTimeFormat("en-NG", {
+        dateStyle: "medium",
+        timeStyle: "short"
+    }).format(date);
 }
 
 function formatAmount(value) {
@@ -37,6 +44,106 @@ function formatAmount(value) {
         currency: "NGN",
         maximumFractionDigits: 2
     }).format(amount);
+}
+
+function timestampMillis(value) {
+    const millis = value?.toMillis?.();
+    return Number.isFinite(millis) ? millis : 0;
+}
+
+function seenStorageKey(userId) {
+    return `skillbridge.customer.quoteNotifications.${userId}`;
+}
+
+function getSeenNotifications(userId) {
+    try {
+        const saved = JSON.parse(localStorage.getItem(seenStorageKey(userId)) || "[]");
+        return new Set(Array.isArray(saved) ? saved : []);
+    } catch {
+        return new Set();
+    }
+}
+
+function saveSeenNotifications(userId, seen) {
+    try {
+        localStorage.setItem(seenStorageKey(userId), JSON.stringify([...seen]));
+    } catch (error) {
+        console.warn("Could not save notification read state:", error);
+    }
+}
+
+function ensureNotificationPanel() {
+    if (!list?.parentElement) return null;
+    if (notificationPanel?.isConnected) return notificationPanel;
+
+    notificationPanel = document.createElement("section");
+    notificationPanel.id = "customerQuoteNotifications";
+    notificationPanel.className = "card";
+    notificationPanel.setAttribute("aria-label", "Quote notifications");
+    notificationPanel.style.cssText = "padding:18px;margin:0 0 20px;border:1px solid rgba(120,120,120,.22);border-radius:14px;";
+    list.parentElement.insertBefore(notificationPanel, list);
+
+    notificationPanel.addEventListener("click", (event) => {
+        const markButton = event.target.closest("[data-mark-notification]");
+        if (!markButton) return;
+
+        const user = auth.currentUser;
+        if (!user) return;
+
+        const seen = getSeenNotifications(user.uid);
+        seen.add(markButton.dataset.markNotification);
+        saveSeenNotifications(user.uid, seen);
+        renderNotifications(currentQuotes, user.uid);
+    });
+
+    return notificationPanel;
+}
+
+function getCustomerNotificationEvents(quotes) {
+    return quotes.flatMap(({ id, data }) => {
+        const state = String(data.status || "pending").toLowerCase();
+        const repliedAt = timestampMillis(data.respondedAt);
+
+        if (!repliedAt || !["responded", "revision_requested", "accepted", "declined"].includes(state)) {
+            return [];
+        }
+
+        const eventId = `${id}:provider-reply:${repliedAt}`;
+        return [{
+            id: eventId,
+            quoteId: id,
+            time: repliedAt,
+            title: "Your provider replied",
+            message: `${data.providerName || "Your provider"} sent an estimate for ${data.service || "your request"}.`
+        }];
+    }).sort((a, b) => b.time - a.time);
+}
+
+function renderNotifications(quotes, userId) {
+    const panel = ensureNotificationPanel();
+    if (!panel) return;
+
+    const seen = getSeenNotifications(userId);
+    const events = getCustomerNotificationEvents(quotes);
+    const unread = events.filter((item) => !seen.has(item.id));
+
+    panel.innerHTML = `
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+            <h2 style="font-size:1.15rem;margin:0">Notifications</h2>
+            <span>${unread.length ? `${unread.length} new` : "All caught up"}</span>
+        </div>
+        <div style="display:grid;gap:10px;margin-top:12px">
+            ${unread.length ? unread.slice(0, 10).map((item) => `
+                <article style="padding:12px;border-radius:10px;background:rgba(120,120,120,.08)">
+                    <strong>${escapeHtml(item.title)}</strong>
+                    <p style="margin:6px 0">${escapeHtml(item.message)}</p>
+                    <small>${escapeHtml(formatDate({ toDate: () => new Date(item.time) }))}</small>
+                    <div style="display:flex;gap:14px;margin-top:8px">
+                        <a href="#quote-${escapeHtml(item.quoteId)}">View quote</a>
+                        <button type="button" data-mark-notification="${escapeHtml(item.id)}">Mark as read</button>
+                    </div>
+                </article>`).join("") : "<p style='margin:0'>No new quote updates.</p>"}
+        </div>`;
 }
 
 function renderQuotes(quotes) {
@@ -73,8 +180,7 @@ function renderQuotes(quotes) {
                     <button class="quote-action quote-accept" type="submit">Send to provider</button>
                 </form>`;
         } else if (quoteStatus === "revision_requested") {
-            followUp = `
-                <p class="quote-follow-up quote-waiting-revision">Your message was sent. Waiting for the provider to reply.</p>`;
+            followUp = `<p class="quote-follow-up quote-waiting-revision">Your message was sent. Waiting for the provider to reply.</p>`;
         } else if (quoteStatus === "accepted") {
             followUp = `<p class="quote-follow-up quote-accepted-note">You accepted this estimate. A booking has been added to <a href="bookings.html">My Bookings</a>.</p>`;
         } else if (quoteStatus === "declined") {
@@ -86,7 +192,7 @@ function renderQuotes(quotes) {
             : "";
 
         return `
-            <article class="quote-card card" data-quote-card="${escapeHtml(id)}">
+            <article id="quote-${escapeHtml(id)}" class="quote-card card" data-quote-card="${escapeHtml(id)}">
                 <div class="quote-card-heading">
                     <div>
                         <div class="section-label">${escapeHtml(data.service || "SERVICE REQUEST")}</div>
@@ -111,16 +217,30 @@ function renderQuotes(quotes) {
     }).join("");
 }
 
-async function reloadQuotes(user) {
+function watchQuotes(user) {
+    stopQuoteWatch?.();
+
+    if (status) status.textContent = "Loading your quote requests…";
+    if (list) list.innerHTML = "";
+
     const requestQuery = query(
         collection(db, "quoteRequests"),
         where("customerUid", "==", user.uid)
     );
-    const snapshot = await getDocs(requestQuery);
-    const quotes = snapshot.docs
-        .map((quoteDoc) => ({ id: quoteDoc.id, data: quoteDoc.data() }))
-        .sort((a, b) => (b.data.createdAt?.toMillis?.() || 0) - (a.data.createdAt?.toMillis?.() || 0));
-    renderQuotes(quotes);
+
+    stopQuoteWatch = onSnapshot(requestQuery, (snapshot) => {
+        currentQuotes = snapshot.docs
+            .map((quoteDoc) => ({ id: quoteDoc.id, data: quoteDoc.data() }))
+            .sort((a, b) => timestampMillis(b.data.createdAt) - timestampMillis(a.data.createdAt));
+
+        renderQuotes(currentQuotes);
+        renderNotifications(currentQuotes, user.uid);
+        if (status) status.textContent = "";
+    }, (error) => {
+        console.error("Customer quote requests could not be loaded:", error);
+        if (status) status.textContent = "Unable to load quote requests. Please refresh and try again.";
+        if (list) list.innerHTML = "";
+    });
 }
 
 list?.addEventListener("click", async (event) => {
@@ -142,7 +262,7 @@ list?.addEventListener("click", async (event) => {
     const user = auth.currentUser;
     const quoteId = button.dataset.quoteId;
     const quote = quoteDataById.get(quoteId);
-    if (!user || !quote || quote.status !== "responded") {
+    if (!user || !quote || String(quote.status || "").toLowerCase() !== "responded") {
         if (status) status.textContent = "This quote has already been updated. Refresh the page to see its current status.";
         return;
     }
@@ -153,8 +273,10 @@ list?.addEventListener("click", async (event) => {
 
     try {
         const quoteRef = doc(db, "quoteRequests", quoteId);
+        const batch = writeBatch(db);
+        const notificationRef = doc(collection(db, "notifications"));
+
         if (action === "accept") {
-            const batch = writeBatch(db);
             batch.update(quoteRef, { status: "accepted", acceptedAt: serverTimestamp() });
             batch.set(doc(db, "bookings", quoteId), {
                 quoteRequestId: quoteId,
@@ -170,21 +292,41 @@ list?.addEventListener("click", async (event) => {
                 status: "confirmed",
                 createdAt: serverTimestamp()
             });
-            await batch.commit();
-            if (status) status.textContent = "Quote accepted. Your booking is ready in My Bookings.";
+            batch.set(notificationRef, {
+                recipientUid: quote.providerId,
+                actorUid: user.uid,
+                quoteRequestId: quoteId,
+                type: "quote_accepted",
+                title: "Estimate accepted",
+                message: "The customer accepted your estimate.",
+                read: false,
+                createdAt: serverTimestamp()
+            });
         } else if (action === "decline") {
-            await updateDoc(quoteRef, { status: "declined", declinedAt: serverTimestamp() });
-            if (status) status.textContent = "You declined the estimate.";
+            batch.update(quoteRef, { status: "declined", declinedAt: serverTimestamp() });
+            batch.set(notificationRef, {
+                recipientUid: quote.providerId,
+                actorUid: user.uid,
+                quoteRequestId: quoteId,
+                type: "quote_declined",
+                title: "Estimate declined",
+                message: "The customer declined your estimate.",
+                read: false,
+                createdAt: serverTimestamp()
+            });
         } else {
             return;
         }
 
-        await reloadQuotes(user);
+        await batch.commit();
+        if (status) status.textContent = action === "accept"
+            ? "Quote accepted. Your booking is ready in My Bookings."
+            : "You declined the estimate.";
     } catch (error) {
         console.error("Could not update customer quote:", error);
         if (status) {
             status.textContent = error?.code === "permission-denied"
-                ? "This action was denied. Check that the latest Firestore rules are published."
+                ? "This action was denied. The latest Firestore rules may need a notification rule."
                 : "Could not update this quote. Please refresh and try again.";
         }
         card?.querySelectorAll("button").forEach((item) => { item.disabled = false; });
@@ -201,7 +343,8 @@ list?.addEventListener("submit", async (event) => {
     const quote = quoteDataById.get(quoteId);
     const customerMessage = String(new FormData(form).get("customerMessage") || "").trim();
     const button = form.querySelector("button[type='submit']");
-    if (!user || !quote || quote.status !== "responded") {
+
+    if (!user || !quote || String(quote.status || "").toLowerCase() !== "responded") {
         if (status) status.textContent = "This quote is no longer awaiting a response. Refresh the page and try again.";
         return;
     }
@@ -212,39 +355,46 @@ list?.addEventListener("submit", async (event) => {
 
     button.disabled = true;
     if (status) status.textContent = "Sending your question to the provider…";
+
     try {
-        await updateDoc(doc(db, "quoteRequests", quoteId), {
+        const batch = writeBatch(db);
+        batch.update(doc(db, "quoteRequests", quoteId), {
             status: "revision_requested",
             customerMessage,
             customerMessageAt: serverTimestamp()
         });
+        batch.set(doc(collection(db, "notifications")), {
+            recipientUid: quote.providerId,
+            actorUid: user.uid,
+            quoteRequestId: quoteId,
+            type: "customer_revision_requested",
+            title: "Clarification requested",
+            message: "A customer asked you to clarify or revise an estimate.",
+            read: false,
+            createdAt: serverTimestamp()
+        });
+
+        await batch.commit();
         if (status) status.textContent = "Your question was sent. The provider can now reply with clarification or an updated estimate.";
-        await reloadQuotes(user);
     } catch (error) {
         console.error("Could not send quote clarification request:", error);
         if (status) {
             status.textContent = error?.code === "permission-denied"
-                ? "This request was denied. Publish the updated Firestore rules, then try again."
+                ? "This request was denied. The latest Firestore rules may need a notification rule."
                 : "Could not send your message. Please refresh and try again.";
         }
         button.disabled = false;
     }
 });
 
-onAuthStateChanged(auth, async (user) => {
+onAuthStateChanged(auth, (user) => {
+    stopQuoteWatch?.();
+    stopQuoteWatch = null;
+
     if (!user) {
         window.location.replace("auth.html?mode=login");
         return;
     }
 
-    if (status) status.textContent = "Loading your quote requests…";
-    if (list) list.innerHTML = "";
-    try {
-        await reloadQuotes(user);
-        if (status) status.textContent = "";
-    } catch (error) {
-        console.error("Customer quote requests could not be loaded:", error);
-        if (status) status.textContent = "Unable to load quote requests. Please refresh and try again.";
-        if (list) list.innerHTML = "";
-    }
+    watchQuotes(user);
 });

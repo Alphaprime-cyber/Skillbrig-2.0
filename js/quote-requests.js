@@ -1,6 +1,17 @@
 import { auth, db } from "./firebase.js";
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
-import { addDoc, collection, doc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+import {
+    createUserWithEmailAndPassword,
+    onAuthStateChanged,
+    signInWithEmailAndPassword,
+    updateProfile
+} from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
+import {
+    collection,
+    doc,
+    getDoc,
+    serverTimestamp,
+    writeBatch
+} from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
 const byId = (id) => document.getElementById(id);
 const providerId = new URLSearchParams(window.location.search).get("id");
@@ -17,12 +28,18 @@ function setStatus(message, error = false) {
 
 async function loadProvider() {
     if (!providerId) return setStatus("This provider link is missing an ID.", true);
+
     try {
         const snapshot = await getDoc(doc(db, "providers", providerId));
-        if (!snapshot.exists() || snapshot.data().verified !== true) return setStatus("Quote requests are available for approved providers only.", true);
+        if (!snapshot.exists() || snapshot.data().verified !== true) {
+            return setStatus("Quote requests are available for approved providers only.", true);
+        }
+
         provider = snapshot.data();
-        const category = byId("quoteService");
-        if (category && !category.value) category.placeholder = `For example, ${provider.category || "a service"}`;
+        const serviceField = byId("quoteService");
+        if (serviceField && !serviceField.value) {
+            serviceField.placeholder = `For example, ${provider.category || "a service"}`;
+        }
         updateControls(auth.currentUser);
     } catch (error) {
         console.error("Unable to load provider for quote request:", error);
@@ -32,8 +49,10 @@ async function loadProvider() {
 
 function updateControls(user) {
     if (!authForm || !requestForm) return;
+
     authForm.hidden = Boolean(user);
     requestForm.hidden = !user || !provider;
+
     if (user && provider && user.uid === providerId) {
         requestForm.hidden = true;
         setStatus("You can’t request a quote from your own provider profile.", true);
@@ -45,8 +64,13 @@ function updateControls(user) {
 authForm?.addEventListener("submit", async (event) => {
     event.preventDefault();
     setStatus("Signing in...");
+
     try {
-        await signInWithEmailAndPassword(auth, byId("quoteEmail").value.trim(), byId("quotePassword").value);
+        await signInWithEmailAndPassword(
+            auth,
+            byId("quoteEmail").value.trim(),
+            byId("quotePassword").value
+        );
         setStatus("You’re signed in. Complete your quote request below.");
     } catch (error) {
         console.error("Quote request sign-in failed:", error);
@@ -57,6 +81,7 @@ authForm?.addEventListener("submit", async (event) => {
 byId("createQuoteAccount")?.addEventListener("click", async () => {
     const nameWrap = byId("quoteNameWrap");
     const nameField = byId("quoteName");
+
     if (nameWrap?.hidden) {
         nameWrap.hidden = false;
         if (nameField) nameField.required = true;
@@ -64,34 +89,55 @@ byId("createQuoteAccount")?.addEventListener("click", async () => {
         setStatus("Enter your name, email, and a password of at least 8 characters, then select Create account again.");
         return;
     }
+
     const name = nameField?.value.trim() || "";
     const email = byId("quoteEmail")?.value.trim() || "";
     const password = byId("quotePassword")?.value || "";
-    if (!name || !email || password.length < 8) return setStatus("Enter your name and email, and choose a password of at least 8 characters.", true);
+
+    if (!name || !email || password.length < 8) {
+        return setStatus("Enter your name and email, and choose a password of at least 8 characters.", true);
+    }
+
     setStatus("Creating your customer account...");
+
     try {
         const credential = await createUserWithEmailAndPassword(auth, email, password);
         await updateProfile(credential.user, { displayName: name });
         setStatus("Account created. You can now send your request.");
     } catch (error) {
         console.error("Quote customer account creation failed:", error);
-        setStatus(error?.code === "auth/email-already-in-use" ? "An account already uses that email. Sign in instead." : "Unable to create the account. Check your details and try again.", true);
+        setStatus(error?.code === "auth/email-already-in-use"
+            ? "An account already uses that email. Sign in instead."
+            : "Unable to create the account. Check your details and try again.", true);
     }
 });
 
 requestForm?.addEventListener("submit", async (event) => {
     event.preventDefault();
+
     const user = auth.currentUser;
-    if (!user || !provider) return setStatus("Sign in and reload the provider profile before sending a request.", true);
+    if (!user || !provider) {
+        return setStatus("Sign in and reload the provider profile before sending a request.", true);
+    }
+
     const service = byId("quoteService").value.trim();
     const description = byId("quoteDescription").value.trim();
     const preferredDate = byId("quotePreferredDate").value;
-    if (!service || !description) return setStatus("Add the service and a short description of the work.", true);
+
+    if (!service || !description) {
+        return setStatus("Add the service and a short description of the work.", true);
+    }
+
     const button = requestForm.querySelector("button[type=submit]");
     button.disabled = true;
     setStatus("Sending your quote request...");
+
     try {
-        await addDoc(collection(db, "quoteRequests"), {
+        const batch = writeBatch(db);
+        const quoteRef = doc(collection(db, "quoteRequests"));
+        const notificationRef = doc(collection(db, "notifications"));
+
+        batch.set(quoteRef, {
             customerUid: user.uid,
             customerName: (user.displayName || user.email?.split("@")[0] || "Customer").slice(0, 80),
             customerEmail: (user.email || "").slice(0, 254),
@@ -103,11 +149,26 @@ requestForm?.addEventListener("submit", async (event) => {
             status: "pending",
             createdAt: serverTimestamp()
         });
+
+        batch.set(notificationRef, {
+            recipientUid: providerId,
+            actorUid: user.uid,
+            quoteRequestId: quoteRef.id,
+            type: "quote_request_received",
+            title: "New quote request",
+            message: "A customer sent you a quote request.",
+            read: false,
+            createdAt: serverTimestamp()
+        });
+
+        await batch.commit();
         requestForm.reset();
         setStatus("Quote request sent. You can track the response from your customer dashboard.");
     } catch (error) {
         console.error("Quote request failed:", error);
-        setStatus(error?.code === "permission-denied" ? "Request denied. Check that the latest Firestore rules are deployed." : "Unable to send your request. Please try again.", true);
+        setStatus(error?.code === "permission-denied"
+            ? "Request denied. Check that the notification Firestore rules are published."
+            : "Unable to send your request. Please try again.", true);
     } finally {
         button.disabled = false;
     }
