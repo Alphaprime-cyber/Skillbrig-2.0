@@ -48,13 +48,13 @@
 <body class="provider-dashboard-page">
 <header class="site-header">
     <a href="index.html" class="logo"><span class="logo-icon"><i class="fas fa-link"></i></span><span>Skill<span>Bridge</span></span></a>
-    <nav class="desktop-nav"><a href="index.html">Home</a><a href="providers.html">Providers</a><a href="provider.html">Register</a><a href="dashboard.html" class="active">Dashboard</a><a href="#providerRequestsPanel" data-provider-quotes-link hidden>Quote Requests</a></nav>
+    <nav class="desktop-nav"><a href="index.html">Home</a><a href="providers.html">Providers</a><a href="provider.html">Register</a><a href="dashboard.html" class="active">Dashboard</a><a href="#providerBookingsPanel" data-provider-bookings-link hidden>Bookings</a><a href="#providerRequestsPanel" data-provider-quotes-link hidden>Quote Requests</a></nav>
     <div class="header-actions"><a href="providers.html" class="provider-btn">Find a Provider</a></div>
     <button class="menu-btn" id="menuBtn" aria-label="Open menu"><i class="fas fa-bars"></i></button>
 </header>
 <div class="mobile-menu" id="mobileMenu">
     <div class="mobile-menu-header"><strong>SkillBridge</strong><button id="closeMenu" aria-label="Close menu"><i class="fas fa-times"></i></button></div>
-    <a href="index.html">Home</a><a href="providers.html">Providers</a><a href="provider.html">Register</a><a href="dashboard.html">Dashboard</a><a href="#providerRequestsPanel" data-provider-quotes-link hidden>Quote Requests</a>
+    <a href="index.html">Home</a><a href="providers.html">Providers</a><a href="provider.html">Register</a><a href="dashboard.html">Dashboard</a><a href="#providerBookingsPanel" data-provider-bookings-link hidden>Bookings</a><a href="#providerRequestsPanel" data-provider-quotes-link hidden>Quote Requests</a>
 </div>
 <section class="hero"><div class="hero-overlay"></div><div class="hero-content"><div class="hero-label"><i class="fas fa-user-tie"></i> PROVIDER ACCOUNT</div><h1>Provider <span>Dashboard</span></h1><p>Update your information and keep your public profile current.</p></div></section>
 <main class="section"><div class="dashboard-wrap">
@@ -452,6 +452,11 @@
             <button class="search-btn wide" type="submit">Save profile</button>
         </form>
     </section>
+    <section id="providerBookingsPanel" class="card dashboard-card provider-requests-panel" hidden>
+        <div class="section-label">WORK IN PROGRESS</div><h2>Your Bookings</h2><p>Update customers as you begin and complete accepted jobs.</p>
+        <p id="providerBookingStatus" class="dashboard-status" role="status" aria-live="polite"></p>
+        <div id="providerBookingList" class="provider-request-list"><p>Loading bookings...</p></div>
+    </section>
     <section id="providerRequestsPanel" class="card dashboard-card provider-requests-panel" hidden>
         <div class="section-label">CUSTOMER ENQUIRIES</div><h2>Quote Requests</h2><p>Reply with an estimate so the customer can decide whether to book.</p>
         <div id="providerRequestList" class="provider-request-list"><p>Loading requests...</p></div>
@@ -470,6 +475,7 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 <script type="module" src="js/providers.js"></script>
 <script type="module" src="js/provider-requests.js"></script>
+<script type="module" src="js/provider-bookings.js"></script>
 <script src="js/password-toggle.js" defer></script>
 </body>
 </html>

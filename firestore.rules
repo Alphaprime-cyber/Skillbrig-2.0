@@ -24,12 +24,11 @@ service cloud.firestore {
       allow read: if true;
       allow create, update, delete: if isAdmin();
     }
+
     match /providers/{providerId} {
-      // Public profiles are readable; owners can also read their pending profile.
       allow get, list: if resource.data.verified == true || ownsProvider(providerId) || isAdmin();
 
-      // Registration initializes aggregates to zero. Only the Admin SDK function
-      // can change them after creation because it bypasses these client rules.
+      // Provider rating aggregates remain writable only by the trusted server process.
       allow create: if ownsProvider(providerId)
         && request.resource.data.uid == request.auth.uid
         && request.resource.data.verified == false
@@ -51,13 +50,20 @@ service cloud.firestore {
 
       match /reviews/{reviewId} {
         allow read: if verifiedProvider(providerId);
+
+        // The review document ID is the booking ID, so a customer can review
+        // each completed booking once, including repeat work with one provider.
         allow create: if verifiedProvider(providerId)
           && signedIn()
-          && request.auth.uid == reviewId
-          && request.auth.uid != providerId
-          && request.resource.data.keys().hasAll(['uid', 'displayName', 'rating', 'comment', 'createdAt'])
-          && request.resource.data.keys().hasOnly(['uid', 'displayName', 'rating', 'comment', 'createdAt'])
+          && request.resource.data.keys().hasAll([
+            'bookingId', 'uid', 'displayName', 'rating', 'comment', 'createdAt'
+          ])
+          && request.resource.data.keys().hasOnly([
+            'bookingId', 'uid', 'displayName', 'rating', 'comment', 'createdAt'
+          ])
+          && request.resource.data.bookingId == reviewId
           && request.resource.data.uid == request.auth.uid
+          && request.auth.uid != providerId
           && request.resource.data.displayName is string
           && request.resource.data.displayName.size() > 0
           && request.resource.data.displayName.size() <= 80
@@ -67,7 +73,11 @@ service cloud.firestore {
           && request.resource.data.comment is string
           && request.resource.data.comment.size() > 0
           && request.resource.data.comment.size() <= 2000
-          && request.resource.data.createdAt == request.time;
+          && request.resource.data.createdAt == request.time
+          && exists(/databases/$(database)/documents/bookings/$(reviewId))
+          && get(/databases/$(database)/documents/bookings/$(reviewId)).data.customerUid == request.auth.uid
+          && get(/databases/$(database)/documents/bookings/$(reviewId)).data.providerId == providerId
+          && get(/databases/$(database)/documents/bookings/$(reviewId)).data.status == 'completed';
         allow update, delete: if false;
       }
     }
@@ -107,7 +117,6 @@ service cloud.firestore {
         && request.resource.data.status == 'pending'
         && request.resource.data.createdAt == request.time;
 
-      // Only the addressed provider can issue one immutable estimate, while pending.
       allow update: if signedIn()
         && resource.data.providerId == request.auth.uid
         && resource.data.status == 'pending'
@@ -121,7 +130,6 @@ service cloud.firestore {
         && request.resource.data.providerResponse.size() <= 1000
         && request.resource.data.respondedAt == request.time;
 
-      // The addressed provider can update an estimate after the customer requests clarification.
       allow update: if signedIn()
         && resource.data.providerId == request.auth.uid
         && resource.data.status == 'revision_requested'
@@ -134,7 +142,7 @@ service cloud.firestore {
         && request.resource.data.providerResponse.size() > 0
         && request.resource.data.providerResponse.size() <= 1000
         && request.resource.data.respondedAt == request.time;
-      // A customer may ask their provider for clarification or a revised estimate.
+
       allow update: if signedIn()
         && resource.data.customerUid == request.auth.uid
         && resource.data.status == 'responded'
@@ -145,7 +153,7 @@ service cloud.firestore {
         && request.resource.data.customerMessage.size() > 0
         && request.resource.data.customerMessage.size() <= 1000
         && request.resource.data.customerMessageAt == request.time;
-      // The customer can accept only in the same atomic batch that creates the booking.
+
       allow update: if signedIn()
         && resource.data.customerUid == request.auth.uid
         && resource.data.status == 'responded'
@@ -156,7 +164,6 @@ service cloud.firestore {
         && getAfter(/databases/$(database)/documents/bookings/$(quoteId)).data.quoteRequestId == quoteId
         && getAfter(/databases/$(database)/documents/bookings/$(quoteId)).data.customerUid == request.auth.uid;
 
-      // A customer can decline only their own responded quote.
       allow update: if signedIn()
         && resource.data.customerUid == request.auth.uid
         && resource.data.status == 'responded'
@@ -200,7 +207,111 @@ service cloud.firestore {
         && getAfter(/databases/$(database)/documents/quoteRequests/$(bookingId)).data.quoteAmount == request.resource.data.quoteAmount
         && getAfter(/databases/$(database)/documents/quoteRequests/$(bookingId)).data.providerResponse == request.resource.data.providerResponse;
 
-      allow update, delete: if false;
+      // Providers advance confirmed -> in_progress -> completed. Either party
+      // may cancel only while the booking is confirmed.
+      allow update: if signedIn()
+        && resource.data.providerId == request.auth.uid
+        && ((resource.data.status == 'confirmed' && request.resource.data.status == 'in_progress')
+          || (resource.data.status == 'in_progress' && request.resource.data.status == 'completed'))
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'statusUpdatedAt'])
+        && request.resource.data.statusUpdatedAt == request.time;
+
+      allow update: if signedIn()
+        && (resource.data.customerUid == request.auth.uid || resource.data.providerId == request.auth.uid)
+        && resource.data.status == 'confirmed'
+        && request.resource.data.status == 'cancelled'
+        && request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['status', 'statusUpdatedAt', 'cancelledBy'])
+        && request.resource.data.statusUpdatedAt == request.time
+        && request.resource.data.cancelledBy == request.auth.uid;
+
+      allow delete: if false;
+    }
+
+    match /notifications/{notificationId} {
+      allow get, list: if signedIn() && resource.data.recipientUid == request.auth.uid;
+
+      allow create: if signedIn()
+        && request.resource.data.keys().hasAll([
+          'recipientUid', 'actorUid', 'type', 'title', 'message', 'read', 'createdAt'
+        ])
+        && request.resource.data.keys().hasOnly([
+          'recipientUid', 'actorUid', 'type', 'title', 'message', 'read', 'createdAt',
+          'quoteRequestId', 'bookingId', 'bookingStatus'
+        ])
+        && request.resource.data.recipientUid is string
+        && request.resource.data.actorUid == request.auth.uid
+        && request.resource.data.type is string
+        && request.resource.data.title is string
+        && request.resource.data.message is string
+        && request.resource.data.read == false
+        && request.resource.data.createdAt == request.time
+        && (
+          (request.resource.data.type == 'quote_request_received'
+            && request.resource.data.quoteRequestId is string
+            && !exists(/databases/$(database)/documents/quoteRequests/$(request.resource.data.quoteRequestId))
+            && existsAfter(/databases/$(database)/documents/quoteRequests/$(request.resource.data.quoteRequestId))
+            && getAfter(/databases/$(database)/documents/quoteRequests/$(request.resource.data.quoteRequestId)).data.customerUid == request.auth.uid
+            && getAfter(/databases/$(database)/documents/quoteRequests/$(request.resource.data.quoteRequestId)).data.providerId == request.resource.data.recipientUid
+            && getAfter(/databases/$(database)/documents/quoteRequests/$(request.resource.data.quoteRequestId)).data.status == 'pending')
+          || (request.resource.data.type == 'customer_revision_requested'
+            && request.resource.data.quoteRequestId is string
+            && exists(/databases/$(database)/documents/quoteRequests/$(request.resource.data.quoteRequestId))
+            && existsAfter(/databases/$(database)/documents/quoteRequests/$(request.resource.data.quoteRequestId))
+            && get(/databases/$(database)/documents/quoteRequests/$(request.resource.data.quoteRequestId)).data.status == 'responded'
+            && getAfter(/databases/$(database)/documents/quoteRequests/$(request.resource.data.quoteRequestId)).data.status == 'revision_requested'
+            && getAfter(/databases/$(database)/documents/quoteRequests/$(request.resource.data.quoteRequestId)).data.customerUid == request.auth.uid
+            && getAfter(/databases/$(database)/documents/quoteRequests/$(request.resource.data.quoteRequestId)).data.providerId == request.resource.data.recipientUid)
+          || (request.resource.data.type == 'quote_accepted'
+            && request.resource.data.quoteRequestId is string
+            && exists(/databases/$(database)/documents/quoteRequests/$(request.resource.data.quoteRequestId))
+            && existsAfter(/databases/$(database)/documents/quoteRequests/$(request.resource.data.quoteRequestId))
+            && get(/databases/$(database)/documents/quoteRequests/$(request.resource.data.quoteRequestId)).data.status == 'responded'
+            && getAfter(/databases/$(database)/documents/quoteRequests/$(request.resource.data.quoteRequestId)).data.status == 'accepted'
+            && getAfter(/databases/$(database)/documents/quoteRequests/$(request.resource.data.quoteRequestId)).data.customerUid == request.auth.uid
+            && getAfter(/databases/$(database)/documents/quoteRequests/$(request.resource.data.quoteRequestId)).data.providerId == request.resource.data.recipientUid
+            && existsAfter(/databases/$(database)/documents/bookings/$(request.resource.data.quoteRequestId)))
+          || (request.resource.data.type == 'quote_declined'
+            && request.resource.data.quoteRequestId is string
+            && exists(/databases/$(database)/documents/quoteRequests/$(request.resource.data.quoteRequestId))
+            && existsAfter(/databases/$(database)/documents/quoteRequests/$(request.resource.data.quoteRequestId))
+            && get(/databases/$(database)/documents/quoteRequests/$(request.resource.data.quoteRequestId)).data.status == 'responded'
+            && getAfter(/databases/$(database)/documents/quoteRequests/$(request.resource.data.quoteRequestId)).data.status == 'declined'
+            && getAfter(/databases/$(database)/documents/quoteRequests/$(request.resource.data.quoteRequestId)).data.customerUid == request.auth.uid
+            && getAfter(/databases/$(database)/documents/quoteRequests/$(request.resource.data.quoteRequestId)).data.providerId == request.resource.data.recipientUid)
+          || (request.resource.data.type == 'booking_status_updated'
+            && request.resource.data.bookingId is string
+            && request.resource.data.bookingStatus in ['in_progress', 'completed']
+            && exists(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId))
+            && existsAfter(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId))
+            && get(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId)).data.providerId == request.auth.uid
+            && get(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId)).data.customerUid == request.resource.data.recipientUid
+            && getAfter(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId)).data.status == request.resource.data.bookingStatus
+            && ((request.resource.data.bookingStatus == 'in_progress'
+                && get(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId)).data.status == 'confirmed')
+              || (request.resource.data.bookingStatus == 'completed'
+                && get(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId)).data.status == 'in_progress')))
+          || (request.resource.data.type == 'booking_cancelled'
+            && request.resource.data.bookingId is string
+            && request.resource.data.bookingStatus == 'cancelled'
+            && exists(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId))
+            && existsAfter(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId))
+            && get(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId)).data.status == 'confirmed'
+            && getAfter(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId)).data.status == 'cancelled'
+            && getAfter(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId)).data.cancelledBy == request.auth.uid
+            && ((get(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId)).data.customerUid == request.auth.uid
+                && get(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId)).data.providerId == request.resource.data.recipientUid)
+              || (get(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId)).data.providerId == request.auth.uid
+                && get(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId)).data.customerUid == request.resource.data.recipientUid)))
+        );
+
+      allow update: if signedIn()
+        && resource.data.recipientUid == request.auth.uid
+        && resource.data.read == false
+        && request.resource.data.read == true
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['read', 'readAt'])
+        && request.resource.data.readAt == request.time;
+      allow delete: if false;
     }
 
     match /admins/{adminId} {

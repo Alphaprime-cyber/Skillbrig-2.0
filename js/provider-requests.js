@@ -99,14 +99,14 @@ function renderNotifications() {
         <div style="display:grid;gap:10px;margin-top:12px">
             ${ordered.length ? ordered.slice(0, 10).map(({ id, data }) => `
                 <article style="padding:12px;border-radius:10px;background:rgba(120,120,120,.08)">
-                    <strong>${escapeHtml(data.title || "Quote update")}</strong>
-                    <p style="margin:6px 0">${escapeHtml(data.message || "There is an update to a quote request.")}</p>
+                    <strong>${escapeHtml(data.title || "Update")}</strong>
+                    <p style="margin:6px 0">${escapeHtml(data.message || "There is an update to your account.")}</p>
                     <small>${escapeHtml(formatDate(data.createdAt))}</small>
                     <div style="display:flex;gap:14px;margin-top:8px">
-                        <a href="#provider-quote-${escapeHtml(data.quoteRequestId || "")}">View request</a>
+                        <a href="${data.bookingId ? `#provider-booking-${escapeHtml(data.bookingId)}` : `#provider-quote-${escapeHtml(data.quoteRequestId || "")}`}">${data.bookingId ? "View booking" : "View request"}</a>
                         ${data.read === true ? "" : `<button type="button" data-mark-notification="${escapeHtml(id)}">Mark as read</button>`}
                     </div>
-                </article>`).join("") : "<p style='margin:0'>No quote notifications yet.</p>"}
+                </article>`).join("") : "<p style='margin:0'>No notifications yet.</p>"}
         </div>`;
 }
 

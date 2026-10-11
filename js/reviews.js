@@ -19,7 +19,9 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
 const byId = (id) => document.getElementById(id);
-const providerId = new URLSearchParams(window.location.search).get("id");
+const params = new URLSearchParams(window.location.search);
+const providerId = params.get("id");
+const bookingId = params.get("bookingId");
 const authForm = byId("reviewAuthForm");
 const reviewForm = byId("reviewForm");
 const note = byId("reviewNotice");
@@ -74,7 +76,7 @@ async function loadReviews() {
         const average = Number(provider.averageRating) || 0;
         if (summary) summary.textContent = count
             ? `${average.toFixed(1)} out of 5 from ${count} ${count === 1 ? "review" : "reviews"}`
-            : "No reviews yet. Be the first to share your experience.";
+            : "No reviews yet. Be the first to share the experience.";
         if (!reviewSnaps.size) {
             const empty = document.createElement("p");
             empty.textContent = "No written reviews yet.";
@@ -88,25 +90,52 @@ async function loadReviews() {
 
 async function refreshReviewControls(user) {
     const signOutButton = byId("reviewSignOut");
-    if (authForm) authForm.hidden = Boolean(user);
+    if (authForm) authForm.hidden = !bookingId || Boolean(user);
     if (signOutButton) signOutButton.hidden = !user;
-    if (!reviewForm || !user || !providerId) {
-        if (reviewForm) reviewForm.hidden = true;
+    if (reviewForm) reviewForm.hidden = true;
+
+    if (!bookingId) {
+        setNotice("To review a provider, open a completed booking in My Bookings and select Leave a review.");
+        return;
+    }
+    if (!providerId) {
+        setNotice("This review link is missing the provider ID.", true);
+        return;
+    }
+    if (!user) {
+        setNotice("Sign in to review this completed booking.");
         return;
     }
     if (user.uid === providerId) {
-        reviewForm.hidden = true;
-        setNotice("You cannot review your own provider profile.");
+        setNotice("You cannot review your own provider profile.", true);
         return;
     }
+
     try {
-        const existing = await getDoc(doc(db, "providers", providerId, "reviews", user.uid));
-        reviewForm.hidden = existing.exists();
-        setNotice(existing.exists() ? "You have already reviewed this provider." : "Signed in. You can submit one review for this provider.");
+        const bookingSnap = await getDoc(doc(db, "bookings", bookingId));
+        if (!bookingSnap.exists()) {
+            setNotice("This booking could not be found.", true);
+            return;
+        }
+        const booking = bookingSnap.data();
+        if (booking.customerUid !== user.uid || booking.providerId !== providerId || String(booking.status || "").toLowerCase() !== "completed") {
+            setNotice("Reviews are available only to the customer who owns this completed booking.", true);
+            return;
+        }
+
+        const existing = await getDoc(doc(db, "providers", providerId, "reviews", bookingId));
+        if (existing.exists()) {
+            setNotice("You have already reviewed this completed booking.");
+            return;
+        }
+
+        if (reviewForm) reviewForm.hidden = false;
+        setNotice(`Share your experience with ${booking.providerName || "this provider"} for this completed job.`);
     } catch (error) {
-        reviewForm.hidden = true;
-        setNotice("Unable to check your review status. Please try again.", true);
-        console.error("Unable to check existing review:", error);
+        console.error("Unable to verify completed booking review eligibility:", error);
+        setNotice(error?.code === "permission-denied"
+            ? "Unable to check this booking. Make sure the latest Firestore rules are published."
+            : "Unable to check your review eligibility. Please try again.", true);
     }
 }
 
@@ -142,10 +171,9 @@ byId("createCustomerAccount")?.addEventListener("click", async () => {
         setNotice("Account created. You can now submit your review.");
     } catch (error) {
         console.error("Customer account creation failed:", error);
-        const message = error?.code === "auth/email-already-in-use"
+        setNotice(error?.code === "auth/email-already-in-use"
             ? "An account already uses that email. Sign in instead."
-            : "Unable to create the account. Check your details and try again.";
-        setNotice(message, true);
+            : "Unable to create the account. Check your details and try again.", true);
     }
 });
 
@@ -155,12 +183,17 @@ reviewForm?.addEventListener("submit", async (event) => {
     const rating = Number(new FormData(reviewForm).get("reviewRating"));
     const comment = byId("reviewComment")?.value.trim() || "";
     if (!user) return setNotice("Sign in before submitting a review.", true);
+    if (!bookingId) return setNotice("Open this review from a completed booking.", true);
     if (!Number.isInteger(rating) || rating < 1 || rating > 5) return setNotice("Choose a rating from 1 to 5 stars.", true);
     if (!comment || comment.length > 2000) return setNotice("Write a review of up to 2,000 characters.", true);
+
     const displayName = (user.displayName || user.email?.split("@")[0] || "SkillBridge customer").slice(0, 80);
+    const submitButton = reviewForm.querySelector("button[type='submit']");
+    submitButton.disabled = true;
     setNotice("Submitting your review...");
     try {
-        await setDoc(doc(db, "providers", providerId, "reviews", user.uid), {
+        await setDoc(doc(db, "providers", providerId, "reviews", bookingId), {
+            bookingId,
             uid: user.uid,
             displayName,
             rating,
@@ -174,8 +207,9 @@ reviewForm?.addEventListener("submit", async (event) => {
     } catch (error) {
         console.error("Review submission failed:", error);
         setNotice(error?.code === "permission-denied"
-            ? "Your review could not be accepted. Make sure Firestore rules and the rating function are installed."
+            ? "Only the customer for a completed booking can review it. Check that the latest Firestore rules are published."
             : "Unable to submit your review. Please try again.", true);
+        submitButton.disabled = false;
     }
 });
 
