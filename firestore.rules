@@ -211,6 +211,7 @@ service cloud.firestore {
       // may cancel only while the booking is confirmed.
       allow update: if signedIn()
         && resource.data.providerId == request.auth.uid
+        && (!('rescheduleStatus' in resource.data) || resource.data.rescheduleStatus != 'pending')
         && ((resource.data.status == 'confirmed' && request.resource.data.status == 'in_progress')
           || (resource.data.status == 'in_progress' && request.resource.data.status == 'completed'))
         && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'statusUpdatedAt'])
@@ -225,6 +226,37 @@ service cloud.firestore {
         && request.resource.data.statusUpdatedAt == request.time
         && request.resource.data.cancelledBy == request.auth.uid;
 
+      // Either participant may propose a new date while the booking is confirmed.
+      // Only one proposal may be pending at a time.
+      allow update: if signedIn()
+        && (resource.data.customerUid == request.auth.uid || resource.data.providerId == request.auth.uid)
+        && resource.data.status == 'confirmed'
+        && (!('rescheduleStatus' in resource.data) || resource.data.rescheduleStatus != 'pending')
+        && request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['rescheduleStatus', 'rescheduleProposedDate', 'rescheduleProposedBy', 'rescheduleProposedAt'])
+        && request.resource.data.rescheduleStatus == 'pending'
+        && request.resource.data.rescheduleProposedBy == request.auth.uid
+        && request.resource.data.rescheduleProposedDate is string
+        && request.resource.data.rescheduleProposedDate.matches('^\\d{4}-\\d{2}-\\d{2}$')
+        && request.resource.data.rescheduleProposedDate != resource.data.preferredDate
+        && request.resource.data.rescheduleProposedAt == request.time;
+
+      // Only the other participant may accept or decline a pending proposal.
+      // Acceptance updates the booking date; declining preserves the current date.
+      allow update: if signedIn()
+        && resource.data.status == 'confirmed'
+        && resource.data.rescheduleStatus == 'pending'
+        && resource.data.rescheduleProposedBy != request.auth.uid
+        && (resource.data.customerUid == request.auth.uid || resource.data.providerId == request.auth.uid)
+        && request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['preferredDate', 'rescheduleStatus', 'rescheduleRespondedAt'])
+        && request.resource.data.rescheduleStatus in ['accepted', 'declined']
+        && request.resource.data.rescheduleRespondedAt == request.time
+        && ((request.resource.data.rescheduleStatus == 'accepted'
+              && request.resource.data.preferredDate == resource.data.rescheduleProposedDate)
+          || (request.resource.data.rescheduleStatus == 'declined'
+              && request.resource.data.preferredDate == resource.data.preferredDate));
+
       allow delete: if false;
     }
 
@@ -237,7 +269,7 @@ service cloud.firestore {
         ])
         && request.resource.data.keys().hasOnly([
           'recipientUid', 'actorUid', 'type', 'title', 'message', 'read', 'createdAt',
-          'quoteRequestId', 'bookingId', 'bookingStatus'
+          'quoteRequestId', 'bookingId', 'bookingStatus', 'rescheduleStatus', 'rescheduleDate'
         ])
         && request.resource.data.recipientUid is string
         && request.resource.data.actorUid == request.auth.uid
@@ -299,6 +331,41 @@ service cloud.firestore {
             && get(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId)).data.status == 'confirmed'
             && getAfter(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId)).data.status == 'cancelled'
             && getAfter(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId)).data.cancelledBy == request.auth.uid
+            && ((get(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId)).data.customerUid == request.auth.uid
+                && get(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId)).data.providerId == request.resource.data.recipientUid)
+              || (get(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId)).data.providerId == request.auth.uid
+                && get(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId)).data.customerUid == request.resource.data.recipientUid)))
+          || (request.resource.data.type == 'booking_reschedule_requested'
+            && request.resource.data.bookingId is string
+            && request.resource.data.rescheduleStatus == 'pending'
+            && request.resource.data.rescheduleDate is string
+            && exists(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId))
+            && existsAfter(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId))
+            && get(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId)).data.status == 'confirmed'
+            && getAfter(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId)).data.status == 'confirmed'
+            && getAfter(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId)).data.rescheduleStatus == 'pending'
+            && getAfter(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId)).data.rescheduleProposedBy == request.auth.uid
+            && getAfter(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId)).data.rescheduleProposedDate == request.resource.data.rescheduleDate
+            && ((get(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId)).data.customerUid == request.auth.uid
+                && get(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId)).data.providerId == request.resource.data.recipientUid)
+              || (get(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId)).data.providerId == request.auth.uid
+                && get(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId)).data.customerUid == request.resource.data.recipientUid)))
+          || (request.resource.data.type == 'booking_reschedule_responded'
+            && request.resource.data.bookingId is string
+            && request.resource.data.rescheduleStatus in ['accepted', 'declined']
+            && request.resource.data.rescheduleDate is string
+            && exists(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId))
+            && existsAfter(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId))
+            && get(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId)).data.status == 'confirmed'
+            && get(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId)).data.rescheduleStatus == 'pending'
+            && get(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId)).data.rescheduleProposedBy == request.resource.data.recipientUid
+            && get(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId)).data.rescheduleProposedDate == request.resource.data.rescheduleDate
+            && getAfter(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId)).data.status == 'confirmed'
+            && getAfter(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId)).data.rescheduleStatus == request.resource.data.rescheduleStatus
+            && ((request.resource.data.rescheduleStatus == 'accepted'
+                && getAfter(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId)).data.preferredDate == request.resource.data.rescheduleDate)
+              || (request.resource.data.rescheduleStatus == 'declined'
+                && getAfter(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId)).data.preferredDate == get(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId)).data.preferredDate))
             && ((get(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId)).data.customerUid == request.auth.uid
                 && get(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId)).data.providerId == request.resource.data.recipientUid)
               || (get(/databases/$(database)/documents/bookings/$(request.resource.data.bookingId)).data.providerId == request.auth.uid
