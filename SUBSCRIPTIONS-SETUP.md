@@ -6,6 +6,7 @@
 - Yearly: NGN 10,000 / 365 days (saves NGN 8,000 vs twelve monthly payments)
 
 ## What is included
+- Provider registration requires selecting Monthly, 3 Months, or Yearly and continues to hosted Paystack checkout after account creation. There is no free provider plan; Paystack collects card details directly.
 - `subscription.html` plan selection page
 - `js/subscription.js` requires Firebase sign-in and calls trusted Cloud Functions
 - `functions/index.js` initializes Paystack checkout, verifies transactions server-side, handles Paystack `charge.success` webhooks, and writes active subscription dates

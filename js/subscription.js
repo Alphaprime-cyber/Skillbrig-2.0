@@ -10,6 +10,7 @@ const startCheckout = httpsCallable(functions, "startSubscriptionCheckout");
 const verifyPayment = httpsCallable(functions, "verifySubscriptionPayment");
 let currentUser = null;
 let ready = false;
+let autoCheckoutAttempted = false;
 
 function status(message, isError = false) {
   statusEl.textContent = message;
@@ -44,8 +45,32 @@ onAuthStateChanged(auth, async user => {
     status("We couldn't load your provider/subscription details. Check your connection and try again.", true);
   }
   const reference = new URLSearchParams(location.search).get("reference");
+  const params = new URLSearchParams(location.search);
   if (reference) await confirmReturn(reference);
+  else if (params.get("autostart") === "1" && ["monthly", "quarterly", "yearly"].includes(params.get("plan")) && !autoCheckoutAttempted) {
+    autoCheckoutAttempted = true;
+    await beginCheckout(params.get("plan"));
+  }
 });
+
+async function beginCheckout(planId) {
+  if (!currentUser) {
+    status("Please sign in first. Redirecting to provider login…", true);
+    location.href = `provider-login.html?next=${encodeURIComponent(`subscription.html?plan=${planId}&autostart=1`)}`;
+    return;
+  }
+  if (!ready) { status("Your provider profile could not be confirmed. Please check your account and try again.", true); return; }
+  setBusy(true); status("Starting secure Paystack checkout…");
+  try {
+    const result = await startCheckout({ planId });
+    if (!result.data?.authorizationUrl) throw new Error("Checkout link was not returned. Please try again.");
+    location.href = result.data.authorizationUrl;
+  } catch (error) {
+    console.error(error);
+    status(error?.message || "Unable to start payment. Please try again later.", true);
+    setBusy(false);
+  }
+}
 
 async function confirmReturn(reference) {
   if (!currentUser) return;
@@ -61,17 +86,4 @@ async function confirmReturn(reference) {
   } finally { setBusy(false); }
 }
 
-buttons.forEach(button => button.addEventListener("click", async () => {
-  if (!currentUser) { status("Please sign in first. Redirecting to provider login…", true); location.href = "provider-login.html?next=subscription.html"; return; }
-  if (!ready) { status("Your provider profile could not be confirmed. Please check your account and try again.", true); return; }
-  setBusy(true); status("Starting secure checkout…");
-  try {
-    const result = await startCheckout({ planId: button.dataset.plan });
-    if (!result.data?.authorizationUrl) throw new Error("Checkout link was not returned. Please try again.");
-    location.href = result.data.authorizationUrl;
-  } catch (error) {
-    console.error(error);
-    status(error?.message || "Unable to start payment. Please try again later.", true);
-    setBusy(false);
-  }
-}));
+buttons.forEach(button => button.addEventListener("click", () => beginCheckout(button.dataset.plan)));

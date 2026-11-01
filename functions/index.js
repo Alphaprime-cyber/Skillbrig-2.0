@@ -33,7 +33,7 @@ exports.startSubscriptionCheckout = onCall({ secrets: [PAYSTACK_SECRET_KEY], cor
   const providerSnap = await providerRef.get();
   if (!providerSnap.exists) throw new HttpsError("failed-precondition", "No provider profile is linked to this account.");
   const email = request.auth.token.email;
-  if (!email || request.auth.token.email_verified !== true) throw new HttpsError("failed-precondition", "Verify your account email before starting a payment.");
+  if (!email) throw new HttpsError("failed-precondition", "Your account needs an email address to pay.");
   const reference = `SB-${uid.slice(0, 8)}-${crypto.randomUUID()}`;
   const baseUrl = SITE_BASE_URL.value().replace(/\/$/, "");
   const callbackUrl = `${baseUrl}/subscription.html`;

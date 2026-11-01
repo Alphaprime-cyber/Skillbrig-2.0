@@ -28,6 +28,16 @@
 
     <link rel="stylesheet" href="css/style.css">
 
+    <style>
+        .provider-plan-choice{margin:28px 0 10px;padding:20px;border:1px solid #dce7e5;border-radius:14px;background:#f8fbfa}
+        .provider-plan-choice legend{padding:0 8px;font-size:19px;font-weight:700;color:#102536}
+        #providerPlanHelp{margin:0 0 16px;color:#526575;font-size:13px;line-height:1.6}
+        .provider-plan-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+        .provider-plan-option{display:flex;align-items:flex-start;gap:10px;padding:14px;border:1px solid #dce4e8;border-radius:11px;background:#fff;cursor:pointer}
+        .provider-plan-option input{width:auto!important;margin:4px 0 0;accent-color:#0b6e4f}
+        .provider-plan-option span{display:grid;gap:4px}.provider-plan-option b{font-size:20px;color:#0b6e4f}.provider-plan-option small{color:#64748b}
+        @media(max-width:640px){.provider-plan-options{grid-template-columns:1fr}.provider-plan-choice{padding:15px}}
+    </style>
     <link rel="manifest" href="manifest.webmanifest">
     <meta name="theme-color" content="#0b6b5e">
 </head>
@@ -650,6 +660,25 @@
         >
 
 
+        <fieldset class="provider-plan-choice" aria-describedby="providerPlanHelp">
+            <legend><i class="fas fa-credit-card" aria-hidden="true"></i> Choose a required subscription plan</legend>
+            <p id="providerPlanHelp">A paid plan is required to register. You’ll continue to secure Paystack checkout after creating your account. Card details are entered on Paystack and are not stored by SkillBridge.</p>
+            <div class="provider-plan-options">
+                <label class="provider-plan-option">
+                    <input id="providerPlanMonthly" type="radio" name="subscriptionPlan" value="monthly" required>
+                    <span><strong>Monthly</strong><b>₦1,500</b><small>30 days</small></span>
+                </label>
+                <label class="provider-plan-option">
+                    <input type="radio" name="subscriptionPlan" value="quarterly" required>
+                    <span><strong>3 Months</strong><b>₦3,500</b><small>90 days · Most popular</small></span>
+                </label>
+                <label class="provider-plan-option">
+                    <input type="radio" name="subscriptionPlan" value="yearly" required>
+                    <span><strong>Yearly</strong><b>₦10,000</b><small>365 days</small></span>
+                </label>
+            </div>
+        </fieldset>
+
         <!-- TERMS -->
 
         <label style="display:flex;gap:10px;align-items:flex-start;margin-top:20px;">
@@ -678,7 +707,7 @@
 
             <i class="fas fa-user-plus"></i>
 
-            Register Now
+            Register &amp; Continue to Payment
 
         </button>
 

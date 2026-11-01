@@ -1,6 +1,7 @@
 import { auth, db } from "./firebase.js";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
 import { collection, setDoc, getDocs, doc, getDoc, updateDoc, query, where } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-functions.js";
 
 const byId = (id) => document.getElementById(id);
 const clean = (value) => String(value ?? "").trim();
@@ -17,12 +18,18 @@ window.registerProvider = async function () {
     const whatsapp = clean(byId("providerWhatsApp")?.value);
     const email = clean(byId("providerEmail")?.value);
     const password = clean(byId("providerPassword")?.value);
+    const planId = document.querySelector('input[name="subscriptionPlan"]:checked')?.value;
     const experience = clean(byId("providerExperience")?.value);
     const businessHours = clean(byId("providerBusinessHours")?.value);
     const description = clean(byId("providerDescription")?.value);
 
     if (!name || !category || !state || !location || !phone || !email || !password) {
         alert("Please complete all required fields.");
+        return;
+    }
+    if (!["monthly", "quarterly", "yearly"].includes(planId)) {
+        alert("Choose a subscription plan to continue. A paid plan is required to register.");
+        byId("providerPlanMonthly")?.focus();
         return;
     }
     if (password.length < 8) {
@@ -34,6 +41,7 @@ window.registerProvider = async function () {
         return;
     }
 
+    let accountCreated = false;
     try {
         const credential = await createUserWithEmailAndPassword(auth, email, password);
         await setDoc(doc(db, "providers", credential.user.uid), {
@@ -43,16 +51,18 @@ window.registerProvider = async function () {
             verified: false, averageRating: 0, totalReviews: 0, jobsCompleted: 0,
             skillScore: 50, createdAt: new Date()
         });
-        alert("🎉 Registration submitted successfully! Your application is awaiting approval. You can manage your profile from the Provider Dashboard.");
-        document.querySelectorAll("input, textarea").forEach((input) => {
-            if (input.type !== "checkbox") input.value = "";
-        });
-        if (byId("providerCategory")) byId("providerCategory").value = "";
-        if (byId("providerState")) byId("providerState").value = "";
-        if (byId("agreeTerms")) byId("agreeTerms").checked = false;
-        window.location.href = "dashboard.html";
+        accountCreated = true;
+        const startCheckout = httpsCallable(getFunctions(undefined, "us-central1"), "startSubscriptionCheckout");
+        const checkout = await startCheckout({ planId });
+        if (!checkout.data?.authorizationUrl) throw new Error("Paystack did not return a checkout link.");
+        window.location.assign(checkout.data.authorizationUrl);
     } catch (error) {
         console.error("Registration error:", error);
+        if (accountCreated) {
+            alert("Your provider account was created, but checkout could not start. We’ll open your selected plan so you can retry payment. Do not register again.");
+            window.location.href = `subscription.html?plan=${encodeURIComponent(planId)}&autostart=1`;
+            return;
+        }
         alert("Registration failed: " + (error?.message || "Please try again."));
     }
 };
@@ -289,7 +299,7 @@ document.addEventListener("DOMContentLoaded", () => {
     registerButton?.addEventListener("click", () => {
         // This legacy page uses standalone inputs instead of a <form>, so run
         // native input validation explicitly before starting Firebase signup.
-        const requiredFields = ["providerName", "providerCategory", "providerState", "providerLocation", "providerPhone", "providerEmail", "providerPassword", "agreeTerms"]
+        const requiredFields = ["providerName", "providerCategory", "providerState", "providerLocation", "providerPhone", "providerEmail", "providerPassword", "providerPlanMonthly", "agreeTerms"]
             .map(byId)
             .filter(Boolean);
         const invalidField = requiredFields.find((field) => !field.checkValidity());
