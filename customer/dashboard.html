@@ -15,6 +15,8 @@
     @media(max-width:760px){.customer-dashboard{width:calc(100% - 32px);margin:30px auto 54px}.customer-heading{align-items:flex-start}.customer-stats,.customer-links{grid-template-columns:repeat(2,minmax(0,1fr))}.customer-stat,.customer-link{padding:17px}}
     @media(max-width:420px){.customer-heading{flex-direction:column}.customer-stats,.customer-links{grid-template-columns:1fr}}
   </style>
+    <link rel="manifest" href="../manifest.webmanifest">
+    <meta name="theme-color" content="#0b6b5e">
 </head>
 <body>
   <header class="site-header">
@@ -47,5 +49,6 @@
     document.getElementById("customerLogoutMobile")?.addEventListener("click", () => window.dispatchEvent(new Event("customer-logout")));
   </script>
   <script type="module" src="../js/customer-dashboard.js"></script>
+<script>if('serviceWorker' in navigator && location.protocol.startsWith('http')){window.addEventListener('load',()=>navigator.serviceWorker.register('service-worker.js').catch(console.warn));}</script>
 </body>
 </html>

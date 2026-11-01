@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b6b5e"><meta name="description" content="Choose a SkillBridge Premium subscription plan for your service business.">
+  <title>Provider Subscription | SkillBridge</title>
+  <link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icons/icon-192.png" type="image/png">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    :root{--sb-green:#0b6b5e;--sb-dark:#102536;--sb-muted:#64748b}*{box-sizing:border-box}body{margin:0;background:#f3f7f7;color:var(--sb-dark);font-family:Arial,sans-serif}.top{background:#082b2a;color:#fff;padding:18px 5%;display:flex;align-items:center;justify-content:space-between;gap:14px}.brand{font-weight:800;font-size:21px;color:#fff;text-decoration:none}.top a:not(.brand){color:#fff}.wrap{max-width:1080px;margin:auto;padding:42px 20px 70px}.eyebrow{color:var(--sb-green);font-weight:800;letter-spacing:.1em;text-transform:uppercase;font-size:12px}.intro{text-align:center;max-width:680px;margin:0 auto 32px}.intro h1{font-size:clamp(30px,5vw,44px);margin:10px 0}.intro p{color:var(--sb-muted);line-height:1.6}.plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.plan{background:#fff;border:1px solid #dce7e5;border-radius:18px;padding:25px;display:flex;flex-direction:column;box-shadow:0 8px 25px #082b2a0b;position:relative}.plan.popular{border:2px solid var(--sb-green);transform:translateY(-5px)}.ribbon{align-self:flex-start;background:#e1f5ef;color:#075a4e;border-radius:999px;padding:6px 10px;font-size:11px;font-weight:800;text-transform:uppercase}.plan h2{font-size:20px;margin:18px 0 5px}.price{font-size:35px;font-weight:800;letter-spacing:-1px;margin:8px 0}.period{font-size:13px;color:var(--sb-muted)}.saving{color:#087b51;font-weight:700;font-size:13px;min-height:20px;margin:14px 0}.features{padding:0;list-style:none;line-height:1.9;color:#334155;flex:1}.features li:before{content:'✓';color:#07845c;font-weight:800;margin-right:9px}.choose{width:100%;border:0;background:var(--sb-green);color:#fff;padding:13px 15px;border-radius:10px;font-size:15px;font-weight:800;cursor:pointer}.choose:hover{background:#07554b}.choose:disabled{opacity:.6;cursor:wait}.notice{max-width:760px;margin:25px auto 0;padding:15px 17px;background:#fff;border:1px solid #dce7e5;border-radius:12px;color:#475569;line-height:1.6}.status{min-height:24px;text-align:center;margin:20px 0;color:var(--sb-dark);font-weight:600}.status.error{color:#b42318}.fineprint{text-align:center;font-size:12px;color:#64748b;margin-top:20px}@media(max-width:780px){.plans{grid-template-columns:1fr}.plan.popular{transform:none}.top{padding:15px 20px}.wrap{padding-top:30px}}
+  </style>
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#0b6b5e">
+</head>
+<body>
+<header class="top"><a class="brand" href="index.html">SkillBridge</a><nav><a href="dashboard.html">Provider dashboard</a></nav></header>
+<main class="wrap">
+  <section class="intro"><div class="eyebrow">Grow your service business</div><h1>Choose your Premium plan</h1><p>Pick the access period that works for your business. Your subscription is activated only after Paystack confirms the payment securely.</p></section>
+  <section class="plans" aria-label="Subscription plans">
+    <article class="plan"><span class="ribbon">Flexible</span><h2>Monthly</h2><div class="price">₦1,500</div><div class="period">for 1 month</div><div class="saving">No long-term commitment</div><ul class="features"><li>30 days of Premium access</li><li>Renew when you need to</li><li>Manage from your dashboard</li></ul><button class="choose" data-plan="monthly">Choose Monthly</button></article>
+    <article class="plan popular"><span class="ribbon">Most popular</span><h2>3 Months</h2><div class="price">₦3,500</div><div class="period">for 3 months</div><div class="saving">Save ₦1,000 vs monthly</div><ul class="features"><li>90 days of Premium access</li><li>Lower monthly equivalent</li><li>Manage from your dashboard</li></ul><button class="choose" data-plan="quarterly">Choose 3 Months</button></article>
+    <article class="plan"><span class="ribbon">Best value</span><h2>Yearly</h2><div class="price">₦10,000</div><div class="period">for 12 months</div><div class="saving">Save ₦8,000 vs monthly</div><ul class="features"><li>365 days of Premium access</li><li>About ₦833 per month</li><li>Best for long-term providers</li></ul><button class="choose" data-plan="yearly">Choose Yearly</button></article>
+  </section>
+  <div id="subscriptionStatus" class="status" role="status" aria-live="polite"></div>
+  <section class="notice"><strong>Secure payments:</strong> Paystack processes your payment. SkillBridge does not activate a plan just because you return to this page; payment must be verified by the server. If you have already paid and are returning from checkout, keep this page open while verification completes.</section>
+  <p class="fineprint">Prices are in Nigerian naira (NGN). Premium access duration begins when the payment is verified.</p>
+</main>
+<script type="module" src="js/subscription.js"></script>
+<script>if('serviceWorker' in navigator && location.protocol.startsWith('http')){window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(console.warn));}</script>
+</body></html>

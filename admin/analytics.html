@@ -10,6 +10,8 @@
 
 <link rel="stylesheet" href="../css/style.css">
 
+    <link rel="manifest" href="../manifest.webmanifest">
+    <meta name="theme-color" content="#0b6b5e">
 </head>
 
 <body>
@@ -74,6 +76,7 @@
 
 <script type="module" src="../js/analytics.js"></script>
 
+<script>if('serviceWorker' in navigator && location.protocol.startsWith('http')){window.addEventListener('load',()=>navigator.serviceWorker.register('service-worker.js').catch(console.warn));}</script>
 </body>
 
 </html>

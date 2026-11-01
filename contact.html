@@ -63,6 +63,8 @@
             .contact-aside { padding: 21px 18px; }
         }
     </style>
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#0b6b5e">
 </head>
 <body class="contact-page home-page">
     <header class="site-header">
@@ -183,5 +185,6 @@
             window.location.href = `mailto:support@skillbridge.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
         });
     </script>
+<script>if('serviceWorker' in navigator && location.protocol.startsWith('http')){window.addEventListener('load',()=>navigator.serviceWorker.register('service-worker.js').catch(console.warn));}</script>
 </body>
 </html>

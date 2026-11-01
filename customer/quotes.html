@@ -54,6 +54,8 @@
     .quote-waiting-revision{background:#fff6dc;color:#795916}
     @media(max-width:620px){.quotes-page{width:calc(100% - 30px);margin:28px auto 48px}.quotes-heading{align-items:flex-start;flex-direction:column}.quote-card-heading{flex-direction:column}}
   </style>
+    <link rel="manifest" href="../manifest.webmanifest">
+    <meta name="theme-color" content="#0b6b5e">
 </head>
 <body>
   <header class="site-header">
@@ -69,5 +71,6 @@
     <section id="quotesList" class="quote-list" aria-label="Your quote requests"></section>
   </main>
   <script type="module" src="../js/customer-quotes.js"></script>
+<script>if('serviceWorker' in navigator && location.protocol.startsWith('http')){window.addEventListener('load',()=>navigator.serviceWorker.register('service-worker.js').catch(console.warn));}</script>
 </body>
 </html>
