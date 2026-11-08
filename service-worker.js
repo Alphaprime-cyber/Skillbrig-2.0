@@ -1,4 +1,4 @@
-const CACHE_NAME = "skillbridge-static-v1";
+const CACHE_NAME = "skillbridge-static-v2";
 const STATIC_ASSETS = ["./offline.html", "./icons/icon-192.svg", "./icons/icon-512.svg", "./icons/icon-192.png", "./icons/icon-512.png", "./manifest.webmanifest"];
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(STATIC_ASSETS)).then(() => self.skipWaiting()));

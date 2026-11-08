@@ -662,22 +662,27 @@
 
         <fieldset class="provider-plan-choice" aria-describedby="providerPlanHelp">
             <legend><i class="fas fa-credit-card" aria-hidden="true"></i> Choose a required subscription plan</legend>
-            <p id="providerPlanHelp">A paid plan is required to register. You’ll continue to secure Paystack checkout after creating your account. Card details are entered on Paystack and are not stored by SkillBridge.</p>
+            <p id="providerPlanHelp">A paid plan is required to register. Your card will be charged automatically at the selected interval until you cancel. You’ll continue to secure Paystack checkout after creating your account. Card details are entered on Paystack and are not stored by SkillBridge.</p>
             <div class="provider-plan-options">
                 <label class="provider-plan-option">
                     <input id="providerPlanMonthly" type="radio" name="subscriptionPlan" value="monthly" required>
-                    <span><strong>Monthly</strong><b>₦1,500</b><small>30 days</small></span>
+                    <span><strong>Monthly</strong><b>₦1,500</b><small>Billed every month</small></span>
                 </label>
                 <label class="provider-plan-option">
                     <input type="radio" name="subscriptionPlan" value="quarterly" required>
-                    <span><strong>3 Months</strong><b>₦3,500</b><small>90 days · Most popular</small></span>
+                    <span><strong>3 Months</strong><b>₦3,500</b><small>Billed every 3 months · Most popular</small></span>
                 </label>
                 <label class="provider-plan-option">
                     <input type="radio" name="subscriptionPlan" value="yearly" required>
-                    <span><strong>Yearly</strong><b>₦10,000</b><small>365 days</small></span>
+                    <span><strong>Yearly</strong><b>₦10,000</b><small>Billed every year</small></span>
                 </label>
             </div>
         </fieldset>
+
+        <label style="display:flex;gap:10px;align-items:flex-start;margin-top:14px;">
+            <input type="checkbox" id="agreeAutoRenew">
+            <span>I authorize automatic recurring charges for the plan I selected until I cancel it. I understand I can manage or cancel the subscription through Paystack.</span>
+        </label>
 
         <!-- TERMS -->
 

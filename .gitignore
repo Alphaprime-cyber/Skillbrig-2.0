@@ -1,0 +1,12 @@
+functions/node_modules/
+node_modules/
+firebase-debug.log
+.firebase/
+.env*
+
+.npm-cache/
+www/
+android/.gradle/
+android/build/
+ios/build/
+*.xcuserstate

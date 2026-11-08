@@ -16,7 +16,7 @@ window.registerProvider = async function () {
     const location = clean(byId("providerLocation")?.value);
     const phone = clean(byId("providerPhone")?.value);
     const whatsapp = clean(byId("providerWhatsApp")?.value);
-    const email = clean(byId("providerEmail")?.value);
+    const email = clean(byId("providerEmail")?.value).toLowerCase();
     const password = clean(byId("providerPassword")?.value);
     const planId = document.querySelector('input[name="subscriptionPlan"]:checked')?.value;
     const experience = clean(byId("providerExperience")?.value);
@@ -30,6 +30,11 @@ window.registerProvider = async function () {
     if (!["monthly", "quarterly", "yearly"].includes(planId)) {
         alert("Choose a subscription plan to continue. A paid plan is required to register.");
         byId("providerPlanMonthly")?.focus();
+        return;
+    }
+    if (!byId("agreeAutoRenew")?.checked) {
+        alert("Please confirm that you agree to automatic recurring charges until you cancel.");
+        byId("agreeAutoRenew")?.focus();
         return;
     }
     if (password.length < 8) {
@@ -48,19 +53,20 @@ window.registerProvider = async function () {
             uid: credential.user.uid,
             name, businessName, category, state, location, phone, whatsapp, email,
             experience, businessHours, description,
+            subscriptionConsentAt: new Date(), subscriptionConsentVersion: "auto-renew-v1",
             verified: false, averageRating: 0, totalReviews: 0, jobsCompleted: 0,
             skillScore: 50, createdAt: new Date()
         });
         accountCreated = true;
         const startCheckout = httpsCallable(getFunctions(undefined, "us-central1"), "startSubscriptionCheckout");
-        const checkout = await startCheckout({ planId });
+        const checkout = await startCheckout({ planId, recurringConsent: true });
         if (!checkout.data?.authorizationUrl) throw new Error("Paystack did not return a checkout link.");
         window.location.assign(checkout.data.authorizationUrl);
     } catch (error) {
         console.error("Registration error:", error);
         if (accountCreated) {
             alert("Your provider account was created, but checkout could not start. We’ll open your selected plan so you can retry payment. Do not register again.");
-            window.location.href = `subscription.html?plan=${encodeURIComponent(planId)}&autostart=1`;
+            window.location.href = `subscription.html?plan=${encodeURIComponent(planId)}`;
             return;
         }
         alert("Registration failed: " + (error?.message || "Please try again."));
