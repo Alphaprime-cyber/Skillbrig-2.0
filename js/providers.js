@@ -197,25 +197,38 @@ function displayProviders(providers) {
         const place = [provider.state, provider.location].filter(Boolean).map(escapeHtml).join(", ");
         const rating = Number(provider.averageRating) || 0;
         const experience = provider.experience ? `<p>${escapeHtml(provider.experience)} years experience</p>` : "";
+        const phone = clean(provider.phone).replace(/[^\d+]/g, "");
+        const whatsapp = clean(provider.whatsapp).replace(/\D/g, "");
+        const reviews = Number(provider.totalReviews) || 0;
+        const actions = (whatsapp ? '<a class="provider-contact whatsapp" href="https://wa.me/' + whatsapp + '" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp" aria-hidden="true"></i> WhatsApp</a>' : "") + (phone ? '<a class="provider-contact call" href="tel:' + phone + '"><i class="fas fa-phone" aria-hidden="true"></i> Call</a>' : "") + '<a href="profile.html?id=' + encodeURIComponent(provider.id) + '" class="search-btn profile-link">View Profile</a>';
         return `<article class="card provider-card">
+            <div class="provider-card-top"><span class="verified-badge"><i class="fas fa-circle-check" aria-hidden="true"></i> Verified</span></div>
             <h3>${title}</h3><p><strong>${category}</strong></p>
             ${place ? `<p><i class="fas fa-location-dot" aria-hidden="true"></i> ${place}</p>` : ""}
-            <p>⭐ ${rating}</p>${experience}
-            <a href="profile.html?id=${encodeURIComponent(provider.id)}" class="search-btn" style="display:inline-flex;text-decoration:none;">View Profile</a>
+            <p class="provider-rating">⭐ ${rating.toFixed(1)} <span>(${reviews} reviews)</span></p>${experience}
+            <div class="provider-card-actions">${actions}</div>
         </article>`;
     }).join("");
 }
 
+function updateHomepageStats(providers) {
+    const values = { statProviders: providers.length, statStates: new Set(providers.map((provider) => clean(provider.state)).filter(Boolean)).size, statCategories: new Set(providers.map((provider) => clean(provider.category)).filter(Boolean)).size, statReviews: providers.reduce((total, provider) => total + (Number(provider.totalReviews) || 0), 0) };
+    Object.entries(values).forEach(([id, value]) => { const element = byId(id); if (element) element.textContent = Number(value).toLocaleString(); });
+}
+
 async function filterProviders() {
-    const search = clean(byId("providerSearch")?.value).toLowerCase();
-    const category = clean(byId("providerCategory")?.value).toLowerCase();
-    const state = clean(byId("providerState")?.value).toLowerCase();
+    const search = clean((byId("providerSearch") || byId("searchBox"))?.value).toLowerCase();
+    const category = clean((byId("providerCategory") || byId("categoryFilter"))?.value).toLowerCase();
+    const state = clean((byId("providerState") || byId("stateFilter"))?.value).toLowerCase();
+    const city = clean(byId("cityFilter")?.value).toLowerCase();
     const providers = await getVerifiedProviders();
+    updateHomepageStats(providers);
     const filtered = providers.filter((provider) => {
         const values = [provider.name, provider.businessName, provider.category, provider.state, provider.location].map((value) => clean(value).toLowerCase());
         return (!search || values.some((value) => value.includes(search))) &&
             (!category || clean(provider.category).toLowerCase() === category) &&
-            (!state || clean(provider.state).toLowerCase() === state);
+            (!state || clean(provider.state).toLowerCase() === state) &&
+            (!city || clean(provider.location).toLowerCase().includes(city));
     });
     displayProviders(filtered);
 }
@@ -225,9 +238,13 @@ async function loadProviderDirectory() {
     if (!list) return;
     list.innerHTML = '<div class="card"><p>Loading providers...</p></div>';
     const params = new URLSearchParams(window.location.search);
-    if (byId("providerSearch")) byId("providerSearch").value = params.get("search") || "";
-    if (byId("providerCategory")) byId("providerCategory").value = params.get("category") || "";
-    if (byId("providerState")) byId("providerState").value = params.get("state") || "";
+    const searchInput = byId("providerSearch") || byId("searchBox");
+    if (searchInput) searchInput.value = params.get("search") || "";
+    const categoryInput = byId("providerCategory") || byId("categoryFilter");
+    if (categoryInput) categoryInput.value = params.get("category") || "";
+    const stateInput = byId("providerState") || byId("stateFilter");
+    if (stateInput) stateInput.value = params.get("state") || "";
+    if (byId("cityFilter")) byId("cityFilter").value = params.get("city") || "";
     try { await filterProviders(); }
     catch (error) {
         console.error("Error loading providers:", error);
@@ -325,7 +342,12 @@ document.addEventListener("DOMContentLoaded", () => {
     if (byId("providersList")) loadProviderDirectory();
     if (byId("profileStatus")) window.loadProviderProfile();
     if (byId("dashboardLoginForm")) loadProviderDashboard();
-    byId("providerSearch")?.addEventListener("input", () => filterProviders().catch(console.error));
-    byId("providerCategory")?.addEventListener("change", () => filterProviders().catch(console.error));
-    byId("providerState")?.addEventListener("change", () => filterProviders().catch(console.error));
+    const searchInput = byId("providerSearch") || byId("searchBox");
+    const categoryInput = byId("providerCategory") || byId("categoryFilter");
+    const stateInput = byId("providerState") || byId("stateFilter");
+    searchInput?.addEventListener("input", () => filterProviders().catch(console.error));
+    categoryInput?.addEventListener("change", () => filterProviders().catch(console.error));
+    stateInput?.addEventListener("change", () => filterProviders().catch(console.error));
+    byId("cityFilter")?.addEventListener("change", () => filterProviders().catch(console.error));
+    window.searchProviders = () => filterProviders().catch(console.error);
 });

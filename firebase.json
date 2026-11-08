@@ -1,5 +1,5 @@
 {
   "functions": [{"source": "functions", "codebase": "default"}],
   "firestore": {"rules": "firestore.rules"},
-  "hosting": {"public": ".", "ignore": ["firebase.json", "**/.*", "**/node_modules/**", "functions/**"]}
+  "hosting": {"public": "www", "ignore": ["firebase.json", "**/.*", "**/node_modules/**", "functions/**"]}
 }

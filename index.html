@@ -105,6 +105,7 @@
     @media(max-width:768px){body.home-page .mobile-menu{top:0;right:-100%;width:82%;max-width:360px;height:100vh;max-height:none;padding:22px;border:0;border-radius:0;visibility:visible;opacity:1;transform:none;transition:right .3s ease}body.home-page .mobile-menu.open{top:0;right:0}}
 </style>
 
+    <link rel="stylesheet" href="css/homepage.css">
     <link rel="manifest" href="manifest.webmanifest">
     <meta name="theme-color" content="#0b6b5e">
 </head>
@@ -123,7 +124,7 @@
 
 <span class="logo-icon">
 
-            <i class="fas fa-link"></i>
+            <img src="images/skillbridge-mark.svg" alt="" width="42" height="42">
 
         </span>
 
@@ -137,9 +138,10 @@
 
 <!-- Mobile Menu Button -->
 
-<button
-
-        class="menu-btn"
+<nav class="desktop-nav" aria-label="Main navigation">
+<a href="index.html" class="active">Home</a><a href="#categories">Categories</a><a href="providers.html">Providers</a><a href="#why">About Us</a><a href="contact.html">Contact Us</a>
+</nav><div class="header-actions"><a class="provider-btn" href="provider.html">Become a Provider</a><a class="login-btn" href="customer/auth.html?mode=login">Login</a></div>
+<button class="menu-btn"
 
         id="menuBtn"
 
@@ -250,11 +252,7 @@
 
 <h1>
 
-            Find Trusted
-
-            <span>Professionals</span>
-
-            Across Nigeria
+            Find Trusted<br>Professionals <span>Near You.</span>
 
         </h1>
 
@@ -606,9 +604,8 @@
 
 </div>
 
-<button
-
-                class="search-btn"
+<div class="search-field city-field"><i class="fas fa-city"></i><div><label for="cityFilter">City / LGA</label><select id="cityFilter"><option value="">All Cities</option><option>Lagos Island</option><option>Ikeja</option><option>Lekki</option><option>Surulere</option><option>Abuja</option><option>Port Harcourt</option><option>Ibadan</option><option>Kano</option></select></div></div>
+<button class="search-btn"
 
                 onclick="searchProviders()"
 
@@ -1028,6 +1025,13 @@
 
 </div>
 
+
+<div class="homepage-stats" id="homepageStats" aria-label="Live SkillBridge marketplace statistics">
+<div class="homepage-stat"><strong id="statProviders">—</strong><span>Verified Professionals</span></div>
+<div class="homepage-stat"><strong id="statStates">—</strong><span>States Covered</span></div>
+<div class="homepage-stat"><strong id="statCategories">—</strong><span>Service Categories</span></div>
+<div class="homepage-stat"><strong id="statReviews">—</strong><span>Customer Reviews</span></div>
+</div>
 </section>
 
 <!-- =========================================
