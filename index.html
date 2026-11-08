@@ -228,6 +228,7 @@
 <a href="provider-login.html" class="mobile-provider provider-menu-link"><i class="fas fa-right-to-bracket"></i> Provider Login</a>
 <a href="provider.html" class="mobile-provider provider-menu-link provider-menu-cta"><i class="fas fa-user-plus"></i> Become a Provider</a>
 
+<button type="button" class="theme-toggle" id="themeToggle" aria-label="Switch to dark theme" aria-pressed="false"><i class="fas fa-moon" aria-hidden="true"></i><span>Use dark theme</span></button>
 </div>
 
 <!-- =========================================
@@ -1218,6 +1219,26 @@ document.addEventListener("DOMContentLoaded", function () {
 <script type="module" src="js/providers.js"></script>
 
 <script>if('serviceWorker' in navigator && location.protocol.startsWith('http')){window.addEventListener('load',()=>navigator.serviceWorker.register('service-worker.js').catch(console.warn));}</script>
+<script>
+(function () {
+    const key = "skillbridge-theme";
+    const button = document.getElementById("themeToggle");
+    let dark = false;
+    try { dark = localStorage.getItem(key) === "dark"; } catch (error) {}
+    function applyTheme(useDark, save) {
+        dark = useDark;
+        document.documentElement.dataset.theme = dark ? "dark" : "light";
+        if (button) {
+            button.setAttribute("aria-pressed", String(dark));
+            button.setAttribute("aria-label", dark ? "Switch to light theme" : "Switch to dark theme");
+            button.innerHTML = dark ? "<i class=\"fas fa-sun\" aria-hidden=\"true\"></i><span>Use light theme</span>" : "<i class=\"fas fa-moon\" aria-hidden=\"true\"></i><span>Use dark theme</span>";
+        }
+        if (save) { try { localStorage.setItem(key, dark ? "dark" : "light"); } catch (error) {} }
+    }
+    applyTheme(dark, false);
+    if (button) button.addEventListener("click", function () { applyTheme(!dark, true); });
+})();
+</script>
 </body>
 
 </html>
